@@ -12,16 +12,24 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.model.User
+import dagger.android.AndroidInjection
+import dagger.android.DaggerActivity
 import kotlinx.android.synthetic.main.activity_greeting.*
+import javax.inject.Inject
 
 private const val TAG: String = "GreetingActivity"
 private const val RC_SIGN_IN = 191
 
 class GreetingActivity : Activity() {
 
+    @Inject
+    lateinit var localStorage: LocalStorage
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_greeting)
         auth_sign_in_button.setOnClickListener {
@@ -37,7 +45,6 @@ class GreetingActivity : Activity() {
         val token = getString(R.string.google_sign_in_token)
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestServerAuthCode(token)
                 .requestEmail()
                 .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -65,14 +72,21 @@ class GreetingActivity : Activity() {
         try {
             val account =
                 completedTask.getResult(ApiException::class.java)
-
+            localStorage.saveUser(
+                User(
+                    account?.idToken,
+                    account?.givenName,
+                    account?.familyName,
+                    account?.email
+                )
+            )
             Log.d(TAG, "handleSignInResult: ${account?.givenName}")
             // Signed in successfully, show authenticated UI.
             openMainScreen()
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.e(TAG, "signInResult:failed code=" + e.statusCode)
+            Log.e(TAG, "signInResult:failed code= ${e.message} \n ${e.statusCode}", e)
         }
     }
 

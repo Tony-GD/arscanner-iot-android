@@ -5,7 +5,7 @@ import com.griddynamics.connectedapps.gateway.network.AirScannerGatewayImpl
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = [ApiModule::class])
+@Module(includes = [ApiModule::class, LocalStorageModule::class])
  object GatewayModule {
     @Provides
     @JvmStatic

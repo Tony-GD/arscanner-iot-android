@@ -7,13 +7,13 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/user/projects/AirScanner/airscanner.keystore')
+            storeFile file('/Users/user/projects/AirScanner/arscanner-iot-android/airscanner.keystore')
             storePassword 'ksU2664854!#'
             keyAlias = 'key0'
             keyPassword 'ksU2664854!#'
         }
         debug {
-            storeFile file('/Users/user/projects/AirScanner/airscanner.keystore')
+            storeFile file('/Users/user/projects/AirScanner/arscanner-iot-android/airscanner.keystore')
             storePassword 'ksU2664854!#'
             keyAlias = 'key0'
             keyPassword 'ksU2664854!#'
@@ -71,6 +71,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+
+    //storage
+    implementation "com.orhanobut:hawk:2.0.1"
 
     //auth
     implementation 'com.google.android.gms:play-services-auth:18.0.0'

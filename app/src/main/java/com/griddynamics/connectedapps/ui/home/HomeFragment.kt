@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.FragmentHomeBindingImpl
+import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -21,6 +22,9 @@ class HomeFragment : DaggerFragment() {
     private lateinit var homeViewModel: HomeViewModel
 
     private lateinit var bindingImpl: FragmentHomeBindingImpl
+
+    @Inject
+    lateinit var localStorage: LocalStorage
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -41,9 +45,6 @@ class HomeFragment : DaggerFragment() {
             )
         homeViewModel =
             ViewModelProviders.of(this, viewModelFactory)[HomeViewModel::class.java]
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-//            text_home.text = it
-        })
         bindingImpl.lifecycleOwner = viewLifecycleOwner
         bindingImpl.viewModel = homeViewModel
         return bindingImpl.root

@@ -4,6 +4,7 @@ import android.app.Application
 import com.griddynamics.connectedapps.BaseApp
 import com.griddynamics.connectedapps.di.gateway.GatewayModule
 import com.griddynamics.connectedapps.di.gateway.StreamModule
+import com.griddynamics.connectedapps.di.greeting.GreetingActivityContributor
 import com.griddynamics.connectedapps.di.home.HomeFragmentContributor
 import com.griddynamics.connectedapps.di.home.HomeModule
 import dagger.BindsInstance
@@ -21,9 +22,10 @@ import javax.inject.Singleton
         StreamModule::class,
         HomeModule::class,
         ViewModelFactoryModule::class,
-        HomeFragmentContributor::class]
+        HomeFragmentContributor::class,
+        GreetingActivityContributor::class]
 )
-interface ApplicationComponent: AndroidInjector<BaseApp>{
+interface ApplicationComponent : AndroidInjector<BaseApp> {
 
     @Component.Builder
     interface Builder {

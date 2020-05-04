@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.di.home
+package com.griddynamics.connectedapps.di.ui.home
 
 import com.griddynamics.connectedapps.ui.home.HomeFragment
 import dagger.Module

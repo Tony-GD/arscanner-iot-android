@@ -1,6 +1,5 @@
-package com.griddynamics.connectedapps.di.greeting
+package com.griddynamics.connectedapps.di.ui.greeting
 
-import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.ui.greeting.GreetingActivity
 import dagger.Module
 

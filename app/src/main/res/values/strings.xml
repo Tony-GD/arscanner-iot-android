@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Air Scanner</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_map">Map</string>
     <string name="title_notifications">Notifications</string>
     <string name="sign_in">Sign In</string>
     <string name="or">or</string>

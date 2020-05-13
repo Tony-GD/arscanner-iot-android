@@ -11,4 +11,6 @@
     <string name="add_widget">Air Scanner</string>
     <string name="humidity">Humidity: %s</string>
     <string name="temperature">Temperature: %s</string>
+    <string name="special">Special data: %s</string>
+    <string name="co2">CO2: %s</string>
 </resources>

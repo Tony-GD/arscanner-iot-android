@@ -1,34 +1,93 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:padding="@dimen/widget_margin">
 
-    <TextView
-        android:id="@+id/appwidget_humidity_text"
+
+    <LinearLayout
+        android:id="@+id/appwidget_sensor_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ff0000"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/appwidget_temperature_text"
+        <TextView
+            android:id="@+id/appwidget_humidity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/appwidget_text"
+            android:text="@string/appwidget_text"
+            android:textColor="#ff0000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/appwidget_temperature_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/appwidget_text"
+            android:textColor="#ffff00"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@string/appwidget_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/appwidget_special_sensor_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appwidget_humidity_text"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffff00"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_below="@id/appwidget_sensor_data"
+        android:background="@color/design_default_color_on_secondary"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/appwidget_special_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/appwidget_text"
+            android:textColor="#00ff00"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@string/appwidget_text" />
+
+        <TextView
+            android:id="@+id/appwidget_special_temp_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/appwidget_text"
+            android:textColor="#00ff00"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@string/appwidget_text" />
+
+        <TextView
+            android:id="@+id/appwidget_special_co2_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/appwidget_text"
+            android:textColor="#00ff00"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@string/appwidget_text" />
+
+        <TextView
+            android:id="@+id/appwidget_special_humidity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/appwidget_text"
+            android:textColor="#00ff00"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@string/appwidget_text" />
+    </LinearLayout>
 </RelativeLayout>

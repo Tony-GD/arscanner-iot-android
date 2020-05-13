@@ -22,6 +22,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.model.ScannersResponse
+import com.griddynamics.connectedapps.model.SpecialScannerResponse
 import com.griddynamics.connectedapps.ui.widget.AirScannerSubscriptionWidget
 
 
@@ -44,6 +45,7 @@ private const val TAG: String = "ScannerDataUpdateServic"
 class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
     private lateinit var database: DatabaseReference
     private val gson = Gson()
+
     private val dbEventListener = object : ValueEventListener {
         override fun onCancelled(databaseError: DatabaseError) {
             Log.e(TAG, "MainActivity: ", databaseError.toException())
@@ -58,6 +60,25 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
                 gson.fromJson(
                     dataSnapshot.value.toString(),
                     ScannersResponse::class.java
+                )
+            )
+        }
+    }
+
+    private val dbSpecialEventListener = object : ValueEventListener {
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.e(TAG, "MainActivity: ", databaseError.toException())
+        }
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            Log.d(
+                TAG,
+                "onDataChange() called with: dataSnapshot = [$dataSnapshot], value = [${dataSnapshot.value.toString()}]"
+            )
+            updateWidget(
+                gson.fromJson(
+                    dataSnapshot.value.toString(),
+                    SpecialScannerResponse::class.java
                 )
             )
         }
@@ -93,6 +114,12 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
             .child("orangepi-2G-IoT-1")
             .child("type")
             .addValueEventListener(dbEventListener)
+
+        database
+            .child("metrics")
+            .child("ik_ard")
+            .child("type")
+            .addValueEventListener(dbSpecialEventListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -129,6 +156,33 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
         updateViews.setTextViewText(
             R.id.appwidget_temperature_text,
             String.format(getString(R.string.temperature), "${data.temperature}")
+        )
+
+        val thisWidget =
+            ComponentName(applicationContext, AirScannerSubscriptionWidget::class.java)
+        val manager = AppWidgetManager.getInstance(applicationContext)
+        manager.updateAppWidget(thisWidget, updateViews)
+    }
+
+    fun updateWidget(data: SpecialScannerResponse) {
+        Log.d(TAG, "updateWidget() called with: data = [$data]")
+        val updateViews =
+            RemoteViews(packageName, R.layout.air_scanner_subscription_widget)
+        updateViews.setTextViewText(
+            R.id.appwidget_special_text,
+            String.format(getString(R.string.special), "${data.PM2_5}")
+        )
+        updateViews.setTextViewText(
+            R.id.appwidget_special_temp_text,
+            String.format(getString(R.string.temperature), "${data.Temp}")
+        )
+        updateViews.setTextViewText(
+            R.id.appwidget_special_humidity_text,
+            String.format(getString(R.string.humidity), "${data.Humidity}")
+        )
+        updateViews.setTextViewText(
+            R.id.appwidget_special_co2_text,
+            String.format(getString(R.string.co2), "${data.CO2}")
         )
 
         val thisWidget =

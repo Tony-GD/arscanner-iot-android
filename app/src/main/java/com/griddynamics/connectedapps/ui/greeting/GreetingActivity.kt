@@ -10,6 +10,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.ktx.Firebase
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
@@ -26,12 +30,14 @@ class GreetingActivity : Activity() {
 
     @Inject
     lateinit var localStorage: LocalStorage
+    private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_greeting)
+        auth = FirebaseAuth.getInstance()
         auth_sign_in_button.setOnClickListener {
             signIn()
         }
@@ -42,9 +48,10 @@ class GreetingActivity : Activity() {
     }
 
     private fun setupClient() {
-        val token = getString(R.string.google_sign_in_token)
+        val token = getString(R.string.default_web_client_id)
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(token)
                 .requestEmail()
                 .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
@@ -72,6 +79,7 @@ class GreetingActivity : Activity() {
         try {
             val account =
                 completedTask.getResult(ApiException::class.java)
+            firebaseAuth(account?.idToken)
             localStorage.saveUser(
                 User(
                     account?.idToken,
@@ -81,13 +89,32 @@ class GreetingActivity : Activity() {
                 )
             )
             Log.d(TAG, "handleSignInResult: ${account?.givenName}")
-            // Signed in successfully, show authenticated UI.
-            openMainScreen()
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.e(TAG, "signInResult:failed code= ${e.message} \n ${e.statusCode}", e)
+            Snackbar.make(greeting_root, "Google Authentication Failed.", Snackbar.LENGTH_SHORT)
+                .show()
+            Log.e(TAG, "signInResult:failed code= ${e.message}", e)
         }
+    }
+
+    private fun firebaseAuth(token: String?) {
+        Log.d(TAG, "firebaseAuth() called with: token = [$token]")
+        val credential = GoogleAuthProvider.getCredential(token, null)
+        Log.d(TAG, "firebaseAuth: credential [${credential}]")
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    openMainScreen()
+                } else {
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Snackbar.make(
+                        greeting_root,
+                        "Firebase Authentication Failed.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
     fun onContinue() {

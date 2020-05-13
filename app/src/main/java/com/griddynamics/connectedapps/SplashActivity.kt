@@ -22,6 +22,7 @@ class SplashActivity : Activity() {
 
         doOnUserSignedIn {
             startActivity(it)
+            finish()
         }
 
     }

@@ -79,12 +79,17 @@ dependencies {
     //maps
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
 
-    //storage
+    //local storage
     implementation "com.orhanobut:hawk:2.0.1"
 
     //auth
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
+    //remote DB
+    implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
+
     //dagger
     implementation "com.google.dagger:dagger:$dagger2_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

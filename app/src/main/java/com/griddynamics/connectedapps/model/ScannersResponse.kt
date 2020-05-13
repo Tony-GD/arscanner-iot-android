@@ -1,3 +1,5 @@
 package com.griddynamics.connectedapps.model
 
-data class ScannersResponse(val data: List<String>)
+const val SCANNER_RESPONSE_ID = "SCANNER_RESPONSE_ID"
+
+data class ScannersResponse(val humidity: Float, val temperature: Float)

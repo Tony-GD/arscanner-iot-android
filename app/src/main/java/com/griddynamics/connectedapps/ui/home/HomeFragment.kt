@@ -9,11 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.FragmentHomeBindingImpl
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
@@ -47,6 +49,14 @@ class HomeFragment : DaggerFragment() {
             ViewModelProviders.of(this, viewModelFactory)[HomeViewModel::class.java]
         bindingImpl.lifecycleOwner = viewLifecycleOwner
         bindingImpl.viewModel = homeViewModel
+
         return bindingImpl.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        home_logout.setOnClickListener {
+            (requireActivity() as MainActivity).logout()
+        }
     }
 }

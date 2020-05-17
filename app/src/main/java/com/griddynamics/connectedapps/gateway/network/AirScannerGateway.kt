@@ -1,10 +1,8 @@
 package com.griddynamics.connectedapps.gateway.network
 
 import androidx.lifecycle.LiveData
-import com.griddynamics.connectedapps.model.ScannersResponse
+import com.griddynamics.connectedapps.model.GetDevicesResponse
 
 interface AirScannerGateway {
-    fun getAirScanners(): LiveData<ScannersResponse>
-    fun getName(): LiveData<String>
-    fun getName2()
+    fun getAirScanners(): LiveData<GetDevicesResponse>
 }

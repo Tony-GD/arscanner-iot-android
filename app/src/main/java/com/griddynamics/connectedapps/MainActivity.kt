@@ -42,7 +42,7 @@ class MainActivity : DaggerAppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        ScannerDataUpdateService.startActionStart(applicationContext, "", "")
+        ScannerDataUpdateService.startActionStart(applicationContext)
     }
 
     fun logout() {

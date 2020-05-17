@@ -1,9 +1,6 @@
 package com.griddynamics.connectedapps.service
 
-import android.app.IntentService
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -84,6 +81,10 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
         }
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return Service.START_STICKY
+    }
+
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             ACTION_START -> {
@@ -104,7 +105,7 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
      * parameters.
      */
     private fun handleActionStart(param1: String, param2: String) {
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notification = prepareNotification()
             startForeground(191, notification)
         }
@@ -207,7 +208,7 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
          * @see IntentService
          */
         @JvmStatic
-        fun startActionStart(context: Context, param1: String, param2: String) {
+        fun startActionStart(context: Context, param1: String = "", param2: String = "") {
             val intent = Intent(context, ScannerDataUpdateService::class.java).apply {
                 action = ACTION_START
                 putExtra(EXTRA_PARAM1, param1)
@@ -223,7 +224,7 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
          * @see IntentService
          */
         @JvmStatic
-        fun startActionStop(context: Context, param1: String, param2: String) {
+        fun startActionStop(context: Context, param1: String = "", param2: String = "") {
             val intent = Intent(context, ScannerDataUpdateService::class.java).apply {
                 action = ACTION_STOP
                 putExtra(EXTRA_PARAM1, param1)

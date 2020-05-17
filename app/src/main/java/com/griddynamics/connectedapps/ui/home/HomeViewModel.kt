@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import com.griddynamics.connectedapps.gateway.network.AirScannerGateway
 import com.griddynamics.connectedapps.gateway.stream.ScannerStream
+import com.griddynamics.connectedapps.model.GetDevicesResponse
 import com.griddynamics.connectedapps.model.User
 import javax.inject.Inject
 
@@ -18,22 +19,22 @@ class HomeViewModel @Inject constructor(
     private val localStorage: LocalStorage
 ) : ViewModel() {
 
-    private var _text: LiveData<String> = scannerStream.scannerData
+    private var _devices: LiveData<GetDevicesResponse> = scannerStream.scannerData
 
 
     init {
-        Log.d(TAG, "init and get name() called ${_text.value}")
+        Log.d(TAG, "init and get name() called ${_devices.value}")
     }
 
-    val text: LiveData<String> = _text
+    val devices: LiveData<GetDevicesResponse> = _devices
 
     val user: LiveData<User>
     get() {
-        return MutableLiveData<User>(localStorage.getUser())
+        return MutableLiveData(localStorage.getUser())
     }
 
     fun load() {
-        Log.d(TAG, "load:${scannerStream} ${text.value}")
-        gateway.getName2()
+        Log.d(TAG, "load:${scannerStream} ${devices.value}")
+        gateway.getAirScanners()
     }
 }

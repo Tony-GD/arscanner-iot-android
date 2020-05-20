@@ -1,5 +1,6 @@
 package com.griddynamics.connectedapps.ui.home
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +9,19 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.FragmentHomeBindingImpl
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.model.DeviceRequest
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
+private const val TAG: String = "HomeFragment"
 
 class HomeFragment : DaggerFragment() {
 
@@ -36,6 +40,12 @@ class HomeFragment : DaggerFragment() {
         super.onAttach(context)
     }
 
+    private fun navigateToEditFragment(data: DeviceRequest) {
+        val actionGlobalNavigationEdit = HomeFragmentDirections.ActionNavigationHomeToNavigationEdit()
+        actionGlobalNavigationEdit.setDevice(data.deviceId)
+        findNavController().navigate(actionGlobalNavigationEdit)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +56,8 @@ class HomeFragment : DaggerFragment() {
                 layoutInflater, R.layout.fragment_home, container, false
             )
         homeViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[HomeViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
+        homeViewModel.onEditListener = { navigateToEditFragment(it) }
         bindingImpl.lifecycleOwner = viewLifecycleOwner
         bindingImpl.viewModel = homeViewModel
 
@@ -56,7 +67,28 @@ class HomeFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         home_logout.setOnClickListener {
-            (requireActivity() as MainActivity).logout()
+            getLogoutDialog {
+                (requireActivity() as MainActivity).logout()
+            }.show()
         }
+        home_scanners_rv.adapter = ScannersViewAdapter(homeViewModel)
+        home_scanners_rv.layoutManager = LinearLayoutManager(context)
+        homeViewModel.devices.observe(viewLifecycleOwner, Observer {
+            home_scanners_rv.adapter?.notifyDataSetChanged()
+        })
+        homeViewModel.load()
+    }
+
+    private fun getLogoutDialog(callback: Callback): AlertDialog {
+        return AlertDialog.Builder(context)
+            .setTitle(R.string.logout_alert_title)
+            .setPositiveButton(R.string.yes) { dialog, _ ->
+                callback()
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }
+            .create()
     }
 }

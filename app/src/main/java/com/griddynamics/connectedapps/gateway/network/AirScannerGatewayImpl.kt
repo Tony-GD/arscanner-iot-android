@@ -1,8 +1,10 @@
 package com.griddynamics.connectedapps.gateway.network
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import com.griddynamics.connectedapps.gateway.api.AirScannerAPI
-import com.griddynamics.connectedapps.gateway.stream.ScannerStream
+import com.griddynamics.connectedapps.gateway.api.*
+import com.griddynamics.connectedapps.gateway.stream.DeviceStream
+import com.griddynamics.connectedapps.model.EMPTY_DEVICES_RESPONSE
 import com.griddynamics.connectedapps.model.GetDevicesResponse
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -12,18 +14,15 @@ private const val TAG: String = "AirScannerGatewayImpl"
 
 @Singleton
 class AirScannerGatewayImpl
-@Inject constructor(private val api: AirScannerAPI, private val stream: ScannerStream) :
+@Inject constructor(private val api: AirScannerAPI, private val stream: DeviceStream) :
     AirScannerGateway {
     private val job = Job()
     private val scope = CoroutineScope(GlobalScope.coroutineContext + job)
 
-    override fun getAirScanners(): LiveData<GetDevicesResponse> {
-        val data = stream.scannerData
-        scope.launch {
-            val result = runAsync().await()
-            data.postValue(result.body())
-        }
-        return data
+    override fun getAirScanners(): LiveData<ApiResponse<GetDevicesResponse>> {
+        Log.d(TAG, "getAirScanners() called")
+        stream.scannerData.postValue(ApiSuccessResponse(EMPTY_DEVICES_RESPONSE))
+            return api.getScanners()
     }
 
     private fun runAsync() = runBlocking {

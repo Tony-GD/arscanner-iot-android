@@ -1,7 +1,7 @@
 package com.griddynamics.connectedapps.di.gateway
 
-import com.griddynamics.connectedapps.gateway.stream.ScannerStream
-import com.griddynamics.connectedapps.gateway.stream.ScannerStreamImpl
+import com.griddynamics.connectedapps.gateway.stream.DeviceStream
+import com.griddynamics.connectedapps.gateway.stream.DeviceStreamImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 object StreamModule {
     @Provides
     @Singleton
-    fun provideScannerStream(): ScannerStream {
-        return ScannerStreamImpl()
+    fun provideScannerStream(): DeviceStream {
+        return DeviceStreamImpl()
     }
 }

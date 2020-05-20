@@ -8,6 +8,8 @@ import com.griddynamics.connectedapps.di.ui.greeting.GreetingActivityContributor
 import com.griddynamics.connectedapps.di.ui.home.HomeFragmentContributor
 import com.griddynamics.connectedapps.di.ui.home.HomeModule
 import com.griddynamics.connectedapps.di.ui.main.MainActivityContributor
+import com.griddynamics.connectedapps.di.ui.map.MapFragmentContributor
+import com.griddynamics.connectedapps.di.ui.map.MapModule
 import com.griddynamics.connectedapps.di.ui.splash.SplashActivityContributor
 import dagger.BindsInstance
 import dagger.Component
@@ -22,9 +24,11 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         GatewayModule::class,
         StreamModule::class,
-        HomeModule::class,
         ViewModelFactoryModule::class,
+        HomeModule::class,
         HomeFragmentContributor::class,
+        MapModule::class,
+        MapFragmentContributor::class,
         GreetingActivityContributor::class,
         SplashActivityContributor::class,
         MainActivityContributor::class]

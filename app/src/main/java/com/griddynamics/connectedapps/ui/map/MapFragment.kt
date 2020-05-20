@@ -1,6 +1,7 @@
 package com.griddynamics.connectedapps.ui.map
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -11,22 +12,49 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
+import com.griddynamics.connectedapps.model.DeviceRequest
+import com.griddynamics.connectedapps.util.unwrapApiResponse
+import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapController
+import org.osmdroid.views.overlay.Marker
+import javax.inject.Inject
 
+class MapFragment : DaggerFragment() {
 
-class MapFragment : Fragment() {
+    interface OnDeviceSelectedListener {
+        fun onDeviceSelected(device: DeviceRequest)
+    }
 
     private lateinit var mapViewModel: MapViewModel
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val onDeviceSelectedListener = object : OnDeviceSelectedListener {
+        override fun onDeviceSelected(device: DeviceRequest) {
+            Toast.makeText(context, "${device.userId}", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private val locationChangeListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
@@ -46,7 +74,24 @@ class MapFragment : Fragment() {
         override fun onProviderDisabled(provider: String?) {
             //NOP
         }
+    }
 
+    private fun addDeviceMarker(device: DeviceRequest) {
+        val binding: MapInfoViewLayoutBinding =
+            DataBindingUtil.inflate(
+                LayoutInflater.from(requireContext()),
+                R.layout.map_info_view_layout,
+                map,
+                false
+            )
+        binding.item = device
+        binding.listener = onDeviceSelectedListener
+        val info = MapInfoWindow(binding.root, map)
+        val elementMarker = Marker(map)
+        elementMarker.infoWindow = info
+        elementMarker.position = GeoPoint(device.locLat.toDouble(), device.locLong.toDouble())
+        elementMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        map.overlays.add(elementMarker)
     }
 
     override fun onCreateView(
@@ -54,10 +99,16 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        AndroidSupportInjection.inject(this)
         mapViewModel =
-            ViewModelProviders.of(this).get(MapViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_map, container, false)
-        return root
+            ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
+        mapViewModel.devices.observe(viewLifecycleOwner, Observer {
+            map.overlays.clear()
+            it.unwrapApiResponse()?.devices?.forEach { device ->
+                addDeviceMarker(device)
+            }
+        })
+        return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,35 +122,51 @@ class MapFragment : Fragment() {
     private fun setupMap() {
         map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = map.controller as MapController
-        val startPoint = GeoPoint(52370816, 9735936)
-        mapController.animateTo(startPoint)
         map.setBuiltInZoomControls(true)
         mapController.zoomTo(10)
         map.setUseDataConnection(true)
         map.setMultiTouchControls(true)
 
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissionsIfNecessary(
-                arrayOf(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
+        Dexter.withContext(activity)
+            .withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-            return
-        }
-        val locationManager =
-            getSystemService(requireContext(), LocationManager::class.java)
+            .withListener(object : MultiplePermissionsListener {
+                @SuppressLint("MissingPermission")
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                    if (report.areAllPermissionsGranted()) {
+                        val locationManager =
+                            getSystemService(requireContext(), LocationManager::class.java)
 
-        locationManager?.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER, 5000L, 10f, locationChangeListener
-        )
+                        locationManager?.requestLocationUpdates(
+                            LocationManager.GPS_PROVIDER, 5000L, 10f, locationChangeListener
+                        )
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.permission_message),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: MutableList<PermissionRequest>,
+                    permissionToken: PermissionToken
+                ) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.permission_message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    permissionToken.continuePermissionRequest()
+                }
+
+            })
+            .check();
+
     }
 
     private fun requestPermissionsIfNecessary(permissions: Array<String>) {

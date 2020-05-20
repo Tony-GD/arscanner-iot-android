@@ -82,6 +82,7 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         return Service.START_STICKY
     }
 

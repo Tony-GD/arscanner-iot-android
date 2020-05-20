@@ -1,34 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.griddynamics.connectedapps.ui.EditDeviceViewModel" />
+            type="com.griddynamics.connectedapps.ui.edit.EditDeviceViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.EditDeviceFragment">
+        tools:context=".ui.edit.EditDeviceFragment">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.device.deviceId}" />
+            android:hint="@string/display_name"
+            android:text="@{}" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.device.gatewayId}" />
+            android:hint="@string/lat"
+            android:text="@{viewModel.device.locLat}" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.device.userId}" />
+            android:hint="@string/longitude"
+            android:text="@{viewModel.device.locLong}" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            tools:src="@android:drawable/ic_menu_mylocation" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"
+            android:text="@{}" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/description_padding_15"
+            android:text="@string/is_public" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gateway" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/demo_gateways" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/data_format" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/data_format_values" />
+        </LinearLayout>
+
+        <CheckBox
+            android:text="@string/pm2_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <CheckBox
+            android:text="@string/pm1_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <CheckBox
+            android:text="@string/pm10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <CheckBox
+            android:text="@string/co2_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <CheckBox
+            android:text="@string/temperature_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <CheckBox
+            android:text="@string/humidity_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:enabled="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"/>
     </LinearLayout>
 </layout>

@@ -8,12 +8,12 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AirScannerAPI {
-    @GET("/api/devices")
+    @GET("api/device")
     fun getScanners(): LiveData<ApiResponse<GetDevicesResponse>>
 
-    @POST("/api/devices/add")
+    @POST("api/devices/add")
     fun addDevice(@Body device: DeviceRequest): LiveData<ApiResponse<Any>>
 
-    @POST("/api/devices/remove")
+    @POST("api/devices/remove")
     fun removeDevice(@Body device: DeviceRequest): LiveData<ApiResponse<Any>>
 }

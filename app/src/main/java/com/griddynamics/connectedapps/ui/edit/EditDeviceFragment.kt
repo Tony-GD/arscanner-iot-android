@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui
+package com.griddynamics.connectedapps.ui.edit
 
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
 import com.griddynamics.connectedapps.model.EMPTY_DEVICE_REQUEST
+private const val TAG: String = "EditDeviceFragment"
 
 class EditDeviceFragment : Fragment() {
 
     companion object {
-        private const val TAG: String = "EditDeviceFragment"
-        fun newInstance() = EditDeviceFragment()
+        fun newInstance() =
+            EditDeviceFragment()
     }
 
 
@@ -37,7 +38,9 @@ class EditDeviceFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(EditDeviceViewModel::class.java)
         binding.viewModel = viewModel
         arguments?.apply {
-            val device = EditDeviceFragmentArgs.fromBundle(arguments).device
+            val device = EditDeviceFragmentArgs.fromBundle(
+                arguments
+            ).device
             viewModel.device = EMPTY_DEVICE_REQUEST.copy(deviceId = device)
         }
     }

@@ -13,9 +13,9 @@ import com.griddynamics.connectedapps.gateway.api.ApiSuccessResponse
 
 typealias Callback = () -> Unit
 
-class ScannersViewAdapter(
+class DevicesViewAdapter(
     private val viewModel: HomeViewModel
-) : RecyclerView.Adapter<ScannersViewAdapter.ScannersViewHolder>() {
+) : RecyclerView.Adapter<DevicesViewAdapter.ScannersViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScannersViewHolder {
         return ScannersViewHolder(

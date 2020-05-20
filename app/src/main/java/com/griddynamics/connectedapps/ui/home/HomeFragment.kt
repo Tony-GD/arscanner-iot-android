@@ -71,7 +71,7 @@ class HomeFragment : DaggerFragment() {
                 (requireActivity() as MainActivity).logout()
             }.show()
         }
-        home_scanners_rv.adapter = ScannersViewAdapter(homeViewModel)
+        home_scanners_rv.adapter = DevicesViewAdapter(homeViewModel)
         home_scanners_rv.layoutManager = LinearLayoutManager(context)
         homeViewModel.devices.observe(viewLifecycleOwner, Observer {
             home_scanners_rv.adapter?.notifyDataSetChanged()

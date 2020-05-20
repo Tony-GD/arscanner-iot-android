@@ -104,7 +104,10 @@ class GreetingActivity : Activity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
+                    auth.currentUser?.getIdToken(true)?.addOnSuccessListener {
+                        Log.d(TAG, "firebaseAuth: save Firebase token [${it.token}]")
+                        localStorage.saveFirebaseToken(it.token)
+                    }
                     openMainScreen()
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)

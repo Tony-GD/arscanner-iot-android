@@ -22,7 +22,9 @@ class AirScannerGatewayImpl
     override fun getAirScanners(): LiveData<ApiResponse<GetDevicesResponse>> {
         Log.d(TAG, "getAirScanners() called")
         stream.scannerData.postValue(ApiSuccessResponse(EMPTY_DEVICES_RESPONSE))
-            return api.getScanners()
+        val scanners = api.getScanners()
+        scanners.observeForever {}
+        return scanners
     }
 
     private fun runAsync() = runBlocking {

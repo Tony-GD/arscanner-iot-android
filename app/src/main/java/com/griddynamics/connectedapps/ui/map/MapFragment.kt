@@ -19,9 +19,11 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
 import com.griddynamics.connectedapps.model.DeviceRequest
+import com.griddynamics.connectedapps.ui.home.HomeFragmentDirections
 import com.griddynamics.connectedapps.util.unwrapApiResponse
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import com.karumi.dexter.Dexter
@@ -33,6 +35,7 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.osmdroid.config.Configuration
+import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapController
@@ -53,6 +56,7 @@ class MapFragment : DaggerFragment() {
     private val onDeviceSelectedListener = object : OnDeviceSelectedListener {
         override fun onDeviceSelected(device: DeviceRequest) {
             Toast.makeText(context, "${device.userId}", Toast.LENGTH_SHORT).show()
+            navigateToEditFragment(device)
         }
     }
 
@@ -74,6 +78,22 @@ class MapFragment : DaggerFragment() {
         override fun onProviderDisabled(provider: String?) {
             //NOP
         }
+    }
+
+    val eventsReceiver = object: MapEventsReceiver {
+        override fun longPressHelper(p: GeoPoint?): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
+            TODO("Not yet implemented")
+        }
+    }
+
+    private fun navigateToEditFragment(data: DeviceRequest) {
+        val actionGlobalNavigationEdit = MapFragmentDirections.ActionNavigationMapToNavigationEdit()
+        actionGlobalNavigationEdit.setDevice(data.deviceId)
+        findNavController().navigate(actionGlobalNavigationEdit)
     }
 
     private fun addDeviceMarker(device: DeviceRequest) {

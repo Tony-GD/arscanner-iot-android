@@ -21,4 +21,27 @@
     <string name="logout_alert_title">Logout?</string>
     <string name="edit">Edit</string>
     <string name="permission_message">The app requires the permission on order to provide the map functionality</string>
+    <string name="display_name">Display name</string>
+    <string name="lat">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="description">Description</string>
+    <string name="is_public">Is Public</string>
+    <string name="gateway">Gateway:</string>
+    <string name="data_format">Data format:</string>
+    <string name="co2_label">CO2</string>
+    <string name="pm2_5">PM2.5</string>
+    <string name="pm1_0">PM1.0</string>
+    <string name="pm10">PM10</string>
+    <string name="temperature_label">Temperature</string>
+    <string name="humidity_label">Humidity</string>
+    <string name="save">Save</string>
+    <string-array name="demo_gateways">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
+    <string-array name="data_format_values">
+        <item>JSON</item>
+        <item>Single value</item>
+    </string-array>
 </resources>

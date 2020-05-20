@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-const val BASE_URL = "http://192.168.0.101"
+const val BASE_URL = "https://europe-west3-gd-gcp-rnd-connected-apps.cloudfunctions.net/connectedApps/"
 private const val TAG: String = "RetrofitModule"
 
 @Module(includes = [LocalStorageModule::class])
@@ -30,7 +30,7 @@ object RetrofitModule {
         val authInterceptor = object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${localStorage.getUser().id}")
+                    .addHeader("Authorization", "Bearer ${localStorage.getFirebaseToken()}")
                     .build()
                 return chain.proceed(newRequest)
             }
@@ -38,7 +38,7 @@ object RetrofitModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-//            .addInterceptor(authInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
     }
 

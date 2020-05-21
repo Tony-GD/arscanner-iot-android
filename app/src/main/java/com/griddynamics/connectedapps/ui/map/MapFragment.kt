@@ -55,7 +55,6 @@ class MapFragment : DaggerFragment() {
 
     private val onDeviceSelectedListener = object : OnDeviceSelectedListener {
         override fun onDeviceSelected(device: DeviceRequest) {
-            Toast.makeText(context, "${device.userId}", Toast.LENGTH_SHORT).show()
             navigateToEditFragment(device)
         }
     }
@@ -77,16 +76,6 @@ class MapFragment : DaggerFragment() {
 
         override fun onProviderDisabled(provider: String?) {
             //NOP
-        }
-    }
-
-    val eventsReceiver = object: MapEventsReceiver {
-        override fun longPressHelper(p: GeoPoint?): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
-            TODO("Not yet implemented")
         }
     }
 
@@ -187,25 +176,6 @@ class MapFragment : DaggerFragment() {
             })
             .check();
 
-    }
-
-    private fun requestPermissionsIfNecessary(permissions: Array<String>) {
-        val permissionsToRequest: ArrayList<String> = ArrayList()
-        for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(requireContext(), permission)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Permission is not granted
-                permissionsToRequest.add(permission)
-            }
-        }
-        if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                permissionsToRequest.toArray(arrayOfNulls(0)),
-                192
-            )
-        }
     }
 
     override fun onResume() {

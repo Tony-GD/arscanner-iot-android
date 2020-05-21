@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context=".ui.edit.EditDeviceFragment">
 
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/display_name"
-            android:text="@{}" />
+            android:text="@{viewModel.device.deviceId}" />
 
         <EditText
             android:layout_width="match_parent"
@@ -37,19 +37,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
-            tools:src="@android:drawable/ic_menu_mylocation" />
+            android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}"
+            tools:src="@android:drawable/ic_menu_mylocation"
+            android:src="@android:drawable/ic_menu_mylocation" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
-            android:text="@{}" />
-
-        <Switch
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/description_padding_15"
-            android:text="@string/is_public" />
+            android:text="@{viewModel.device.locLat}" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -82,33 +78,46 @@
         </LinearLayout>
 
         <CheckBox
-            android:text="@string/pm2_5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/pm2_5" />
+
         <CheckBox
-            android:text="@string/pm1_0"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/pm1_0" />
+
         <CheckBox
-            android:text="@string/pm10"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/pm10" />
+
         <CheckBox
-            android:text="@string/co2_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/co2_label" />
+
         <CheckBox
-            android:text="@string/temperature_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/temperature_label" />
+
         <CheckBox
-            android:text="@string/humidity_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/humidity_label" />
+
         <Button
-            android:enabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/save"/>
+            android:enabled="true"
+            android:text="@string/save" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:text="@string/remove_title" />
+
     </LinearLayout>
 </layout>

@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.gateway.api
+package com.griddynamics.connectedapps.gateway.network.api
 
 import retrofit2.Response
 

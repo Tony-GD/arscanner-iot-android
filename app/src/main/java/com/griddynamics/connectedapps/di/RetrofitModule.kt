@@ -1,7 +1,7 @@
 package com.griddynamics.connectedapps.di
 
 import com.griddynamics.connectedapps.di.gateway.LocalStorageModule
-import com.griddynamics.connectedapps.gateway.api.LiveDataCallAdapterFactory
+import com.griddynamics.connectedapps.gateway.network.api.LogoutCallAdapterFactory
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import dagger.Module
 import dagger.Provides
@@ -46,22 +46,20 @@ object RetrofitModule {
     @Provides
     @Singleton
     @JvmStatic
-    fun provideLiveDataFactory(): LiveDataCallAdapterFactory {
-        return LiveDataCallAdapterFactory()
+    fun provideLiveDataFactory(): LogoutCallAdapterFactory {
+        return LogoutCallAdapterFactory()
     }
 
     @Provides
     @Singleton
     @JvmStatic
     fun provideRetrofit(
-        liveDataCallAdapterFactory: LiveDataCallAdapterFactory,
         client: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(liveDataCallAdapterFactory)
             .build()
     }
 }

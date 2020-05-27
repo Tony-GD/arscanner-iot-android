@@ -1,94 +1,43 @@
 {
   "project_info": {
-    "project_number": "713133371133",
-    "firebase_url": "https://gd-gcp-techlead-experiments.firebaseio.com",
-    "project_id": "gd-gcp-techlead-experiments",
-    "storage_bucket": "gd-gcp-techlead-experiments.appspot.com"
+    "project_number": "698147414199",
+    "firebase_url": "https://gd-gcp-rnd-connected-apps.firebaseio.com",
+    "project_id": "gd-gcp-rnd-connected-apps",
+    "storage_bucket": "gd-gcp-rnd-connected-apps.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:713133371133:android:ebf67aec9bdcf33b5dd894",
+        "mobilesdk_app_id": "1:698147414199:android:cc89856b51cd30829e2d32",
         "android_client_info": {
-          "package_name": "com.griddynamics.automl"
+          "package_name": "com.griddynamics.connectedappsrnd"
         }
       },
       "oauth_client": [
         {
-          "client_id": "713133371133-jh2n2kls0499ss5jrbvl2qc1o3sf68h3.apps.googleusercontent.com",
+          "client_id": "698147414199-7b9pjt7ekj2r0u1j7a00hstqvrhc68pa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.griddynamics.automl",
-            "certificate_hash": "994f82e034038b4a9580c7adddf13942506de23b"
+            "package_name": "com.griddynamics.connectedappsrnd",
+            "certificate_hash": "66bbe7e443f0fa5d5b39531b156f9cb42139bb11"
           }
         },
         {
-          "client_id": "713133371133-upq100encedk2queibbk4d343blh4oe4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.griddynamics.automl",
-            "certificate_hash": "97f2ea59b1bc3712e2ba9363f461e96ff86464c0"
-          }
-        },
-        {
-          "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
+          "client_id": "698147414199-p5p0815pvkbioo0cd1711kipd1jn445o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA7OyGxakN8dm9DFtiZNL9JRS3k91r1jBM"
+          "current_key": "AIzaSyBpgs0qm_r5OQMAHmhqd2v8H0TBMvu7Wzw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
+              "client_id": "698147414199-p5p0815pvkbioo0cd1711kipd1jn445o.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "713133371133-00gk4cvl3udiappkm950lu0ubustdelp.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.griddynamics.connectedapps"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:713133371133:android:0962c0f1714a86cd5dd894",
-        "android_client_info": {
-          "package_name": "com.griddynamics.connectedapps"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA7OyGxakN8dm9DFtiZNL9JRS3k91r1jBM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "713133371133-00gk4cvl3udiappkm950lu0ubustdelp.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.griddynamics.connectedapps"
-              }
             }
           ]
         }

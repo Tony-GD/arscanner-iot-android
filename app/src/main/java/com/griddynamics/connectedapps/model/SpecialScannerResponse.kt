@@ -1,8 +1,8 @@
 package com.griddynamics.connectedapps.model
 
 data class SpecialScannerResponse(
-    val CO2: Float,
-    val Humidity: Float,
-    val Temp: Float,
-    val PM2_5: Float
+    var CO2: Float,
+    var Humidity: Float,
+    var Temp: Float,
+    var PM2_5: Float
 )

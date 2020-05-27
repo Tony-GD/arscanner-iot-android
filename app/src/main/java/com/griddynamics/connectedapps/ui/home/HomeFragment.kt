@@ -15,7 +15,7 @@ import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.FragmentHomeBindingImpl
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.model.DeviceRequest
+import com.griddynamics.connectedapps.model.device.DeviceRequest
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*

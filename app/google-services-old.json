@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "713133371133",
+    "firebase_url": "https://gd-gcp-techlead-experiments.firebaseio.com",
+    "project_id": "gd-gcp-techlead-experiments",
+    "storage_bucket": "gd-gcp-techlead-experiments.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713133371133:android:ebf67aec9bdcf33b5dd894",
+        "android_client_info": {
+          "package_name": "com.griddynamics.automl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713133371133-jh2n2kls0499ss5jrbvl2qc1o3sf68h3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.griddynamics.automl",
+            "certificate_hash": "994f82e034038b4a9580c7adddf13942506de23b"
+          }
+        },
+        {
+          "client_id": "713133371133-upq100encedk2queibbk4d343blh4oe4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.griddynamics.automl",
+            "certificate_hash": "97f2ea59b1bc3712e2ba9363f461e96ff86464c0"
+          }
+        },
+        {
+          "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7OyGxakN8dm9DFtiZNL9JRS3k91r1jBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "713133371133-00gk4cvl3udiappkm950lu0ubustdelp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.griddynamics.connectedapps"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713133371133:android:0962c0f1714a86cd5dd894",
+        "android_client_info": {
+          "package_name": "com.griddynamics.connectedapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7OyGxakN8dm9DFtiZNL9JRS3k91r1jBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713133371133-bt1s9uidoeaqlug3n1q3400tvndc3kgm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "713133371133-00gk4cvl3udiappkm950lu0ubustdelp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.griddynamics.connectedapps"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

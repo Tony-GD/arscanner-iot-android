@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Air Scanner</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Add</string>
     <string name="title_map">Map</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Settings</string>
     <string name="sign_in">Sign In</string>
     <string name="or">or</string>
     <string name="continue_as_guest">Continue as guest</string>

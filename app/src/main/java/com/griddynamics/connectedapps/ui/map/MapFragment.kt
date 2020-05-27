@@ -3,28 +3,26 @@ package com.griddynamics.connectedapps.ui.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
-import com.griddynamics.connectedapps.model.DeviceRequest
-import com.griddynamics.connectedapps.ui.home.HomeFragmentDirections
-import com.griddynamics.connectedapps.util.unwrapApiResponse
+import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -35,17 +33,17 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.osmdroid.config.Configuration
-import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapController
 import org.osmdroid.views.overlay.Marker
 import javax.inject.Inject
 
+private const val TAG: String = "MapFragment"
 class MapFragment : DaggerFragment() {
 
     interface OnDeviceSelectedListener {
-        fun onDeviceSelected(device: DeviceRequest)
+        fun onDeviceSelected(device: DeviceResponse)
     }
 
     private lateinit var mapViewModel: MapViewModel
@@ -54,7 +52,7 @@ class MapFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private val onDeviceSelectedListener = object : OnDeviceSelectedListener {
-        override fun onDeviceSelected(device: DeviceRequest) {
+        override fun onDeviceSelected(device: DeviceResponse) {
             navigateToEditFragment(device)
         }
     }
@@ -79,13 +77,13 @@ class MapFragment : DaggerFragment() {
         }
     }
 
-    private fun navigateToEditFragment(data: DeviceRequest) {
+    private fun navigateToEditFragment(data: DeviceResponse) {
         val actionGlobalNavigationEdit = MapFragmentDirections.ActionNavigationMapToNavigationEdit()
-        actionGlobalNavigationEdit.setDevice(data.deviceId)
+        actionGlobalNavigationEdit.setDevice(Gson().toJson(data))
         findNavController().navigate(actionGlobalNavigationEdit)
     }
 
-    private fun addDeviceMarker(device: DeviceRequest) {
+    private fun addDeviceMarker(device: DeviceResponse) {
         val binding: MapInfoViewLayoutBinding =
             DataBindingUtil.inflate(
                 LayoutInflater.from(requireContext()),
@@ -94,11 +92,31 @@ class MapFragment : DaggerFragment() {
                 false
             )
         binding.item = device
+        mapViewModel.loadCo2Metrics("${device.deviceId}")
+            .observe(viewLifecycleOwner, Observer {
+                Log.d(TAG, "addDeviceMarker() called $it")
+                it.keys.forEach { key->
+                    val value = it[key]
+                    value?.let{
+                        if (value.isNotEmpty()) {
+                            value.first().keys.forEach {valKey->
+                                val tring = "${valKey}: ${value.first()[valKey]}"
+                                binding.llInfoMetrics.addView(TextView(context).apply {
+                                    Log.d(TAG, "addDeviceMarker: text $tring")
+                                    text = tring
+                                })
+                            }
+                        }
+                    }
+                }
+            })
         binding.listener = onDeviceSelectedListener
         val info = MapInfoWindow(binding.root, map)
         val elementMarker = Marker(map)
         elementMarker.infoWindow = info
-        elementMarker.position = GeoPoint(device.locLat.toDouble(), device.locLong.toDouble())
+        device.location?.let {
+            elementMarker.position = GeoPoint(it.latitude, it.longitude)
+        }
         elementMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         map.overlays.add(elementMarker)
     }
@@ -113,10 +131,11 @@ class MapFragment : DaggerFragment() {
             ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
         mapViewModel.devices.observe(viewLifecycleOwner, Observer {
             map.overlays.clear()
-            it.unwrapApiResponse()?.devices?.forEach { device ->
+            it.forEach { device ->
                 addDeviceMarker(device)
             }
         })
+        mapViewModel.loadDevices()
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 

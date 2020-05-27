@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.gateway.api
+package com.griddynamics.connectedapps.gateway.network.api
 
 import androidx.lifecycle.LiveData
 import retrofit2.Call

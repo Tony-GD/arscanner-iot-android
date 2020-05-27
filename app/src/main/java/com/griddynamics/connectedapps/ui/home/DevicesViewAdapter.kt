@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.gateway.api.ApiSuccessResponse
+import com.griddynamics.connectedapps.gateway.network.api.ApiSuccessResponse
 
 typealias Callback = () -> Unit
 
@@ -25,29 +25,11 @@ class DevicesViewAdapter(
     }
 
     override fun getItemCount(): Int {
-        return when (val value = viewModel.devices.value) {
-            is ApiSuccessResponse -> value.body.devices.size
-            else -> 0
-        }
+        return 0
     }
 
     override fun onBindViewHolder(holder: ScannersViewHolder, position: Int) {
-        viewModel.devices.value?.let { devicesResponse ->
-            when (devicesResponse) {
-                is ApiSuccessResponse -> {
-                    val device = devicesResponse.body.devices[position]
-                    holder.text.text = device.deviceId
-                    holder.edit.setOnClickListener {
-                        viewModel.onEditDevice(device)
-                    }
-                    holder.remove.setOnClickListener {
-                        createRemoveAlert(it.context) {
-                            viewModel.onRemoveDevice(device)
-                        }.show()
-                    }
-                }
-            }
-        }
+
     }
 
     private fun createRemoveAlert(context: Context, callback: Callback): AlertDialog {

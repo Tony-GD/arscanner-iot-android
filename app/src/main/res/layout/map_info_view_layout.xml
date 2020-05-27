@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.griddynamics.connectedapps.model.DeviceRequest" />
+            type="com.griddynamics.connectedapps.model.device.DeviceResponse" />
 
         <variable
             name="listener"
@@ -23,11 +23,24 @@
             android:id="@+id/info_id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.deviceId}"
+            android:text="@{item.displayName}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/ll_info_metrics"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_id_tv"
+            app:layout_constraintBottom_toTopOf="@id/iv_info_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
         <ImageButton
+            android:id="@+id/iv_info_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{()->listener.onDeviceSelected(item)}"

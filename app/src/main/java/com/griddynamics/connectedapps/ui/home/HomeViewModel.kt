@@ -4,33 +4,40 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.griddynamics.connectedapps.gateway.api.ApiResponse
+import androidx.lifecycle.liveData
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.AirScannerGateway
+import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
 import com.griddynamics.connectedapps.gateway.stream.DeviceStream
-import com.griddynamics.connectedapps.model.DeviceRequest
-import com.griddynamics.connectedapps.model.GetDevicesResponse
 import com.griddynamics.connectedapps.model.User
+import com.griddynamics.connectedapps.model.device.DeviceRequest
+import com.griddynamics.connectedapps.model.device.DeviceResponse
+import com.griddynamics.connectedapps.model.device.EMPTY_DEVICE_REQUEST
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 typealias DeviceListener = (device: DeviceRequest) -> Unit
 private const val TAG: String = "HomeViewModel"
 
 class HomeViewModel @Inject constructor(
-    private var gateway: AirScannerGateway,
+    private var repository: AirScannerRepository,
     private var deviceStream: DeviceStream,
     private val localStorage: LocalStorage
 ) : ViewModel() {
 
     var onEditListener: DeviceListener? = null
 
-    private var _devices: LiveData<ApiResponse<GetDevicesResponse>> = deviceStream.scannerData
 
-    val devices: LiveData<ApiResponse<GetDevicesResponse>> = _devices
+    val devices: LiveData<List<DeviceResponse>> = deviceStream.scannerData
 
     val user: LiveData<User>
     get() {
         return MutableLiveData(localStorage.getUser())
+    }
+
+    val firstTodo = liveData(Dispatchers.IO) {
+        val retrivedTodo = repository.addDevice(EMPTY_DEVICE_REQUEST)
+
+        emit(retrivedTodo)
     }
 
     fun onRemoveDevice(device: DeviceRequest) {
@@ -43,6 +50,5 @@ class HomeViewModel @Inject constructor(
 
     fun load() {
         Log.d(TAG, "load:${deviceStream} ${devices.value}")
-        gateway.getAirScanners()
     }
 }

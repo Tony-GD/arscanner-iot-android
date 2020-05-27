@@ -4,6 +4,8 @@ import android.app.Application
 import com.griddynamics.connectedapps.BaseApp
 import com.griddynamics.connectedapps.di.gateway.GatewayModule
 import com.griddynamics.connectedapps.di.gateway.StreamModule
+import com.griddynamics.connectedapps.di.ui.edit.EditFragmentContributor
+import com.griddynamics.connectedapps.di.ui.edit.EditModule
 import com.griddynamics.connectedapps.di.ui.greeting.GreetingActivityContributor
 import com.griddynamics.connectedapps.di.ui.home.HomeFragmentContributor
 import com.griddynamics.connectedapps.di.ui.home.HomeModule
@@ -31,6 +33,8 @@ import javax.inject.Singleton
         MapFragmentContributor::class,
         GreetingActivityContributor::class,
         SplashActivityContributor::class,
+        EditModule::class,
+        EditFragmentContributor::class,
         MainActivityContributor::class]
 )
 interface ApplicationComponent : AndroidInjector<BaseApp> {

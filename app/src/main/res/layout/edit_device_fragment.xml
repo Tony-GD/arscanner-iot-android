@@ -19,33 +19,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/display_name"
-            android:text="@{viewModel.device.deviceId}" />
+            android:text="@{viewModel.device.displayName}" />
 
         <EditText
+            android:id="@+id/lat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/lat"
-            android:text="@{viewModel.device.locLat}" />
+            android:hint="@string/lat" />
 
         <EditText
+            android:id="@+id/lon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/longitude"
-            android:text="@{viewModel.device.locLong}" />
+            android:hint="@string/longitude" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
             android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}"
-            tools:src="@android:drawable/ic_menu_mylocation"
-            android:src="@android:drawable/ic_menu_mylocation" />
+            android:src="@android:drawable/ic_menu_mylocation"
+            tools:src="@android:drawable/ic_menu_mylocation" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/description"
-            android:text="@{viewModel.device.locLat}" />
+            android:hint="@string/description" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -76,7 +75,12 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/data_format_values" />
         </LinearLayout>
-
+<LinearLayout
+    android:id="@+id/ll_edit_json"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+    android:orientation="vertical">
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,14 +110,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/humidity_label" />
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_edit_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/et_edit_single_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/display_name" />
+
+        <EditText
+            android:id="@+id/et_edit_single_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
         <Button
+            style="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
+            android:onClick="@{()-> viewModel.saveEditedDevice()}"
             android:text="@string/save" />
 
         <Button
+            style="@style/AppTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"

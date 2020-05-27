@@ -10,13 +10,9 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.model.ScannersResponse
 import com.griddynamics.connectedapps.model.SpecialScannerResponse
@@ -40,46 +36,32 @@ private const val TAG: String = "ScannerDataUpdateServic"
  * helper methods.
  */
 class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
-    private lateinit var database: DatabaseReference
-    private val gson = Gson()
+    private lateinit var database: FirebaseFirestore
+    private val response = SpecialScannerResponse(0f, 0f, 0f, 0f)
 
-    private val dbEventListener = object : ValueEventListener {
-        override fun onCancelled(databaseError: DatabaseError) {
-            Log.e(TAG, "MainActivity: ", databaseError.toException())
+    private val dbEventListener =
+        EventListener<QuerySnapshot> { dataSnapshot, error ->
+            dataSnapshot?.documents?.forEach { document ->
+                val key = document.reference.path.split("/").last()
+                document.data?.let {
+                    when (key) {
+                        "Humidity" -> {
+                            response.Humidity = (it["value"] as Number).toFloat()
+                        }
+                        "Temp" -> {
+                            response.Temp = (it["value"] as Number).toFloat()
+                        }
+                        "CO2" -> {
+                            response.CO2 = (it["value"] as Number).toFloat()
+                        }
+                        "PM2_5" -> {
+                            response.PM2_5 = (it["value"] as Number).toFloat()
+                        }
+                    }
+                    updateWidget(response)
+                }
+            }
         }
-
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            Log.d(
-                TAG,
-                "onDataChange() called with: dataSnapshot = [$dataSnapshot], value = [${dataSnapshot.value.toString()}]"
-            )
-            updateWidget(
-                gson.fromJson(
-                    dataSnapshot.value.toString(),
-                    ScannersResponse::class.java
-                )
-            )
-        }
-    }
-
-    private val dbSpecialEventListener = object : ValueEventListener {
-        override fun onCancelled(databaseError: DatabaseError) {
-            Log.e(TAG, "MainActivity: ", databaseError.toException())
-        }
-
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            Log.d(
-                TAG,
-                "onDataChange() called with: dataSnapshot = [$dataSnapshot], value = [${dataSnapshot.value.toString()}]"
-            )
-            updateWidget(
-                gson.fromJson(
-                    dataSnapshot.value.toString(),
-                    SpecialScannerResponse::class.java
-                )
-            )
-        }
-    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -110,18 +92,23 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
             val notification = prepareNotification()
             startForeground(191, notification)
         }
-        database = Firebase.database.reference
+        database = FirebaseFirestore.getInstance()
         database
-            .child("metrics")
-            .child("orangepi-2G-IoT-1")
-            .child("type")
-            .addValueEventListener(dbEventListener)
+            .collection("devices")
+            .document("AasMOYlQufCQogR14YSa")
+            .collection("metrics")
+            .addSnapshotListener(dbEventListener)
+//        database
+//            .child("metrics")
+//            .child("orangepi-2G-IoT-1")
+//            .child("type")
+//            .addValueEventListener(dbEventListener)
 
-        database
-            .child("metrics")
-            .child("ik_ard")
-            .child("type")
-            .addValueEventListener(dbSpecialEventListener)
+//        database
+//            .child("metrics")
+//            .child("ik_ard")
+//            .child("type")
+//            .addValueEventListener(dbSpecialEventListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -167,7 +154,6 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
     }
 
     fun updateWidget(data: SpecialScannerResponse) {
-        Log.d(TAG, "updateWidget() called with: data = [$data]")
         val updateViews =
             RemoteViews(packageName, R.layout.air_scanner_subscription_widget)
         updateViews.setTextViewText(

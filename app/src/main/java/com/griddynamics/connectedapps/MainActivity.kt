@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.EmptyUser
 import com.griddynamics.connectedapps.service.ScannerDataUpdateService
 import com.griddynamics.connectedapps.ui.greeting.GreetingActivity
@@ -43,6 +44,11 @@ class MainActivity : DaggerAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         ScannerDataUpdateService.startActionStart(applicationContext)
+        val user = localStorage.getUser()
+//        FirebaseAPI.getUserGateways(user) {}
+//        FirebaseAPI.getUserDevices(user) {}
+        FirebaseAPI.getPublicDevices{}
+        FirebaseAPI.getPublicGateways{}
     }
 
     fun logout() {

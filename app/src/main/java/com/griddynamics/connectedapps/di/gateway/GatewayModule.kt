@@ -1,7 +1,7 @@
 package com.griddynamics.connectedapps.di.gateway
 
-import com.griddynamics.connectedapps.gateway.network.AirScannerGateway
-import com.griddynamics.connectedapps.gateway.network.AirScannerGatewayImpl
+import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
+import com.griddynamics.connectedapps.gateway.network.AirScannerRepositoryImpl
 import dagger.Module
 import dagger.Provides
 
@@ -9,7 +9,7 @@ import dagger.Provides
  object GatewayModule {
     @Provides
     @JvmStatic
-     fun provideGateway(gateway: AirScannerGatewayImpl): AirScannerGateway {
+     fun provideGateway(gateway: AirScannerRepositoryImpl): AirScannerRepository {
         return gateway
     }
 }

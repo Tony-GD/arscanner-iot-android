@@ -24,7 +24,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.griddynamics.connectedapps"
+        applicationId "com.griddynamics.connectedappsrnd"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -76,6 +76,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 
     def nav_version = "2.3.0-alpha06"
 
@@ -98,6 +99,7 @@ dependencies {
 
     //remote DB
     implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
 
     //dagger
     implementation "com.google.dagger:dagger:$dagger2_version"
@@ -114,8 +116,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //OKHttp
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'

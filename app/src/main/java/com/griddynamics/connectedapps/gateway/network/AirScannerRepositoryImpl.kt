@@ -1,5 +1,6 @@
 package com.griddynamics.connectedapps.gateway.network
 
+import android.util.Log
 import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
@@ -53,7 +54,28 @@ class AirScannerRepositoryImpl
         return try {
             api.getLastHourMetrics(request.id)
         } catch (e: Exception) {
-            emptyMap()
+            Log.e(TAG, "AirScannerRepositoryImpl: getMetrics", e)
+            object : MetricsMap {
+                private val origin = HashMap<String, List<Map<String, String>>>()
+                override val entries: Set<Map.Entry<String, List<Map<String, String>>>>
+                    get() = origin.entries
+                override val keys: Set<String>
+                    get() = origin.keys
+                override val size: Int
+                    get() = origin.size
+                override val values: Collection<List<Map<String, String>>>
+                    get() = origin.values
+
+                override fun containsKey(key: String): Boolean = origin.containsKey(key)
+
+                override fun containsValue(value: List<Map<String, String>>): Boolean =
+                    origin.containsValue(value)
+
+                override fun get(key: String): List<Map<String, String>>? = origin[key]
+
+                override fun isEmpty(): Boolean = origin.isEmpty()
+
+            }
         }
     }
 

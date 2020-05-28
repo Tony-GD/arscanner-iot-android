@@ -105,6 +105,7 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger2_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     kapt "com.google.dagger:dagger-compiler:$dagger2_version"
 
     //dagger Android
@@ -125,7 +126,10 @@ dependencies {
 
     //permissions
     implementation 'com.karumi:dexter:6.1.2'
-    
+
+    //charts
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
     //test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -113,8 +113,8 @@ class EditDeviceFragment : DaggerFragment() {
             val device = EditDeviceFragmentArgs.fromBundle(
                 arguments
             ).device
-            viewModel.device = Gson().fromJson(device, DeviceResponse::class.java)
-            viewModel.deviceRequest = EMPTY_DEVICE_REQUEST.copy(deviceId = device)
+            val fromJson = Gson().fromJson(device, DeviceResponse::class.java)
+            viewModel.device = fromJson
             viewModel.editDevice.observe(viewLifecycleOwner, Observer {
                 Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show()
             })

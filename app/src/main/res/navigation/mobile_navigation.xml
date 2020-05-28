@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_navigation_map_to_navigation_edit"
             app:destination="@id/navigation_edit" />
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_history"
+            app:destination="@id/navigation_history" />
     </fragment>
 
     <fragment
@@ -36,6 +39,18 @@
         android:name="com.griddynamics.connectedapps.ui.edit.EditDeviceFragment"
         android:label="@string/edit"
         tools:layout="@layout/edit_device_fragment">
+        <argument
+            android:name="device"
+            android:defaultValue="null"
+            app:argType="string" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.griddynamics.connectedapps.ui.history.DataHistoryFragment"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_data_history">
         <argument
             android:name="device"
             android:defaultValue="null"

@@ -20,6 +20,7 @@
     <string name="logout">Logout</string>
     <string name="logout_alert_title">Logout?</string>
     <string name="edit">Edit</string>
+    <string name="history">History</string>
     <string name="permission_message">The app requires the permission on order to provide the map functionality</string>
     <string name="display_name">Display name</string>
     <string name="lat">Latitude</string>
@@ -44,4 +45,7 @@
         <item>JSON</item>
         <item>Single value</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

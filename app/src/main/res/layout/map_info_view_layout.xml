@@ -16,8 +16,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/description_padding_15"
-        android:background="@drawable/bonuspack_bubble">
+        android:background="@drawable/bonuspack_bubble"
+        android:padding="@dimen/description_padding_15">
 
         <TextView
             android:id="@+id/info_id_tv"
@@ -29,13 +29,13 @@
 
         <LinearLayout
             android:id="@+id/ll_info_metrics"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/info_id_tv"
-            app:layout_constraintBottom_toTopOf="@id/iv_info_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/iv_info_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_id_tv">
 
         </LinearLayout>
 
@@ -45,10 +45,21 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->listener.onDeviceSelected(item)}"
             android:src="@android:drawable/ic_menu_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_edit_btn"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_id_tv" />
+
+        <ImageButton
+            android:id="@+id/iv_edit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->listener.onDeviceEditSelected(item)}"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/info_id_tv"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/iv_info_btn"
+            app:layout_constraintTop_toBottomOf="@id/info_id_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

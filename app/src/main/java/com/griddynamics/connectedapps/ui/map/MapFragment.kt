@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
+import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import com.karumi.dexter.Dexter
@@ -44,6 +45,7 @@ class MapFragment : DaggerFragment() {
 
     interface OnDeviceSelectedListener {
         fun onDeviceSelected(device: DeviceResponse)
+        fun onDeviceEditSelected(device: DeviceResponse)
     }
 
     private lateinit var mapViewModel: MapViewModel
@@ -53,6 +55,10 @@ class MapFragment : DaggerFragment() {
 
     private val onDeviceSelectedListener = object : OnDeviceSelectedListener {
         override fun onDeviceSelected(device: DeviceResponse) {
+            navigateToHistoryFragment("${device.deviceId}")
+        }
+
+        override fun onDeviceEditSelected(device: DeviceResponse) {
             navigateToEditFragment(device)
         }
     }
@@ -83,6 +89,12 @@ class MapFragment : DaggerFragment() {
         findNavController().navigate(actionGlobalNavigationEdit)
     }
 
+    private fun navigateToHistoryFragment(data: String) {
+        val actionGlobalNavigationHistory = MapFragmentDirections.ActionNavigationMapToNavigationHistory()
+        actionGlobalNavigationHistory.setDevice(data)
+        findNavController().navigate(actionGlobalNavigationHistory)
+    }
+
     private fun addDeviceMarker(device: DeviceResponse) {
         val binding: MapInfoViewLayoutBinding =
             DataBindingUtil.inflate(
@@ -92,7 +104,7 @@ class MapFragment : DaggerFragment() {
                 false
             )
         binding.item = device
-        mapViewModel.loadCo2Metrics("${device.deviceId}")
+        mapViewModel.loadMetrics("${device.deviceId}")
             .observe(viewLifecycleOwner, Observer {
                 Log.d(TAG, "addDeviceMarker() called $it")
                 it.keys.forEach { key->

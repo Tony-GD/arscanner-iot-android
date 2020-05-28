@@ -7,6 +7,8 @@ import com.griddynamics.connectedapps.di.gateway.StreamModule
 import com.griddynamics.connectedapps.di.ui.edit.EditFragmentContributor
 import com.griddynamics.connectedapps.di.ui.edit.EditModule
 import com.griddynamics.connectedapps.di.ui.greeting.GreetingActivityContributor
+import com.griddynamics.connectedapps.di.ui.history.HistoryFragmentContributor
+import com.griddynamics.connectedapps.di.ui.history.HistoryModule
 import com.griddynamics.connectedapps.di.ui.home.HomeFragmentContributor
 import com.griddynamics.connectedapps.di.ui.home.HomeModule
 import com.griddynamics.connectedapps.di.ui.main.MainActivityContributor
@@ -33,6 +35,8 @@ import javax.inject.Singleton
         MapFragmentContributor::class,
         GreetingActivityContributor::class,
         SplashActivityContributor::class,
+        HistoryModule::class,
+        HistoryFragmentContributor::class,
         EditModule::class,
         EditFragmentContributor::class,
         MainActivityContributor::class]

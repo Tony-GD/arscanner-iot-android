@@ -43,6 +43,10 @@
             android:name="device"
             android:defaultValue="null"
             app:argType="string" />
+        <argument
+            android:name="@string/is_adding"
+            android:defaultValue="true"
+            app:argType="boolean"/>
     </fragment>
 
 

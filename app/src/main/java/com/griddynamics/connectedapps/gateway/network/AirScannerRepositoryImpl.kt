@@ -1,6 +1,7 @@
 package com.griddynamics.connectedapps.gateway.network
 
 import android.util.Log
+import androidx.annotation.DimenRes
 import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
@@ -17,7 +18,21 @@ class AirScannerRepositoryImpl
 @Inject constructor(private val api: AirScannerAPI) :
     AirScannerRepository {
 
-    override suspend fun addDevice(request: DeviceRequest): Any = api.addDevice(request)
+    override suspend fun addDevice(request: DeviceResponse): Any {
+        return api.addDevice(
+            DeviceRequest(
+                "${request.displayName}",
+                "${request.deviceId}",
+                "${request.dataFormat}",
+                "${request.userId}",
+                "${request.gatewayId}",
+                "${request.location?.latitude}",
+                "${request.location?.longitude}",
+                "${request.locationDescription}"
+            )
+        )
+    }
+
     override suspend fun editDevice(request: DeviceResponse): Any {
         return api.editDevice(
             "${request.deviceId}",
@@ -34,7 +49,7 @@ class AirScannerRepositoryImpl
         )
     }
 
-    override suspend fun deleteDevice(request: DeviceRequest): Any {
+    override suspend fun deleteDevice(request: DeviceResponse): Any {
         return api.deleteDevice(request)
     }
 

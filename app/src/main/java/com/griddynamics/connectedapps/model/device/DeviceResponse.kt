@@ -23,3 +23,15 @@ data class DeviceResponse(
     @SerializedName("gateway_id")
     var gatewayId: String?
 )
+
+val EMPTY_DEVICE = DeviceResponse(
+    null,
+    "json",
+    null,
+    null,
+    null,
+    GeoPoint(0.0, 0.0),
+    null,
+    null,
+    null
+)

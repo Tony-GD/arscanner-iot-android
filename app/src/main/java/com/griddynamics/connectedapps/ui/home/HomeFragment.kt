@@ -66,29 +66,6 @@ class HomeFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        home_logout.setOnClickListener {
-            getLogoutDialog {
-                (requireActivity() as MainActivity).logout()
-            }.show()
-        }
-        home_scanners_rv.adapter = DevicesViewAdapter(homeViewModel)
-        home_scanners_rv.layoutManager = LinearLayoutManager(context)
-        homeViewModel.devices.observe(viewLifecycleOwner, Observer {
-            home_scanners_rv.adapter?.notifyDataSetChanged()
-        })
-        homeViewModel.load()
     }
 
-    private fun getLogoutDialog(callback: Callback): AlertDialog {
-        return AlertDialog.Builder(context)
-            .setTitle(R.string.logout_alert_title)
-            .setPositiveButton(R.string.yes) { dialog, _ ->
-                callback()
-                dialog.dismiss()
-            }
-            .setNegativeButton(R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .create()
-    }
 }

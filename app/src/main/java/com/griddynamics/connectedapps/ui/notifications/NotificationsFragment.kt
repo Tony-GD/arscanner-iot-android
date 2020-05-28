@@ -1,5 +1,6 @@
 package com.griddynamics.connectedapps.ui.notifications
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.ui.home.Callback
+import kotlinx.android.synthetic.main.fragment_notifications.*
 
 class NotificationsFragment : Fragment() {
 
@@ -27,5 +31,27 @@ class NotificationsFragment : Fragment() {
             textView.text = it
         })
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        home_logout.setOnClickListener {
+            getLogoutDialog {
+                (requireActivity() as MainActivity).logout()
+            }.show()
+        }
+    }
+
+    private fun getLogoutDialog(callback: Callback): AlertDialog {
+        return AlertDialog.Builder(context)
+            .setTitle(R.string.logout_alert_title)
+            .setPositiveButton(R.string.yes) { dialog, _ ->
+                callback()
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }
+            .create()
     }
 }

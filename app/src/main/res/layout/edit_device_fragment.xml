@@ -4,12 +4,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.griddynamics.connectedapps.ui.edit.EditDeviceViewModel" />
     </data>
 
     <LinearLayout
+        android:id="@+id/ll_edit_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -19,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/display_name"
-            android:text="@{viewModel.device.displayName}" />
+            android:text="@={viewModel.device.displayName}" />
 
         <EditText
             android:id="@+id/lat"
@@ -44,7 +47,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/description" />
+            android:hint="@string/description"
+            android:text="@={viewModel.device.locationDescription}" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,6 +60,7 @@
                 android:text="@string/gateway" />
 
             <Spinner
+                android:id="@+id/sp_edit_gateways"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/demo_gateways" />
@@ -71,64 +76,72 @@
                 android:text="@string/data_format" />
 
             <Spinner
+                android:id="@+id/sp_edit_format"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/data_format_values" />
         </LinearLayout>
-<LinearLayout
-    android:id="@+id/ll_edit_json"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:visibility="visible"
-    android:orientation="vertical">
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pm2_5" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pm1_0" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pm10" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/co2_label" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temperature_label" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/humidity_label" />
-</LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_edit_single"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="vertical">
-        <EditText
-            android:id="@+id/et_edit_single_name"
+        <LinearLayout
+            android:id="@+id/ll_edit_json"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/display_name" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_edit_single_value"
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isPM2_5Enabled}"
+                android:text="@string/pm2_5" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isPM1_0Enabled}"
+                android:text="@string/pm1_0" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isPM10Enabled}"
+                android:text="@string/pm10" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isCo2Enabled}"
+                android:text="@string/co2_label" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isTempEnabled}"
+                android:text="@string/temperature_label" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.humidityEnabled}"
+                android:text="@string/humidity_label" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_edit_single"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_edit_single_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/display_name" />
+
+            <EditText
+                android:id="@+id/et_edit_single_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <Button
             style="@style/AppTheme"
@@ -143,7 +156,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
-            android:text="@string/remove_title" />
+            android:onClick="@{()->viewModel.deleteDevice()}"
+            android:text="@string/remove_title"
+            android:visibility="@{viewModel.isAdding() ? View.GONE : View.VISIBLE}" />
 
     </LinearLayout>
 </layout>

@@ -86,6 +86,7 @@ class MapFragment : DaggerFragment() {
     private fun navigateToEditFragment(data: DeviceResponse) {
         val actionGlobalNavigationEdit = MapFragmentDirections.ActionNavigationMapToNavigationEdit()
         actionGlobalNavigationEdit.setDevice(Gson().toJson(data))
+        actionGlobalNavigationEdit.setStringIsAdding(false)
         findNavController().navigate(actionGlobalNavigationEdit)
     }
 

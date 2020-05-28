@@ -24,7 +24,7 @@ interface AirScannerAPI {
     suspend fun addDevice(@Body device: DeviceRequest): Any
 
     @DELETE("$deleteDevice/{id}")
-    suspend fun deleteDevice(@Body device: DeviceRequest): Any
+    suspend fun deleteDevice(@Body device: DeviceResponse): Any
 
     @PUT("$editDevice/{id}")
     suspend fun editDevice(@Path("id") id: String, @Body device: DeviceRequest): Any

@@ -34,12 +34,6 @@ class HomeViewModel @Inject constructor(
         return MutableLiveData(localStorage.getUser())
     }
 
-    val firstTodo = liveData(Dispatchers.IO) {
-        val retrivedTodo = repository.addDevice(EMPTY_DEVICE_REQUEST)
-
-        emit(retrivedTodo)
-    }
-
     fun onRemoveDevice(device: DeviceRequest) {
 
     }

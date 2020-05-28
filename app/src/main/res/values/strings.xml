@@ -42,10 +42,11 @@
         <item>C</item>
     </string-array>
     <string-array name="data_format_values">
-        <item>JSON</item>
+        <item>json</item>
         <item>Single value</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="is_adding">isAdding</string>
 </resources>

@@ -24,7 +24,8 @@
         android:id="@+id/home_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="@string/logout"
+        app:layout_constraintTop_toBottomOf="@id/text_notifications"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

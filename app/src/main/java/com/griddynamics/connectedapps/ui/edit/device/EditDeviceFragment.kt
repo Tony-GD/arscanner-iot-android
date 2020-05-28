@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit
+package com.griddynamics.connectedapps.ui.edit.device
 
 import android.os.Bundle
 import android.util.Log
@@ -125,7 +125,9 @@ class EditDeviceFragment : DaggerFragment() {
             val device = EditDeviceFragmentArgs.fromBundle(
                 arguments
             ).device
-            val isAdding = EditDeviceFragmentArgs.fromBundle(arguments).stringIsAdding
+            val isAdding = EditDeviceFragmentArgs.fromBundle(
+                arguments
+            ).stringIsAdding
             viewModel.isAdding.set(isAdding)
             val fromJson = Gson().fromJson(device, DeviceResponse::class.java)
             viewModel.device = fromJson

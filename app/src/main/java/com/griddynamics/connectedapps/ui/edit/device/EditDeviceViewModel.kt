@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit
+package com.griddynamics.connectedapps.ui.edit.device
 
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData

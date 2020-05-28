@@ -18,7 +18,7 @@ import com.anychart.enums.HoverMode
 import com.anychart.enums.Position
 import com.anychart.enums.TooltipPositionMode
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.ui.edit.EditDeviceFragmentArgs
+import com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragmentArgs
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment

@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/navigation_edit"
-        android:name="com.griddynamics.connectedapps.ui.edit.EditDeviceFragment"
+        android:name="com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment"
         android:label="@string/edit"
         tools:layout="@layout/edit_device_fragment">
         <argument

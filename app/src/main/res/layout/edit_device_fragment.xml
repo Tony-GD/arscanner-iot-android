@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.griddynamics.connectedapps.ui.edit.EditDeviceViewModel" />
+            type="com.griddynamics.connectedapps.ui.edit.device.EditDeviceViewModel" />
     </data>
 
     <LinearLayout
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".ui.edit.EditDeviceFragment">
+        tools:context=".ui.edit.device.EditDeviceFragment">
 
         <EditText
             android:layout_width="match_parent"

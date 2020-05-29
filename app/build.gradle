@@ -32,6 +32,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
+        setProperty("archivesBaseName", applicationId + "(" + versionName + ")-" + versionCode)
     }
 
     buildTypes {

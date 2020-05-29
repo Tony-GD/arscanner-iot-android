@@ -3,6 +3,8 @@ package com.griddynamics.connectedapps.model.device
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.google.gson.annotations.SerializedName
+import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
+import com.griddynamics.connectedapps.gateway.network.api.MutableMetricsMap
 
 data class DeviceResponse(
     @SerializedName("device_id")
@@ -23,8 +25,8 @@ data class DeviceResponse(
     @SerializedName("gateway_id")
     var gatewayId: String?,
     @SerializedName("json_metrics_field")
-    var jsonMetricsField: List<Map<String, String>>?,
-    var metrics: List<Map<String, String>>?
+    var jsonMetricsField: MutableMetricsMap?,
+    var metrics: MutableMetricsMap?
 )
 
 val EMPTY_DEVICE = DeviceResponse(
@@ -37,6 +39,6 @@ val EMPTY_DEVICE = DeviceResponse(
     null,
     null,
     null,
-    mutableListOf(),
-    mutableListOf()
+    mutableMapOf(),
+    mutableMapOf()
 )

@@ -50,7 +50,12 @@ class AirScannerRepositoryImpl
     }
 
     override suspend fun deleteDevice(request: DeviceResponse): Any {
-        return api.deleteDevice(request)
+        return try {
+            api.deleteDevice(request)
+        } catch (e: Exception) {
+            Log.e(TAG, "AirScannerRepositoryImpl: deleteDevice", e)
+            Any()
+        }
     }
 
     override suspend fun addGateway(request: GatewayResponse): Any {

@@ -18,6 +18,7 @@ const val metrics = "metrics/v1/device"
 const val lastHour = "lastHour"
 
 typealias MetricsMap = Map<String, List<Map<String, String>>>
+typealias MutableMetricsMap = MutableMap<String, MutableList<MutableMap<String, String>>>
 interface AirScannerAPI {
 
     @POST(addDevice)

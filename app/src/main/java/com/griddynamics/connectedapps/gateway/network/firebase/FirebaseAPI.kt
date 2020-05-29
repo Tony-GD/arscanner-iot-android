@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps.gateway.network.firebase
 
 import android.util.Log
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
@@ -21,7 +22,9 @@ object FirebaseAPI {
     fun getUserGateways(user: User, callback: GatewaysCallback) {
         Log.d(TAG, "getUserGateways() called with: user = [$user]")
         FirebaseFirestore.setLoggingEnabled(true)
-        val query = firestore.collection("gateways").whereEqualTo("user_id", user.id)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        Log.d(TAG, "getUserGateways: ${uid}")
+        val query = firestore.collection("gateways").whereEqualTo("user_id", uid)
         query.addSnapshotListener(
             Executors.BACKGROUND_EXECUTOR,
             gatewayEventListener(callback)
@@ -31,7 +34,8 @@ object FirebaseAPI {
     fun getUserDevices(user: User, callback: DevicesCallback) {
         Log.d(TAG, "getUserDevices() called with: user = [$user]")
         FirebaseFirestore.setLoggingEnabled(true)
-        val query = firestore.collection("devices").whereEqualTo("user_id", user.id)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val query = firestore.collection("devices").whereEqualTo("user_id", uid)
         query.addSnapshotListener(
             Executors.BACKGROUND_EXECUTOR,
             deviceEventListener(callback)
@@ -71,7 +75,9 @@ object FirebaseAPI {
                     location = location as GeoPoint?,
                     locationDescription = locationDescription as String?,
                     createdAt = createdAt as Timestamp?,
-                    gatewayId = gatewayId as String?
+                    gatewayId = gatewayId as String?,
+                    jsonMetricsField = null,
+                    metrics = null
                 )
                 Log.d(TAG, "getPublicDevices: $device")
                 devices.add(device)
@@ -94,17 +100,25 @@ object FirebaseAPI {
         return EventListener { snapshot, exception ->
             val gateways = mutableListOf<GatewayResponse>()
             snapshot?.documents?.forEach {
-                Log.d(TAG, "getPublicGateways: ${it.data}")
+                Log.d(TAG, "gatewayEventListener: ${it.data}")
+                val gatewayId  = it.reference.path.split("/").last()
                 val userId = it.data?.get("user_id")
                 val displayName = it.data?.get("display_name")
+                val key = it.data?.get("key")
                 val gateway = GatewayResponse(
+                    gatewayId = gatewayId,
                     userId = userId as String?,
-                    displayName = displayName as String?
+                    displayName = displayName as String?,
+                    key = key as String?
                 )
-                Log.d(TAG, "getPublicGateways: $gateway")
+                Log.d(TAG, "gatewayEventListener: $gateway")
                 gateways.add(gateway)
+                callback(gateways)
             }
-            callback(gateways)
+            exception?.let {
+                Log.e(TAG, "FirebaseAPI: gatewayEventListener", it)
+            }
+
         }
     }
 }

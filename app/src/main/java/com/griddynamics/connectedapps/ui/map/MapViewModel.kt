@@ -7,6 +7,7 @@ import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.gateway.stream.DeviceStream
+import com.griddynamics.connectedapps.gateway.stream.GatewayStream
 import com.griddynamics.connectedapps.gateway.stream.MetricsStream
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
 import com.griddynamics.connectedapps.model.metrics.MetricsResponse
@@ -16,13 +17,24 @@ import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     private val deviceStream: DeviceStream,
+    private val gatewayStream: GatewayStream,
     private val metricsStream: MetricsStream,
     private val repository: AirScannerRepository
 ) : ViewModel() {
+    val devices = deviceStream.scannerData
+    val gateways = gatewayStream.gatewayData
+    val metrics = MutableLiveData<MetricsResponse>()
+
     fun loadDevices() {
         FirebaseAPI.getPublicDevices { devices ->
             deviceStream.scannerData.postValue(devices)
         }
+    }
+
+    fun loadGateways() {
+//        FirebaseAPI.getPublicGateways { gateways ->
+//            gatewayStream.gatewayData.postValue(gateways)
+//        }
     }
 
     fun loadMetrics(id: String): LiveData<MetricsMap> {
@@ -34,8 +46,4 @@ class MapViewModel @Inject constructor(
         }
         return data
     }
-
-    val devices = deviceStream.scannerData
-
-    val metrics = MutableLiveData<MetricsResponse>()
 }

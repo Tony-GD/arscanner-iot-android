@@ -44,11 +44,6 @@ class MainActivity : DaggerAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         ScannerDataUpdateService.startActionStart(applicationContext)
-        val user = localStorage.getUser()
-//        FirebaseAPI.getUserGateways(user) {}
-//        FirebaseAPI.getUserDevices(user) {}
-        FirebaseAPI.getPublicDevices{}
-        FirebaseAPI.getPublicGateways{}
     }
 
     fun logout() {

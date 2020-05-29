@@ -24,6 +24,7 @@ import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceResponse
+import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -48,6 +49,10 @@ class MapFragment : DaggerFragment() {
         fun onDeviceEditSelected(device: DeviceResponse)
     }
 
+    interface OnGatewaySelectedListener {
+        fun onGatewaySelected(gateway: GatewayResponse)
+    }
+
     private lateinit var mapViewModel: MapViewModel
 
     @Inject
@@ -60,6 +65,12 @@ class MapFragment : DaggerFragment() {
 
         override fun onDeviceEditSelected(device: DeviceResponse) {
             navigateToEditFragment(device)
+        }
+    }
+
+    private val onGatewaySelectedListener = object : OnGatewaySelectedListener {
+        override fun onGatewaySelected(gateway: GatewayResponse) {
+            navigateToGatewayEditFragment("${gateway.displayName}")
         }
     }
 
@@ -93,6 +104,12 @@ class MapFragment : DaggerFragment() {
     private fun navigateToHistoryFragment(data: String) {
         val actionGlobalNavigationHistory = MapFragmentDirections.ActionNavigationMapToNavigationHistory()
         actionGlobalNavigationHistory.setDevice(data)
+        findNavController().navigate(actionGlobalNavigationHistory)
+    }
+
+    private fun navigateToGatewayEditFragment(data: String) {
+        val actionGlobalNavigationHistory = MapFragmentDirections.ActionNavigationMapToEditNavigationGatewayGateway()
+        actionGlobalNavigationHistory.setGateway(data)
         findNavController().navigate(actionGlobalNavigationHistory)
     }
 
@@ -149,6 +166,8 @@ class MapFragment : DaggerFragment() {
             }
         })
         mapViewModel.loadDevices()
+
+        mapViewModel.loadGateways()
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 

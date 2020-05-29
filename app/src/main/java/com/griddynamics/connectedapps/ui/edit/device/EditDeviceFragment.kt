@@ -133,84 +133,109 @@ class EditDeviceFragment : DaggerFragment() {
             viewModel.device = fromJson
         }
         if (viewModel.device == null) {
-            viewModel.device = EMPTY_DEVICE
             viewModel.isAdding.set(true)
+            viewModel.userGateways?.observe(viewLifecycleOwner, Observer {
+                viewModel.device = EMPTY_DEVICE.apply {
+                    gatewayId = it.firstOrNull()?.gatewayId
+                }
+            })
+
+
         }
-            binding.lat.setText("${viewModel.device?.location?.latitude}")
-            binding.lon.setText("${viewModel.device?.location?.longitude}")
-            binding.lat.addTextChangedListener { text ->
-                try {
-                    viewModel.device?.location?.let {
-                        val currentLon = it.longitude
-                        viewModel.device?.location = com.google.firebase.firestore.GeoPoint(
-                            text.toString().toDouble(),
-                            currentLon
-                        )
+        viewModel.device?.let { device ->
+            requireContext().resources.getStringArray(R.array.data_format_values).firstOrNull()
+                ?.let {
+                    device.dataFormat = it
+                }
+        }
+        binding.etEditDisplayName.addTextChangedListener { text ->
+            try {
+                if (text.toString()
+                        .isBlank()
+                ) throw IllegalArgumentException("Name must not be empty")
+                viewModel.device?.let {
+                    it.displayName = text.toString()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "EditDeviceFragment: latitude", e)
+                Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+        }
+        binding.lat.setText("${viewModel.device?.location?.latitude}")
+        binding.lon.setText("${viewModel.device?.location?.longitude}")
+        binding.lat.addTextChangedListener { text ->
+            try {
+                viewModel.device?.location?.let {
+                    val currentLon = it.longitude
+                    viewModel.device?.location = com.google.firebase.firestore.GeoPoint(
+                        text.toString().toDouble(),
+                        currentLon
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "EditDeviceFragment: latitude", e)
+                Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+        }
+        binding.lon.addTextChangedListener { text ->
+            try {
+                viewModel.device?.location?.let {
+                    val currentLat = it.latitude
+                    viewModel.device?.location = com.google.firebase.firestore.GeoPoint(
+                        currentLat,
+                        text.toString().toDouble()
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "EditDeviceFragment: longitude", e)
+                Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+        }
+        binding.spEditFormat.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //NOP
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val formatValues =
+                        requireContext().resources.getStringArray(R.array.data_format_values)
+                    viewModel.device?.let {
+                        val format = formatValues[position]
+                        it.dataFormat = format
+                        viewModel.isSingleValue = format != "json"
+                        setDataVisibility()
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "EditDeviceFragment: latitude", e)
-                    Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
+                }
+
+            }
+        binding.spEditGateways.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //NOP
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedGateway = viewModel.userGateways.value?.get(position)
+                    viewModel.device?.let {
+                        it.gatewayId = selectedGateway?.gatewayId
+                    }
+                    viewModel.device?.dataFormat?.let {
+                        viewModel.isSingleValue = it != "json"
+                        setDataVisibility()
+                    }
                 }
             }
-            binding.lon.addTextChangedListener { text ->
-                try {
-                    viewModel.device?.location?.let {
-                        val currentLat = it.latitude
-                        viewModel.device?.location = com.google.firebase.firestore.GeoPoint(
-                            currentLat,
-                            text.toString().toDouble()
-                        )
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "EditDeviceFragment: longitude", e)
-                    Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
-                }
-            }
-            binding.spEditFormat.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //NOP
-                    }
-
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val formatValues =
-                            requireContext().resources.getStringArray(R.array.data_format_values)
-                        viewModel.device?.let {
-                            val format = formatValues[position]
-                            it.dataFormat = format
-                            viewModel.isSingleValue = format != "json"
-                            setDataVisibility()
-                        }
-                    }
-
-                }
-            binding.spEditGateways.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //NOP
-                    }
-
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val selectedGateway = viewModel.userGateways.value?.get(position)
-                        viewModel.device?.let {
-                            it.gatewayId = selectedGateway?.displayName
-                        }
-                        viewModel.device?.dataFormat?.let {
-                            viewModel.isSingleValue = it != "json"
-                            setDataVisibility()
-                        }
-                    }
-                }
         setDataVisibility()
     }
 
@@ -220,7 +245,7 @@ class EditDeviceFragment : DaggerFragment() {
         } else {
             View.GONE
         }
-        binding.llEditSingle.visibility = if(viewModel.isAdding.get() && viewModel.isSingleValue) {
+        binding.llEditSingle.visibility = if (viewModel.isAdding.get() && viewModel.isSingleValue) {
             View.VISIBLE
         } else {
             View.GONE

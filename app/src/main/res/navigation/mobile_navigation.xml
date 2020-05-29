@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_map">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_navigation_map_to_navigation_history"
             app:destination="@id/navigation_history" />
+        <action
+            android:id="@+id/action_navigation_map_to_edit_navigation_gateway_gateway"
+            app:destination="@id/navigation_edit_gateway" />
     </fragment>
 
     <fragment
@@ -41,6 +44,21 @@
         tools:layout="@layout/edit_device_fragment">
         <argument
             android:name="device"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="@string/is_adding"
+            android:defaultValue="true"
+            app:argType="boolean"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_edit_gateway"
+        android:name="com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment"
+        android:label="@string/edit"
+        tools:layout="@layout/edit_gateway_fragment">
+        <argument
+            android:name="gateway"
             android:defaultValue="null"
             app:argType="string" />
         <argument

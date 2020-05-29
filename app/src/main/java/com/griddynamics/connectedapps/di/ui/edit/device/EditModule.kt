@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.di.ui.edit
+package com.griddynamics.connectedapps.di.ui.edit.device
 
 import dagger.Module
 

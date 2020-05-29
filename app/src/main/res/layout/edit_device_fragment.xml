@@ -19,6 +19,7 @@
         tools:context=".ui.edit.device.EditDeviceFragment">
 
         <EditText
+            android:id="@+id/et_edit_display_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/display_name"

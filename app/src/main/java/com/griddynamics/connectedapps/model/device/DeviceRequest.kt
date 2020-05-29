@@ -10,12 +10,13 @@ const val ADD_DEVICE_REQUEST_KEY = "ADD_DEVICE_REQUEST_KEY"
 data class DeviceRequest(
     @SerializedName("display_name")
     var displayName: String,
+    @SerializedName("device_id")
     var deviceId: String,
-//    var registryId: String,
-//    var cloudRegion: String,
     @SerializedName("data_format")
     var dataFormat: String,
+    @SerializedName("user_id")
     var userId: String,
+    @SerializedName("gateway_id")
     var gatewayId: String,
     @SerializedName("loc_lat")
     var locLat: String,
@@ -26,7 +27,7 @@ data class DeviceRequest(
 ): Parcelable
 var EMPTY_DEVICE_REQUEST =
     DeviceRequest(
-        "fT1nIo5GzvcoTwx4tv2w",
+        "",
         "",
         "",
         "",

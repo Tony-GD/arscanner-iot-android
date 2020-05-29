@@ -1,11 +1,11 @@
 package com.griddynamics.connectedapps.gateway.network
 
 import android.util.Log
-import androidx.annotation.DimenRes
 import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse
+import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.gateway.GatewayRequest
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
 import javax.inject.Inject
@@ -53,8 +53,13 @@ class AirScannerRepositoryImpl
         return api.deleteDevice(request)
     }
 
-    override suspend fun addGateway(request: GatewayRequest): Any {
-        return api.addGateway(request)
+    override suspend fun addGateway(request: GatewayResponse): Any {
+        return try{
+            api.addGateway(GatewayRequest(key = request.key, displayName = request.displayName))
+        } catch (e: Exception) {
+            Log.e(TAG, "AirScannerRepositoryImpl: addGateway", e)
+            Any()
+        }
     }
 
     override suspend fun editGateway(request: GatewayRequest): Any {

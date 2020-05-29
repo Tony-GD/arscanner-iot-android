@@ -21,7 +21,10 @@ data class DeviceResponse(
     @SerializedName("location_description")
     var locationDescription: String?,
     @SerializedName("gateway_id")
-    var gatewayId: String?
+    var gatewayId: String?,
+    @SerializedName("json_metrics_field")
+    var jsonMetricsField: List<Map<String, String>>?,
+    var metrics: List<Map<String, String>>?
 )
 
 val EMPTY_DEVICE = DeviceResponse(
@@ -33,5 +36,7 @@ val EMPTY_DEVICE = DeviceResponse(
     GeoPoint(0.0, 0.0),
     null,
     null,
-    null
+    null,
+    mutableListOf(),
+    mutableListOf()
 )

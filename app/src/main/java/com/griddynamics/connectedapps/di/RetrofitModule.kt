@@ -1,8 +1,8 @@
 package com.griddynamics.connectedapps.di
 
 import com.griddynamics.connectedapps.di.gateway.LocalStorageModule
-import com.griddynamics.connectedapps.gateway.network.api.LogoutCallAdapterFactory
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.gateway.network.api.LogoutCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -14,7 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-const val BASE_URL = "https://europe-west3-gd-gcp-rnd-connected-apps.cloudfunctions.net/connectedApps/"
+const val BASE_URL =
+    "https://europe-west3-gd-gcp-rnd-connected-apps.cloudfunctions.net/connectedApps/"
 private const val TAG: String = "RetrofitModule"
 
 @Module(includes = [LocalStorageModule::class])
@@ -54,7 +55,8 @@ object RetrofitModule {
     @Singleton
     @JvmStatic
     fun provideRetrofit(
-        client: OkHttpClient
+        client: OkHttpClient,
+        callAdapterFactory: LogoutCallAdapterFactory
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)

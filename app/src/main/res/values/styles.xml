@@ -4,8 +4,50 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorBaseDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/AppText.White.16</item>
+<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
+    </style>
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_peekHeight">@dimen/bottom_sheet_height_200</item>
+    </style>
+
+    <style name="AppText.SourceSansPro" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">/font/source_ans_pro_regular.ttf</item>
+    </style>
+
+    <style name="AppText.SourceSansPro.White" parent="AppText.SourceSansPro">
+        <item name="color">#FFFFFF</item>
+    </style>
+
+    <style name="AppText.SourceSansPro.White.14" parent="AppText.SourceSansPro.White">
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">24dp</item>
+    </style>
+
+    <style name="AppText" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">/font/fira_sans_bold.ttf</item>
+    </style>
+
+    <style name="AppText.White" parent="AppText">
+        <item name="color">@color/white</item>
+    </style>
+
+    <style name="AppText.White.16" parent="AppText.White">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">24dp</item>
+    </style>
+
+    <style name="AppDialog" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="cornerRadius">4dp</item>
+        <item name="background">@color/colorDialogPrimary</item>
     </style>
 
 </resources>

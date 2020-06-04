@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps.gateway.network
 
 import android.util.Log
 import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
+import com.griddynamics.connectedapps.gateway.network.api.ApiResponse
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse

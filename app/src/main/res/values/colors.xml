@@ -3,4 +3,10 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorDialogPrimary">#7A1EFF</color>
+    <color name="colorDialogSecondary">#9E00D6</color>
+    <color name="colorBaseDark">#262B31</color>
+    <color name="colorMapBlack">#FF2A2A2A</color>
+    <color name="whiteTransparent">#80FFFFFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

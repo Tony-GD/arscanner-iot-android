@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="AppDialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/scanner_item_height_50"
+    android:paddingVertical="@dimen/padding_42">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_success" />
+
+    <TextView
+        style="AppText.White.16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/success" />
+
+    <TextView
+        style="@style/AppText.SourceSansPro.White.14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/the_device_was_added_now_you_can_track_it" />
+</LinearLayout>

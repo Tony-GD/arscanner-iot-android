@@ -23,7 +23,9 @@ import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_data_history.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 private const val TAG: String = "DataHistoryFragment"
 
@@ -59,22 +61,24 @@ class DataHistoryFragment : DaggerFragment() {
         anyChartView: AnyChartView
     ) {
         val data = ArrayList<DataEntry>()
-        val metrics = viewModel.getMetrics(deviceId)
-        metrics?.keys?.forEach { metricName ->//take first metric section
-            metrics[metricName]?.forEach { metric ->//iterate through the section
-                metric.keys.forEach { metricDateKey ->//  get key and value
-                    val metricValue = metric[metricDateKey]?.toFloat()
-                    Log.d(TAG, "onViewCreated: ${metricDateKey} is ${metricValue}")
-                    data.add(
-                        ValueDataEntry(
-                            metricDateKey,
-                            metricValue
-                        )
-                    )
-                }
-            }
-            showData(data, deviceId, metricName, anyChartView)
-        }
+        data.add(ValueDataEntry("metricDateKey", 33))
+        data.add(ValueDataEntry("metricDateKey1", 23))
+        data.add(ValueDataEntry("metricDateKey2", 43))
+        data.add(ValueDataEntry("metricDateKey3", 35))
+        data.add(ValueDataEntry("metricDateKey4", 38))
+        data.add(ValueDataEntry("metricDateKey5", 40))
+
+//        val metrics = viewModel.getMetrics(deviceId)
+//        metrics?.keys?.firstOrNull()?.let { metricName ->//take first metric section
+//            metrics[metricName]?.firstOrNull()?.let { metric ->//iterate through the section
+//                metric.keys.forEach { metricDateKey ->//  get key and value
+//                    val rand = Random()
+//                    val n: Int = rand.nextInt(50)
+//                    data.add(ValueDataEntry(metricDateKey, n))
+//                }
+//            }
+            showData(data, deviceId, "default", anyChartView)
+//        }
     }
 
     private fun showData(
@@ -83,6 +87,7 @@ class DataHistoryFragment : DaggerFragment() {
         metricName: String,
         anyChartView: AnyChartView
     ) {
+        Log.d(TAG, "showData() called with: data = [$data], deviceId = [$deviceId], metricName = [$metricName], anyChartView = [$anyChartView]")
         val cartesian: Cartesian = AnyChart.column()
         val column: Column = cartesian.column(data)
 

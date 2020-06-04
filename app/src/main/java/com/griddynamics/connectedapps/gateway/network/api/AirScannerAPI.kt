@@ -1,5 +1,6 @@
 package com.griddynamics.connectedapps.gateway.network.api
 
+import androidx.lifecycle.LiveData
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.gateway.GatewayRequest

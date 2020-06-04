@@ -22,9 +22,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDeviceDetailsFragment
+import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -42,6 +43,7 @@ import org.osmdroid.views.overlay.Marker
 import javax.inject.Inject
 
 private const val TAG: String = "MapFragment"
+
 class MapFragment : DaggerFragment() {
 
     interface OnDeviceSelectedListener {
@@ -102,18 +104,23 @@ class MapFragment : DaggerFragment() {
     }
 
     private fun navigateToHistoryFragment(data: String) {
-        val actionGlobalNavigationHistory = MapFragmentDirections.ActionNavigationMapToNavigationHistory()
+        val actionGlobalNavigationHistory =
+            MapFragmentDirections.ActionNavigationMapToNavigationHistory()
         actionGlobalNavigationHistory.setDevice(data)
         findNavController().navigate(actionGlobalNavigationHistory)
     }
 
     private fun navigateToGatewayEditFragment(data: String) {
-        val actionGlobalNavigationHistory = MapFragmentDirections.ActionNavigationMapToEditNavigationGatewayGateway()
+        val actionGlobalNavigationHistory =
+            MapFragmentDirections.ActionNavigationMapToEditNavigationGatewayGateway()
         actionGlobalNavigationHistory.setGateway(data)
         findNavController().navigate(actionGlobalNavigationHistory)
     }
 
-    private fun addDeviceMarker(device: DeviceResponse) {
+    private fun generateMarkers(
+        device: DeviceResponse,
+        onMarkerReadyCallback: (marker: Marker) -> Unit
+    ) {
         val binding: MapInfoViewLayoutBinding =
             DataBindingUtil.inflate(
                 LayoutInflater.from(requireContext()),
@@ -122,33 +129,58 @@ class MapFragment : DaggerFragment() {
                 false
             )
         binding.item = device
+        binding.listener = onDeviceSelectedListener
+        val info = MapInfoWindow(binding.root, map)
+        val elementMarker = Marker(map)
+        elementMarker.setOnMarkerClickListener { marker, mapView ->
+            mapView.overlays.forEach { overlay ->
+                if (overlay is Marker) {
+                    if (overlay != marker) {
+                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                        overlay.icon = requireContext().getDrawable(R.drawable.green)
+                    }
+                }
+            }
+            marker.icon = requireContext().getDrawable(R.drawable.ic_pin)
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            mapViewModel.metrics.observe(viewLifecycleOwner, Observer {
+                marker.setTextIcon("some")
+            })
+            mapViewModel.loadMetrics("${device.deviceId}")
+            showDetails()
+            true
+        }
+
+        elementMarker.icon = requireContext().getDrawable(R.drawable.green)
         mapViewModel.loadMetrics("${device.deviceId}")
             .observe(viewLifecycleOwner, Observer {
                 Log.d(TAG, "addDeviceMarker() called $it")
-                it.keys.forEach { key->
-                    val value = it[key]
-                    value?.let{
+                it.keys.forEach { metricName ->
+                    if (metricName != "[default]") {
+                        return@forEach
+                    }
+                    it[metricName]?.let { value ->
                         if (value.isNotEmpty()) {
-                            value.first().keys.forEach {valKey->
-                                val tring = "${valKey}: ${value.first()[valKey]}"
+                            value.first().keys.firstOrNull()?.let { valKey ->
+                                val text = "${valKey}: ${value.first()[valKey]}"
                                 binding.llInfoMetrics.addView(TextView(context).apply {
-                                    Log.d(TAG, "addDeviceMarker: text $tring")
-                                    text = tring
+                                    Log.d(TAG, "addDeviceMarker: text $text")
+                                    this.text = text
+                                    elementMarker.title = "here: ${value.first()[valKey]}"
+
                                 })
                             }
                         }
                     }
                 }
             })
-        binding.listener = onDeviceSelectedListener
-        val info = MapInfoWindow(binding.root, map)
-        val elementMarker = Marker(map)
-        elementMarker.infoWindow = info
+
+        elementMarker.infoWindow = null
         device.location?.let {
             elementMarker.position = GeoPoint(it.latitude, it.longitude)
+            elementMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            onMarkerReadyCallback(elementMarker)
         }
-        elementMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        map.overlays.add(elementMarker)
     }
 
     override fun onCreateView(
@@ -162,7 +194,9 @@ class MapFragment : DaggerFragment() {
         mapViewModel.devices.observe(viewLifecycleOwner, Observer {
             map.overlays.clear()
             it.forEach { device ->
-                addDeviceMarker(device)
+                generateMarkers(device) { marker ->
+                    map.overlays.add(marker)
+                }
             }
         })
         mapViewModel.loadDevices()
@@ -179,6 +213,14 @@ class MapFragment : DaggerFragment() {
         setupMap()
     }
 
+    private fun showDetails() {
+        val bottomSheetDialogFragment = BottomSheetDeviceDetailsFragment()
+        bottomSheetDialogFragment.show(
+            requireActivity().supportFragmentManager,
+            bottomSheetDialogFragment.tag
+        )
+    }
+
     private fun setupMap() {
         map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = map.controller as MapController
@@ -186,7 +228,12 @@ class MapFragment : DaggerFragment() {
         mapController.zoomTo(10)
         map.setUseDataConnection(true)
         map.setMultiTouchControls(true)
-
+        map.overlayManager.tilesOverlay
+            .setColorFilter(
+                getMapColorFilter(
+                    requireContext().getColor(R.color.colorMapBlack)
+                )
+            )
         Dexter.withContext(activity)
             .withPermissions(
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -201,7 +248,10 @@ class MapFragment : DaggerFragment() {
                             getSystemService(requireContext(), LocationManager::class.java)
 
                         locationManager?.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER, 5000L, 10f, locationChangeListener
+                            LocationManager.GPS_PROVIDER,
+                            5000L,
+                            10f,
+                            locationChangeListener
                         )
                     } else {
                         Toast.makeText(

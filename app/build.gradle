@@ -90,6 +90,9 @@ dependencies {
     //maps
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
 
+    //progress bar
+    implementation 'com.shimaami.android:progressview:1.0.1'
+
     //local storage
     implementation "com.orhanobut:hawk:2.0.1"
 

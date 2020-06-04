@@ -10,6 +10,11 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="description_padding_15">15dp</dimen>
     <dimen name="scanner_item_height_50">50dp</dimen>
+    <dimen name="bottom_sheet_height_200">400dp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
+    <dimen name="padding_42">42dp</dimen>
+    <dimen name="radius_4">4dp</dimen>
+    <dimen name="progress_bar_diameter">70dp</dimen>
+    <dimen name="marker_size_12">12dp</dimen>
 </resources>

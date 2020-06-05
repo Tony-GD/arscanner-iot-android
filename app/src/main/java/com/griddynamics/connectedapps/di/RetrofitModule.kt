@@ -2,7 +2,7 @@ package com.griddynamics.connectedapps.di
 
 import com.griddynamics.connectedapps.di.gateway.LocalStorageModule
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.api.LogoutCallAdapterFactory
+import com.griddynamics.connectedapps.gateway.network.api.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -47,8 +47,8 @@ object RetrofitModule {
     @Provides
     @Singleton
     @JvmStatic
-    fun provideLiveDataFactory(): LogoutCallAdapterFactory {
-        return LogoutCallAdapterFactory()
+    fun provideLiveDataFactory(localStorage: LocalStorage): NetworkResponseAdapterFactory {
+        return NetworkResponseAdapterFactory(localStorage)
     }
 
     @Provides
@@ -56,11 +56,12 @@ object RetrofitModule {
     @JvmStatic
     fun provideRetrofit(
         client: OkHttpClient,
-        callAdapterFactory: LogoutCallAdapterFactory
+        callAdapterFactory: NetworkResponseAdapterFactory
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
+            .addCallAdapterFactory(callAdapterFactory)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

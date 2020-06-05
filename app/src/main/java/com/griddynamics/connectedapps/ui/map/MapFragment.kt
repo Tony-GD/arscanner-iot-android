@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
+import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDeviceDetailsFragment
@@ -136,44 +137,42 @@ class MapFragment : DaggerFragment() {
             mapView.overlays.forEach { overlay ->
                 if (overlay is Marker) {
                     if (overlay != marker) {
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
                         overlay.icon = requireContext().getDrawable(R.drawable.green)
+                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                    } else {
+                        marker.icon = requireContext().getDrawable(R.drawable.green_selected)
+                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     }
                 }
             }
-            marker.icon = requireContext().getDrawable(R.drawable.ic_pin)
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            mapViewModel.metrics.observe(viewLifecycleOwner, Observer {
-                marker.setTextIcon("some")
-            })
             mapViewModel.loadMetrics("${device.deviceId}")
-            showDetails()
+                .observe(viewLifecycleOwner, Observer {
+                    Log.d(TAG, "addDeviceMarker() called $it")
+                    showDetails(it, device)
+                    it.keys.forEach { metricName ->
+                        if (metricName != "[default]") {
+                            return@forEach
+                        }
+                        it[metricName]?.let { value ->
+                            if (value.isNotEmpty()) {
+                                value.first().keys.firstOrNull()?.let { valKey ->
+                                    val text = "${valKey}: ${value.first()[valKey]}"
+                                    binding.llInfoMetrics.addView(TextView(context).apply {
+                                        Log.d(TAG, "addDeviceMarker: text $text")
+                                        this.text = text
+                                        elementMarker.title = "here: ${value.first()[valKey]}"
+
+                                    })
+                                }
+                            }
+                        }
+                    }
+                })
             true
         }
 
         elementMarker.icon = requireContext().getDrawable(R.drawable.green)
-        mapViewModel.loadMetrics("${device.deviceId}")
-            .observe(viewLifecycleOwner, Observer {
-                Log.d(TAG, "addDeviceMarker() called $it")
-                it.keys.forEach { metricName ->
-                    if (metricName != "[default]") {
-                        return@forEach
-                    }
-                    it[metricName]?.let { value ->
-                        if (value.isNotEmpty()) {
-                            value.first().keys.firstOrNull()?.let { valKey ->
-                                val text = "${valKey}: ${value.first()[valKey]}"
-                                binding.llInfoMetrics.addView(TextView(context).apply {
-                                    Log.d(TAG, "addDeviceMarker: text $text")
-                                    this.text = text
-                                    elementMarker.title = "here: ${value.first()[valKey]}"
 
-                                })
-                            }
-                        }
-                    }
-                }
-            })
 
         elementMarker.infoWindow = null
         device.location?.let {
@@ -213,8 +212,9 @@ class MapFragment : DaggerFragment() {
         setupMap()
     }
 
-    private fun showDetails() {
-        val bottomSheetDialogFragment = BottomSheetDeviceDetailsFragment()
+    private fun showDetails(metricsMap: MetricsMap, device: DeviceResponse) {
+        val bottomSheetDialogFragment =
+            BottomSheetDeviceDetailsFragment().apply { setDeviceInfo(metricsMap, device ) }
         bottomSheetDialogFragment.show(
             requireActivity().supportFragmentManager,
             bottomSheetDialogFragment.tag

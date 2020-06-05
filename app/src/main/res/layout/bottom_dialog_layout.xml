@@ -1,121 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:background="@drawable/bottom_sheet_bg"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cl_bottom_sheet_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="15dp"
-    android:paddingTop="10dp">
+    android:background="@drawable/bottom_sheet_bg">
 
-    <View
-        android:id="@+id/bottom_button"
-        android:layout_width="40dp"
-        android:layout_height="4dp"
-        android:background="@drawable/bottom_sheet_button_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/ll_bottom_title_container"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cl_bottom_sheet_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/bottom_button">
+        android:paddingHorizontal="15dp"
+        android:paddingTop="10dp">
 
-        <ImageView
-            android:layout_width="@dimen/marker_size_12"
-            android:layout_height="@dimen/marker_size_12"
-            android:src="@drawable/green" />
+        <View
+            android:id="@+id/bottom_button"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@drawable/bottom_sheet_button_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_weight="5"
-            android:id="@+id/tv_bottom_title"
-            android:textAppearance="@style/AppText.White.16"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_bottom_title_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title" />
-    </LinearLayout>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/bottom_button">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/ll_bottom_title_container"
-        app:layout_constraintBottom_toBottomOf="parent">
+            <ImageView
+                android:layout_width="@dimen/marker_size_12"
+                android:layout_height="@dimen/marker_size_12"
+                android:src="@drawable/green" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tv_bottom_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:fontFamily="@font/fira_sans_bold"
+                android:paddingStart="@dimen/padding_5"
+                android:text="Title"
+                android:textAppearance="@style/AppText.White.16"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
-        <com.progress.progressview.ProgressView
-            android:id="@+id/progressView0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/progress_bar_diameter"
-            android:layout_gravity="center_horizontal"
-            app:pvDirection="fromLeft"
-            android:rotation="90"
-            app:pvProgress="0.9"
-            app:pvShape="circle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_bottom_title_container">
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
-        <com.progress.progressview.ProgressView
-            android:id="@+id/progressView1"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/progress_bar_diameter"
-            android:layout_gravity="center_horizontal"
-            app:pvDirection="fromLeft"
-            android:rotation="90"
-            app:pvProgress="0.75"
-            app:pvShape="circle" />
+            <include
+                android:id="@+id/progress_container_0"
+                layout="@layout/circular_bar_layout" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
-        <com.progress.progressview.ProgressView
-            android:id="@+id/progressView2"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/progress_bar_diameter"
-            android:layout_gravity="center_horizontal"
-            app:pvDirection="fromLeft"
-            android:rotation="90"
-            app:pvProgress="0.4"
-            app:pvShape="circle" />
+            <include
+                android:id="@+id/progress_container_1"
+                layout="@layout/circular_bar_layout" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
-        <com.progress.progressview.ProgressView
-            android:id="@+id/progressView3"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/progress_bar_diameter"
-            android:layout_gravity="center_horizontal"
-            android:rotation="90"
-            app:pvDirection="fromLeft"
-            app:pvProgress="0.1"
-            app:pvShape="circle" />
+            <include
+                android:id="@+id/progress_container_2"
+                layout="@layout/circular_bar_layout" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/progress_container_3"
+                layout="@layout/circular_bar_layout" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

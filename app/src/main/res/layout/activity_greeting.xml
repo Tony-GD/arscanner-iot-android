@@ -5,6 +5,7 @@
     android:id="@+id/greeting_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBaseDark"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".ui.greeting.GreetingActivity">
@@ -26,7 +27,7 @@
             android:id="@+id/auth_logo_image"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
-            android:src="@drawable/gd_logo" />
+            android:src="@drawable/airo_logo_dark" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/auth_sign_in_button"
@@ -41,8 +42,8 @@
         android:text="@string/or" />
 
     <TextView
-        style="@style/AppTheme"
         android:id="@+id/auth_guest_sign_in_text"
+        style="@style/AppText.SourceSansPro.White.14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"

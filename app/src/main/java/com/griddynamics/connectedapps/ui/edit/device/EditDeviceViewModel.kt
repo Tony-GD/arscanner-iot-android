@@ -1,10 +1,12 @@
 package com.griddynamics.connectedapps.ui.edit.device
 
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
+import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
 import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
@@ -13,12 +15,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val CO2 = "co2"
-private const val TEMP = "Temp"
-private const val HUMIDITY = "Humidity"
-private const val PM2_5 = "pm2.5"
-private const val PM1_0 = "pm1.0"
-private const val PM10 = "pm10"
+const val CO2 = "co2"
+const val TEMP = "Temp"
+const val HUMIDITY = "Humidity"
+const val PM2_5 = "pm2.5"
+const val PM1_0 = "pm1.0"
+const val PM10 = "pm10"
+const val DEFAULT = "[default]"
+
+private const val TAG: String = "EditDeviceViewModel"
 
 class EditDeviceViewModel @Inject constructor(
     private val localStorage: LocalStorage,
@@ -50,7 +55,11 @@ class EditDeviceViewModel @Inject constructor(
         GlobalScope.launch {
             device?.let {
                 if (isAdding.get()) {
-                    repository.addDevice(it.apply { saveMetrics() })
+                    when (val response = repository.addDevice(it.apply { saveMetrics() })) {
+                        is NetworkResponse.Success<*> ->
+                            Log.d(TAG, "saveEditedDevice success: ${response.body}")
+                        else -> Log.e(TAG, "EditDeviceViewModel: error ${response}")
+                    }
                 } else {
                     repository.editDevice(it.apply { saveMetrics() })
                 }

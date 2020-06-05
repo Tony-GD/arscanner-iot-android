@@ -1,16 +1,20 @@
 package com.griddynamics.connectedapps.ui.map.bottomsheet
 
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
+import com.griddynamics.connectedapps.model.device.DeviceResponse
+import com.griddynamics.connectedapps.ui.edit.device.*
 import kotlinx.android.synthetic.main.bottom_dialog_layout.*
+import kotlinx.android.synthetic.main.circular_bar_layout.view.*
 
-class BottomSheetDeviceDetailsFragment: BottomSheetDialogFragment() {
+class BottomSheetDeviceDetailsFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,18 +23,54 @@ class BottomSheetDeviceDetailsFragment: BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.bottom_dialog_layout, container, false)
     }
 
+    private var metricsMap: MetricsMap? = null
+    private var device: DeviceResponse? = null
+
+    fun setDeviceInfo(metricsMap: MetricsMap, device: DeviceResponse) {
+        this.metricsMap = metricsMap
+        this.device = device
+    }
+
     override fun onStart() {
         super.onStart()
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         dialog?.cl_bottom_sheet_container?.minHeight = 400
+        metricsMap?.let {
+            tv_bottom_title.text = device?.displayName
+            it[CO2]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
+                progress_container_1.progress_view.progress = it
+            }
+            it[TEMP]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
+                progress_container_2.progress_view.progress = it
+            }
+            it[HUMIDITY]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
+                progress_container_3.progress_view.progress = it
+            }
+            it[PM2_5]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
+                progress_container_0.progress_view.progress = it
+            }
+            it[PM1_0]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()
+            it[PM10]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()
+            it[DEFAULT]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
+                progress_container_0.progress_view.progress = it
+            }
+
+        }
+    }
+
+    private fun String?.toSafeFloat(): Float = try {
+        "$this".toFloat() / 100
+    } catch (e: Exception) {
+        0f
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val colorList0 = intArrayOf(Color.GREEN,Color.LTGRAY)
-        progressView0.applyGradient(colorList0)
+        val colorList0 = intArrayOf(Color.GREEN, Color.LTGRAY)
+        progress_container_0.progress_view.applyGradient(colorList0)
         val colorList1 = intArrayOf(Color.YELLOW, Color.RED)
-        progressView1.applyGradient(colorList1)
+        progress_container_1.progress_view.applyGradient(colorList1)
         val colorList2 = intArrayOf(Color.DKGRAY, Color.CYAN)
-        progressView2.applyGradient(colorList2)
+        progress_container_2.progress_view.applyGradient(colorList2)
     }
 }

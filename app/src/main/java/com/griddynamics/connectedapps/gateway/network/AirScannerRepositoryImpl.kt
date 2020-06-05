@@ -2,7 +2,7 @@ package com.griddynamics.connectedapps.gateway.network
 
 import android.util.Log
 import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
-import com.griddynamics.connectedapps.gateway.network.api.ApiResponse
+import com.griddynamics.connectedapps.gateway.network.api.GenericResponse
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse
@@ -19,7 +19,7 @@ class AirScannerRepositoryImpl
 @Inject constructor(private val api: AirScannerAPI) :
     AirScannerRepository {
 
-    override suspend fun addDevice(request: DeviceResponse): Any {
+    override suspend fun addDevice(request: DeviceResponse): GenericResponse<Any> {
         return api.addDevice(
             DeviceRequest(
                 "${request.displayName}",
@@ -34,7 +34,7 @@ class AirScannerRepositoryImpl
         )
     }
 
-    override suspend fun editDevice(request: DeviceResponse): Any {
+    override suspend fun editDevice(request: DeviceResponse): GenericResponse<Any> {
         return api.editDevice(
             "${request.deviceId}",
             DeviceRequest(
@@ -59,13 +59,8 @@ class AirScannerRepositoryImpl
         }
     }
 
-    override suspend fun addGateway(request: GatewayResponse): Any {
-        return try{
-            api.addGateway(GatewayRequest(key = request.key, displayName = request.displayName))
-        } catch (e: Exception) {
-            Log.e(TAG, "AirScannerRepositoryImpl: addGateway", e)
-            Any()
-        }
+    override suspend fun addGateway(request: GatewayResponse): GenericResponse<Any> {
+        return api.addGateway(GatewayRequest(key = request.key, displayName = request.displayName))
     }
 
     override suspend fun editGateway(request: GatewayRequest): Any {

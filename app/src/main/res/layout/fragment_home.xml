@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+<import type="android.graphics.Color"/>
         <variable
             name="viewModel"
             type="com.griddynamics.connectedapps.ui.home.HomeViewModel" />
@@ -22,13 +22,15 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tl_home_tabs"
                 app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/marker_size_12"
+                android:layout_marginHorizontal="@dimen/marker_size_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?actionBarSize"
-                app:tabBackground="@color/colorPrimary"
+                app:tabBackground="@drawable/ic_normal"
                 app:tabGravity="fill"
                 app:tabSelectedTextColor="#FFFFFF"
-                app:tabIndicatorColor="#FFFFFF"
+                app:tabIndicatorColor="@color/whiteTransparent"
                 app:tabIndicatorHeight="4dp"
                 app:tabMode="fixed" />
 

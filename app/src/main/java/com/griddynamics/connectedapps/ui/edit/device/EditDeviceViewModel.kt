@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps.ui.edit.device
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
@@ -42,6 +43,7 @@ class EditDeviceViewModel @Inject constructor(
     var isPM2_5Enabled = ObservableBoolean()
     var isPM1_0Enabled = ObservableBoolean()
     var isPM10Enabled = ObservableBoolean()
+    var networkResponse = MutableLiveData<NetworkResponse<Any, Any>>()
 
     val userGateways = MutableLiveData<List<GatewayResponse>>()
 
@@ -55,7 +57,9 @@ class EditDeviceViewModel @Inject constructor(
         GlobalScope.launch {
             device?.let {
                 if (isAdding.get()) {
-                    when (val response = repository.addDevice(it.apply { saveMetrics() })) {
+                    val response = repository.addDevice(it.apply { saveMetrics() })
+                    networkResponse.postValue(response)
+                    when (response) {
                         is NetworkResponse.Success<*> ->
                             Log.d(TAG, "saveEditedDevice success: ${response.body}")
                         else -> Log.e(TAG, "EditDeviceViewModel: error ${response}")

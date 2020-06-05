@@ -151,29 +151,6 @@ class MapFragment : DaggerFragment() {
                 map["[default]"] = listOf(HashMap<String, String>().apply{ this["000"] = "${it.value}" } )
                 showDetails(map, device)
             }
-//            mapViewModel.loadMetrics("${devixce.deviceId}")
-//                .observe(viewLifecycleOwner, Observer {
-//                    Log.d(TAG, "addDeviceMarker() called $it")
-//                    showDetails(it, device)
-//                    it.keys.forEach { metricName ->
-//                        if (metricName != "[default]") {
-//                            return@forEach
-//                        }
-//                        it[metricName]?.let { value ->
-//                            if (value.isNotEmpty()) {
-//                                value.first().keys.firstOrNull()?.let { valKey ->
-//                                    val text = "${valKey}: ${value.first()[valKey]}"
-//                                    binding.llInfoMetrics.addView(TextView(context).apply {
-//                                        Log.d(TAG, "addDeviceMarker: text $text")
-//                                        this.text = text
-//                                        elementMarker.title = "here: ${value.first()[valKey]}"
-//
-//                                    })
-//                                }
-//                            }
-//                        }
-//                    }
-//                })
             true
         }
 

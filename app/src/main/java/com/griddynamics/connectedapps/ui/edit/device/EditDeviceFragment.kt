@@ -1,6 +1,7 @@
 package com.griddynamics.connectedapps.ui.edit.device
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +17,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
+import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
 import com.griddynamics.connectedapps.model.device.DEFAULT_LAT
 import com.griddynamics.connectedapps.model.device.DEFAULT_LONG
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.EMPTY_DEVICE
+import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.edit_device_fragment.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.location_picker_layout.view.*
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -57,6 +61,8 @@ class EditDeviceFragment : DaggerFragment() {
     private fun showLocationPicker() {
         val view = LayoutInflater.from(requireContext())
             .inflate(R.layout.location_picker_layout, null)
+
+
         val eventsReceiver = object : MapEventsReceiver {
             override fun longPressHelper(p: GeoPoint?): Boolean {
                 return false
@@ -67,13 +73,19 @@ class EditDeviceFragment : DaggerFragment() {
                 selectedLong = p.longitude.toFloat()
                 view.map_picker.overlays.clear()
                 val elementMarker = Marker(view.map_picker)
+                elementMarker.icon = requireContext().getDrawable(R.drawable.ic_pin)
                 elementMarker.position = p
                 elementMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                 view.map_picker.overlays.add(elementMarker)
                 return false
             }
         }
-
+        view.map_picker.overlayManager.tilesOverlay
+            .setColorFilter(
+                getMapColorFilter(
+                    requireContext().getColor(R.color.colorMapBlack)
+                )
+            )
         val mapEventsOverlay = MapEventsOverlay(eventsReceiver)
         setupMap(view.map_picker)
         view.map_picker.overlays.add(mapEventsOverlay)
@@ -99,6 +111,21 @@ class EditDeviceFragment : DaggerFragment() {
         mapController.animateTo(startPoint)
     }
 
+    private fun getSuccessDialog(): AlertDialog {
+        return AlertDialog.Builder(requireContext())
+            .setView(LayoutInflater
+                .from(requireContext())
+                .inflate(R.layout.alert_success_layout, null))
+            .create()
+    }
+
+    private fun getErrorDialog(): AlertDialog {
+        return AlertDialog.Builder(requireContext())
+            .setView(LayoutInflater
+                .from(requireContext())
+                .inflate(R.layout.alert_success_layout, null))
+            .create()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(
@@ -107,6 +134,18 @@ class EditDeviceFragment : DaggerFragment() {
         )
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditDeviceViewModel::class.java)
+        viewModel.networkResponse.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NetworkResponse.Success<*> -> getSuccessDialog().apply {
+                    show()
+                    Handler().postDelayed({ dismiss()}, 2000)
+                }
+                    else -> getErrorDialog().apply {
+                        show()
+                        Handler().postDelayed({ dismiss()}, 2000)
+                    }
+            }
+        })
         viewModel.onMapPickerRequest = { showLocationPicker() }
         viewModel.loadUserGateways()
         viewModel.userGateways.observe(viewLifecycleOwner, Observer {

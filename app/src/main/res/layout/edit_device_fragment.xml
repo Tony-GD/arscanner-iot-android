@@ -146,18 +146,22 @@
         </LinearLayout>
 
         <Button
-            style="@style/AppTheme"
+            android:background="@drawable/ic_normal"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
+            android:layout_marginHorizontal="@dimen/marker_size_12"
             android:onClick="@{()-> viewModel.saveEditedDevice()}"
             android:text="@string/save" />
 
         <Button
-            style="@style/AppTheme"
+            android:background="@drawable/ic_normal"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
+            android:layout_marginHorizontal="@dimen/marker_size_12"
             android:onClick="@{()->viewModel.deleteDevice()}"
             android:text="@string/remove_title"
             android:visibility="@{viewModel.isAdding() ? View.GONE : View.VISIBLE}" />

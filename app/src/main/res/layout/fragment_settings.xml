@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.NotificationsFragment">
+    tools:context=".ui.notifications.SettingsFragment">
 
     <TextView
         android:id="@+id/text_notifications"
@@ -22,9 +22,13 @@
 
     <Button
         android:id="@+id/home_logout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="@string/logout"
+        android:paddingHorizontal="@dimen/margin_35"
+        android:background="@drawable/ic_normal"
+        android:drawableStart="@drawable/ic_baseline_exit_to_app_24"
         app:layout_constraintTop_toBottomOf="@id/text_notifications"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

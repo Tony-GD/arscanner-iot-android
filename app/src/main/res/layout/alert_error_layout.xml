@@ -4,16 +4,16 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:background="@drawable/success_dialog_background"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/scanner_item_height_50"
+    android:background="@drawable/error_dialog_background"
+    android:paddingHorizontal="@dimen/padding_22"
     android:paddingVertical="@dimen/padding_42">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/diameter_80"
+        android:layout_height="@dimen/diameter_80"
         android:layout_marginBottom="@dimen/margin_35"
-        android:src="@drawable/ic_success" />
+        android:src="@drawable/ic_error" />
 
     <TextView
         android:fontFamily="@font/fira_sans_bold"
@@ -22,7 +22,7 @@
         android:layout_marginBottom="@dimen/margin_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/success" />
+        android:text="@string/oops" />
 
     <TextView
         android:fontFamily="@font/source_sans_pro_regular"
@@ -30,5 +30,13 @@
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/the_device_was_added_now_you_can_track_it" />
+        android:text="@string/something_weird_happened" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_35"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:text="@string/try_again"
+        android:background="@drawable/ghost_background"/>
 </LinearLayout>

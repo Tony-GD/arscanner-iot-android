@@ -1,6 +1,5 @@
 package com.griddynamics.connectedapps.gateway.network
 
-import android.util.Log
 import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
 import com.griddynamics.connectedapps.gateway.network.api.GenericResponse
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
@@ -50,54 +49,24 @@ class AirScannerRepositoryImpl
         )
     }
 
-    override suspend fun deleteDevice(request: DeviceResponse): Any {
-        return try {
-            api.deleteDevice(request)
-        } catch (e: Exception) {
-            Log.e(TAG, "AirScannerRepositoryImpl: deleteDevice", e)
-            Any()
-        }
+    override suspend fun deleteDevice(request: DeviceResponse): GenericResponse<Any> {
+        return api.deleteDevice(request)
     }
 
     override suspend fun addGateway(request: GatewayResponse): GenericResponse<Any> {
         return api.addGateway(GatewayRequest(key = request.key, displayName = request.displayName))
     }
 
-    override suspend fun editGateway(request: GatewayRequest): Any {
+    override suspend fun editGateway(request: GatewayRequest): GenericResponse<Any> {
         return api.editGateway(request)
     }
 
-    override suspend fun deleteGateway(request: GatewayRequest): Any {
+    override suspend fun deleteGateway(request: GatewayRequest): GenericResponse<Any> {
         return api.deleteGateway(request)
     }
 
-    override suspend fun getMetrics(request: MetricsRequest): MetricsMap {
-        return try {
-            api.getLastHourMetrics(request.id)
-        } catch (e: Exception) {
-            Log.e(TAG, "AirScannerRepositoryImpl: getMetrics", e)
-            object : MetricsMap {
-                private val origin = HashMap<String, List<Map<String, String>>>()
-                override val entries: Set<Map.Entry<String, List<Map<String, String>>>>
-                    get() = origin.entries
-                override val keys: Set<String>
-                    get() = origin.keys
-                override val size: Int
-                    get() = origin.size
-                override val values: Collection<List<Map<String, String>>>
-                    get() = origin.values
-
-                override fun containsKey(key: String): Boolean = origin.containsKey(key)
-
-                override fun containsValue(value: List<Map<String, String>>): Boolean =
-                    origin.containsValue(value)
-
-                override fun get(key: String): List<Map<String, String>>? = origin[key]
-
-                override fun isEmpty(): Boolean = origin.isEmpty()
-
-            }
-        }
+    override suspend fun getMetrics(request: MetricsRequest): GenericResponse<MetricsMap> {
+        return api.getLastHourMetrics(request.id)
     }
 
 

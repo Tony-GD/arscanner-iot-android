@@ -24,7 +24,7 @@ interface AirScannerAPI {
     suspend fun addDevice(@Body device: DeviceRequest): GenericResponse<Any>
 
     @DELETE("$deleteDevice/{id}")
-    suspend fun deleteDevice(@Body device: DeviceResponse): Any
+    suspend fun deleteDevice(@Body device: DeviceResponse): GenericResponse<Any>
 
     @PUT("$editDevice/{id}")
     suspend fun editDevice(@Path("id") id: String, @Body device: DeviceRequest): GenericResponse<Any>
@@ -33,13 +33,13 @@ interface AirScannerAPI {
     suspend fun addGateway(@Body device: GatewayRequest): GenericResponse<Any>
 
     @DELETE(deleteGateway)
-    suspend fun deleteGateway(@Body device: GatewayRequest): Any
+    suspend fun deleteGateway(@Body device: GatewayRequest): GenericResponse<Any>
 
     @PUT(editGateway)
-    suspend fun editGateway(@Body device: GatewayRequest): Any
+    suspend fun editGateway(@Body device: GatewayRequest): GenericResponse<Any>
 
     @GET("""$metrics/{id}/$lastHour""")
     suspend fun getLastHourMetrics(
         @Path("id") id: String
-    ): MetricsMap
+    ): GenericResponse<MetricsMap>
 }

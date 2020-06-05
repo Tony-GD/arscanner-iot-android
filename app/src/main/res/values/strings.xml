@@ -53,6 +53,7 @@
     <string name="by">by</string>
     <string name="success">Success!</string>
     <string name="the_device_was_added_now_you_can_track_it">The device was added. Now you can track it.</string>
+    <string name="something_weird_happened">Something weird happened. Keep calm and try again.</string>
     <string name="key_cert">-----BEGIN CERTIFICATE-----
 MIICnjCCAYYCCQDeJVYFfCh18TANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZ1
 bnVzZWQwHhcNMjAwNTI1MDkzNDMyWhcNMjAwNjI0MDkzNDMyWjARMQ8wDQYDVQQD
@@ -70,4 +71,6 @@ lVfcHqiOKYyhX1PH6krlCO+g4aNkT1M3PzGAdUx+24FgHpraVZT6ykhxE0yve1tW
 frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
 /Zg=
 -----END CERTIFICATE-----</string>
+    <string name="oops">Oops!</string>
+    <string name="try_again">Try again</string>
 </resources>

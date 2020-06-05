@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.util.Executors
+import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
@@ -101,7 +102,7 @@ object FirebaseAPI {
             val gateways = mutableListOf<GatewayResponse>()
             snapshot?.documents?.forEach {
                 Log.d(TAG, "gatewayEventListener: ${it.data}")
-                val gatewayId  = it.reference.path.split("/").last()
+                val gatewayId = it.reference.path.split("/").last()
                 val userId = it.data?.get("user_id")
                 val displayName = it.data?.get("display_name")
                 val key = it.data?.get("key")
@@ -120,5 +121,32 @@ object FirebaseAPI {
             }
 
         }
+    }
+
+    fun subscribeForMetrics(id: String, callback: (response: DefaultScannersResponse) -> Unit) {
+        firestore
+            .collection("devices")
+            .document(id)
+            .collection("metrics")
+            .get().addOnCompleteListener { result ->
+                result.result?.documents?.firstOrNull()?.let { document ->
+                    val key = document.reference.path.split("/").last()
+                    val response = DefaultScannersResponse(0f)
+                    document.data.let {
+                        Log.d(TAG, "subscribeForMetrics: data [$it]")
+                        when (key) {
+                            "[default]" -> {
+                                response.value = (it?.get("value") as Number).toFloat()
+                                Log.d(
+                                    TAG,
+                                    "subscribeForMetrics: key = [$key] response = [${response.value}]"
+                                )
+                            }
+                            else -> Log.d(TAG, "subscribeForMetrics: response $response")
+                        }
+                        callback(response)
+                    }
+                }
+            }
     }
 }

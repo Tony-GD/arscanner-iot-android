@@ -23,6 +23,7 @@ import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
+import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDeviceDetailsFragment
@@ -145,29 +146,34 @@ class MapFragment : DaggerFragment() {
                     }
                 }
             }
-            mapViewModel.loadMetrics("${device.deviceId}")
-                .observe(viewLifecycleOwner, Observer {
-                    Log.d(TAG, "addDeviceMarker() called $it")
-                    showDetails(it, device)
-                    it.keys.forEach { metricName ->
-                        if (metricName != "[default]") {
-                            return@forEach
-                        }
-                        it[metricName]?.let { value ->
-                            if (value.isNotEmpty()) {
-                                value.first().keys.firstOrNull()?.let { valKey ->
-                                    val text = "${valKey}: ${value.first()[valKey]}"
-                                    binding.llInfoMetrics.addView(TextView(context).apply {
-                                        Log.d(TAG, "addDeviceMarker: text $text")
-                                        this.text = text
-                                        elementMarker.title = "here: ${value.first()[valKey]}"
-
-                                    })
-                                }
-                            }
-                        }
-                    }
-                })
+            FirebaseAPI.subscribeForMetrics("${device.deviceId}") {
+                val map = HashMap<String, List<Map<String, String>>>()
+                map["[default]"] = listOf(HashMap<String, String>().apply{ this["000"] = "${it.value}" } )
+                showDetails(map, device)
+            }
+//            mapViewModel.loadMetrics("${devixce.deviceId}")
+//                .observe(viewLifecycleOwner, Observer {
+//                    Log.d(TAG, "addDeviceMarker() called $it")
+//                    showDetails(it, device)
+//                    it.keys.forEach { metricName ->
+//                        if (metricName != "[default]") {
+//                            return@forEach
+//                        }
+//                        it[metricName]?.let { value ->
+//                            if (value.isNotEmpty()) {
+//                                value.first().keys.firstOrNull()?.let { valKey ->
+//                                    val text = "${valKey}: ${value.first()[valKey]}"
+//                                    binding.llInfoMetrics.addView(TextView(context).apply {
+//                                        Log.d(TAG, "addDeviceMarker: text $text")
+//                                        this.text = text
+//                                        elementMarker.title = "here: ${value.first()[valKey]}"
+//
+//                                    })
+//                                }
+//                            }
+//                        }
+//                    }
+//                })
             true
         }
 

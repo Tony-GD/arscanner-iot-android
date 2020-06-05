@@ -6,7 +6,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -14,7 +13,6 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.model.ScannersResponse
 import com.griddynamics.connectedapps.model.SpecialScannerResponse
 import com.griddynamics.connectedapps.ui.widget.AirScannerSubscriptionWidget
 
@@ -98,17 +96,6 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
             .document("AasMOYlQufCQogR14YSa")
             .collection("metrics")
             .addSnapshotListener(dbEventListener)
-//        database
-//            .child("metrics")
-//            .child("orangepi-2G-IoT-1")
-//            .child("type")
-//            .addValueEventListener(dbEventListener)
-
-//        database
-//            .child("metrics")
-//            .child("ik_ard")
-//            .child("type")
-//            .addValueEventListener(dbSpecialEventListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -130,27 +117,6 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
             .setContentTitle("Scanner updates")
             .setContentText("Updates are enabled").build()
 
-    }
-
-
-    fun updateWidget(data: ScannersResponse) {
-        Log.d(TAG, "updateWidget() called with: data = [$data]")
-        val updateViews =
-            RemoteViews(packageName, R.layout.air_scanner_subscription_widget)
-        updateViews.setTextViewText(
-            R.id.appwidget_humidity_text,
-            String.format(getString(R.string.humidity), "${data.humidity}")
-        )
-
-        updateViews.setTextViewText(
-            R.id.appwidget_temperature_text,
-            String.format(getString(R.string.temperature), "${data.temperature}")
-        )
-
-        val thisWidget =
-            ComponentName(applicationContext, AirScannerSubscriptionWidget::class.java)
-        val manager = AppWidgetManager.getInstance(applicationContext)
-        manager.updateAppWidget(thisWidget, updateViews)
     }
 
     fun updateWidget(data: SpecialScannerResponse) {

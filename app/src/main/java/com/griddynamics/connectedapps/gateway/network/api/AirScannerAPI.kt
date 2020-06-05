@@ -11,7 +11,6 @@ const val editDevice = "api/device"
 const val addGateway = "api/gateway"
 const val deleteGateway = "api/gateway"
 const val editGateway = "api/gateway"
-const val deleteSensor = "deleteSensor"
 
 const val metrics = "metrics/v1/device"
 const val lastHour = "lastHour"

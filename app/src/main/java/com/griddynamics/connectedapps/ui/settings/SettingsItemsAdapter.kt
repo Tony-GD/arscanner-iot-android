@@ -3,14 +3,23 @@ package com.griddynamics.connectedapps.ui.settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.model.settings.SettingsDeviceItem
 
 
-class SettingsItemsAdapter(private val scannerItems: List<SettingsDeviceItem>) :
+class SettingsItemsAdapter(
+    private val scannerItems: List<SettingsDeviceItem>,
+    private val deviceSelectedListener: OnDeviceSelectedListener
+) :
     RecyclerView.Adapter<SettingsItemsAdapter.SettingsItemViewHolder>() {
+
+    interface OnDeviceSelectedListener {
+        fun onDeviceSelected(deviceId: String)
+        fun onGatewaySelected(gatewayId: String)
+    }
 
     class SettingsItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         var name: String
@@ -23,6 +32,11 @@ class SettingsItemsAdapter(private val scannerItems: List<SettingsDeviceItem>) :
             get() = view.findViewById<TextView>(R.id.tv_settings_item_address).text.toString()
             set(value) {
                 view.findViewById<TextView>(R.id.tv_settings_item_address).text = value
+            }
+        var listener: View.OnClickListener?
+            get() = null
+            set(value) {
+                view.findViewById<ImageButton>(R.id.ib_settings_item_open).setOnClickListener(value)
             }
     }
 
@@ -51,5 +65,11 @@ class SettingsItemsAdapter(private val scannerItems: List<SettingsDeviceItem>) :
         val item = scannerItems[position]
         holder.name = item.displayName
         holder.address = item.address
+        holder.listener = View.OnClickListener {
+            when (item.type) {
+                SettingsDeviceItem.TYPE_DEVICE -> deviceSelectedListener.onDeviceSelected(item.id)
+                else -> deviceSelectedListener.onGatewaySelected(item.id)
+            }
+        }
     }
 }

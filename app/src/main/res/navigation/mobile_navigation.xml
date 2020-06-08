@@ -32,12 +32,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.griddynamics.connectedapps.ui.settings.SettingsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
         android:id="@+id/navigation_edit"
         android:name="com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment"
         android:label="@string/edit"
@@ -65,6 +59,16 @@
             android:name="@string/is_adding"
             android:defaultValue="true"
             app:argType="boolean"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.griddynamics.connectedapps.ui.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_history"
+            app:destination="@id/navigation_history" />
     </fragment>
 
 

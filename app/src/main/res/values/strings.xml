@@ -2,7 +2,6 @@
     <string name="app_name">Airo</string>
     <string name="title_home">Add</string>
     <string name="title_map">Map</string>
-    <string name="title_notifications">Settings</string>
     <string name="sign_in">Sign In</string>
     <string name="or">or</string>
     <string name="continue_as_guest">Continue as guest</string>
@@ -75,4 +74,5 @@ frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
     <string name="try_again">Try again</string>
     <string name="privacy">Privacy</string>
     <string name="add_new">+ Add new</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -26,6 +27,23 @@ class SettingsFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var settingsViewModel: SettingsViewModel
+    private var onDeviceSelectedListener = object : SettingsItemsAdapter.OnDeviceSelectedListener {
+        override fun onDeviceSelected(deviceId: String) {
+//            navigateToChartFragment(deviceId)
+        }
+
+        override fun onGatewaySelected(gatewayId: String) {
+            TODO("Not yet implemented")
+        }
+
+    }
+
+    private fun navigateToChartFragment(deviceId: String) {
+        val actionGlobalNavigationHistory =
+            SettingsFragmentDirections.ActionNavigationSettingsToNavigationHistory()
+        actionGlobalNavigationHistory.setDevice(deviceId)
+        findNavController().navigate(actionGlobalNavigationHistory)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +72,7 @@ class SettingsFragment : DaggerFragment() {
             }.show()
         }
         val items = mutableListOf<SettingsDeviceItem>()
-        rv_settings_devices.adapter = SettingsItemsAdapter(items)
+        rv_settings_devices.adapter = SettingsItemsAdapter(items, onDeviceSelectedListener)
         rv_settings_devices.layoutManager = LinearLayoutManager(requireContext())
         settingsViewModel.loadUserGateways().observe(viewLifecycleOwner, Observer { gateways ->
             items.addAll(gateways.map {
@@ -97,4 +115,6 @@ class SettingsFragment : DaggerFragment() {
             }
             .create()
     }
+
+
 }

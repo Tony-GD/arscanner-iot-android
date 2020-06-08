@@ -27,10 +27,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?actionBarSize"
-                app:tabBackground="@drawable/ic_normal"
+                app:tabBackground="@drawable/tab_background"
                 app:tabGravity="fill"
-                app:tabSelectedTextColor="#FFFFFF"
-                app:tabIndicatorColor="@color/whiteTransparent"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/whiteTransparent"
                 app:tabIndicatorHeight="4dp"
                 app:tabMode="fixed" />
 

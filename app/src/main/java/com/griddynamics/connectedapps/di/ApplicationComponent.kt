@@ -16,6 +16,8 @@ import com.griddynamics.connectedapps.di.ui.home.HomeModule
 import com.griddynamics.connectedapps.di.ui.main.MainActivityContributor
 import com.griddynamics.connectedapps.di.ui.map.MapFragmentContributor
 import com.griddynamics.connectedapps.di.ui.map.MapModule
+import com.griddynamics.connectedapps.di.ui.settings.SettingsFragmentContributor
+import com.griddynamics.connectedapps.di.ui.settings.SettingsModule
 import com.griddynamics.connectedapps.di.ui.splash.SplashActivityContributor
 import dagger.BindsInstance
 import dagger.Component
@@ -42,6 +44,8 @@ import javax.inject.Singleton
         EditModule::class,
         EditFragmentContributor::class,
         EditGatewayModule::class,
+        SettingsModule::class,
+        SettingsFragmentContributor::class,
         EditGatewayFragmentContributor::class,
         MainActivityContributor::class]
 )

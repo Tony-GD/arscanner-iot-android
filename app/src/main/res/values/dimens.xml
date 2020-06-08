@@ -22,4 +22,11 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="margin_35">35dp</dimen>
     <dimen name="padding_22">22dp</dimen>
     <dimen name="margin_10">10dp</dimen>
+    <dimen name="diameter_48">48dp</dimen>
+    <dimen name="radius_24">24dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="margin_27">27dp</dimen>
+    <dimen name="height_62">62dp</dimen>
+    <dimen name="margin_9">9dp</dimen>
+    <dimen name="margin_13">13dp</dimen>
 </resources>

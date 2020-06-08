@@ -1,0 +1,44 @@
+package com.griddynamics.connectedapps.util
+
+import android.location.Address
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.GeoPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.osmdroid.bonuspack.location.GeocoderNominatim
+
+object MapUtil {
+    private const val TAG: String = "MapUtil"
+    private val geocoder = GeocoderNominatim(GeocoderNominatim.NOMINATIM_SERVICE_URL)
+
+    fun getAddressFrom(location: GeoPoint): LiveData<String> {
+        val data = MutableLiveData<String>()
+        GlobalScope.launch {
+            downloadInfo(location).forEach { address ->
+                data.postValue(address.getAddressLine())
+            }
+        }
+        return data
+    }
+
+    private fun downloadInfo(location: GeoPoint): List<Address> {
+        return geocoder.getFromLocation(location.latitude, location.longitude, 1)
+    }
+
+    private fun Address.getAddressLine(): String {
+        val sb = StringBuilder()
+        if (this.maxAddressLineIndex < 2) {
+            sb.append(this.getAddressLine(0)).append(", ")
+            sb.append(this.subAdminArea)
+        } else {
+            for (i in 0..this.maxAddressLineIndex) {
+                sb.append(this.getAddressLine(i))
+                if (i < this.maxAddressLineIndex) {
+                    sb.append(", ")
+                }
+            }
+        }
+        return sb.toString()
+    }
+}

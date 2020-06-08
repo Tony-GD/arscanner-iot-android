@@ -73,4 +73,6 @@ frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
 -----END CERTIFICATE-----</string>
     <string name="oops">Oops!</string>
     <string name="try_again">Try again</string>
+    <string name="privacy">Privacy</string>
+    <string name="add_new">+ Add new</string>
 </resources>

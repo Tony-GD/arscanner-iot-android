@@ -59,7 +59,6 @@ class HomeFragment : DaggerFragment() {
             )
         homeViewModel =
             ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
-        homeViewModel.onEditListener = { navigateToEditFragment(it) }
         bindingImpl.lifecycleOwner = viewLifecycleOwner
         bindingImpl.viewModel = homeViewModel
 

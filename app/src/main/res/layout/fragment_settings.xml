@@ -1,36 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingBottom="70dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.SettingsFragment">
+    android:paddingHorizontal="@dimen/padding_16"
+    tools:context=".ui.settings.SettingsFragment">
 
-    <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <include
+        android:id="@+id/settings_user_layout"
+        layout="@layout/user_info_layout"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/home_logout"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_settings_devices"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/settings_user_layout" />
+
+    <Button
+        android:id="@+id/btn_settings_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/radius_24"
+        android:background="@color/transparent"
+        android:textAlignment="center"
+        android:textSize="15sp"
         android:textColor="@color/white"
-        android:text="@string/logout"
-        android:paddingHorizontal="@dimen/margin_35"
-        android:background="@drawable/ic_normal"
-        android:drawableStart="@drawable/ic_baseline_exit_to_app_24"
-        app:layout_constraintTop_toBottomOf="@id/text_notifications"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:text="@string/add_new"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_settings_devices" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_62"
+        android:background="@drawable/ic_normal"
+        android:layout_marginTop="@dimen/margin_27"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/btn_settings_add"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/settings_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:drawableStart="@drawable/ic_baseline_policy_24"
+            android:paddingHorizontal="@dimen/margin_35"
+            android:drawablePadding="@dimen/padding_22"
+            android:text="@string/privacy"
+            android:background="@color/transparent"
+            android:textColor="@color/white"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/home_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:drawableStart="@drawable/ic_baseline_exit_to_app_24"
+            android:drawablePadding="@dimen/padding_22"
+            android:paddingHorizontal="@dimen/margin_35"
+            android:text="@string/logout"
+            android:background="@color/transparent"
+            android:textColor="@color/white"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

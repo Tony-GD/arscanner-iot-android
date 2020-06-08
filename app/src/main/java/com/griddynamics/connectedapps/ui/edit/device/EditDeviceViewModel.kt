@@ -2,7 +2,7 @@ package com.griddynamics.connectedapps.ui.edit.device
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
@@ -45,11 +45,11 @@ class EditDeviceViewModel @Inject constructor(
     var isPM10Enabled = ObservableBoolean()
     var networkResponse = MutableLiveData<NetworkResponse<Any, Any>>()
 
-    val userGateways = MutableLiveData<List<GatewayResponse>>()
+    val userGateways = MediatorLiveData<List<GatewayResponse>>()
 
     fun loadUserGateways() {
-        FirebaseAPI.getUserGateways(localStorage.getUser()) { gateways ->
-            userGateways.postValue(gateways)
+        userGateways.addSource(FirebaseAPI.getUserGateways(localStorage.getUser()))
+        { _ ->
         }
     }
 

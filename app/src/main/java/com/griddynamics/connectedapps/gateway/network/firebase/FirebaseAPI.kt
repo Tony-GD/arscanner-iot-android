@@ -1,6 +1,8 @@
 package com.griddynamics.connectedapps.gateway.network.firebase
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.EventListener
@@ -12,6 +14,7 @@ import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import kotlin.math.log
 
 private const val TAG: String = "FirebaseAPI"
 typealias DevicesCallback = (devices: List<DeviceResponse>) -> Unit
@@ -20,40 +23,46 @@ typealias GatewaysCallback = (gateways: List<GatewayResponse>) -> Unit
 object FirebaseAPI {
     private val firestore = FirebaseFirestore.getInstance()
 
-    fun getUserGateways(user: User, callback: GatewaysCallback) {
+    fun getUserGateways(user: User): LiveData<List<GatewayResponse>> {
         Log.d(TAG, "getUserGateways() called with: user = [$user]")
         FirebaseFirestore.setLoggingEnabled(true)
+        val liveData = MutableLiveData<List<GatewayResponse>>()
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         Log.d(TAG, "getUserGateways: ${uid}")
         val query = firestore.collection("gateways").whereEqualTo("user_id", uid)
         query.addSnapshotListener(
             Executors.BACKGROUND_EXECUTOR,
-            gatewayEventListener(callback)
+            gatewayEventListener(liveData)
         )
+        return liveData
     }
 
-    fun getUserDevices(user: User, callback: DevicesCallback) {
+    fun getUserDevices(user: User ): LiveData<List<DeviceResponse>> {
         Log.d(TAG, "getUserDevices() called with: user = [$user]")
         FirebaseFirestore.setLoggingEnabled(true)
+        val liveData = MutableLiveData<List<DeviceResponse>>()
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val query = firestore.collection("devices").whereEqualTo("user_id", uid)
         query.addSnapshotListener(
             Executors.BACKGROUND_EXECUTOR,
-            deviceEventListener(callback)
+            deviceEventListener(liveData)
         )
+        return liveData
     }
 
-    fun getPublicDevices(callback: DevicesCallback) {
+    fun getPublicDevices(): LiveData<List<DeviceResponse>> {
         Log.d(TAG, "getPublicDevices() called")
         FirebaseFirestore.setLoggingEnabled(true)
+        val liveData = MutableLiveData<List<DeviceResponse>>()
         val query = firestore.collection("/devices")
         query.addSnapshotListener(
             Executors.BACKGROUND_EXECUTOR,
-            deviceEventListener(callback)
+            deviceEventListener(liveData)
         )
+        return liveData
     }
 
-    private fun deviceEventListener(callback: DevicesCallback): EventListener<QuerySnapshot> {
+    private fun deviceEventListener(callback: MutableLiveData<List<DeviceResponse>>): EventListener<QuerySnapshot> {
         return EventListener { snapshot, exception ->
             val devices = mutableListOf<DeviceResponse>()
             snapshot?.documents?.forEach {
@@ -83,21 +92,23 @@ object FirebaseAPI {
                 Log.d(TAG, "getPublicDevices: $device")
                 devices.add(device)
             }
-            callback(devices)
+            callback.postValue(devices)
         }
     }
 
-    fun getPublicGateways(callback: GatewaysCallback) {
+    fun getPublicGateways(): LiveData<List<GatewayResponse>> {
         Log.d(TAG, "getPublicGateways() called")
         FirebaseFirestore.setLoggingEnabled(true)
+        val liveData = MutableLiveData<List<GatewayResponse>>()
         val query = firestore.collection("/gateways")
         query.addSnapshotListener(
             Executors.BACKGROUND_EXECUTOR,
-            gatewayEventListener(callback)
+            gatewayEventListener(liveData)
         )
+        return liveData
     }
 
-    private fun gatewayEventListener(callback: GatewaysCallback): EventListener<QuerySnapshot> {
+    private fun gatewayEventListener(callback: MutableLiveData<List<GatewayResponse>>): EventListener<QuerySnapshot> {
         return EventListener { snapshot, exception ->
             val gateways = mutableListOf<GatewayResponse>()
             snapshot?.documents?.forEach {
@@ -114,7 +125,7 @@ object FirebaseAPI {
                 )
                 Log.d(TAG, "gatewayEventListener: $gateway")
                 gateways.add(gateway)
-                callback(gateways)
+                callback.postValue(gateways)
             }
             exception?.let {
                 Log.e(TAG, "FirebaseAPI: gatewayEventListener", it)
@@ -123,13 +134,16 @@ object FirebaseAPI {
         }
     }
 
-    fun subscribeForMetrics(id: String, callback: (response: DefaultScannersResponse) -> Unit) {
+    fun subscribeForMetrics(id: String): LiveData<DefaultScannersResponse> {
+        val liveData = MutableLiveData<DefaultScannersResponse>()
+
         firestore
             .collection("devices")
             .document(id)
             .collection("metrics")
             .get().addOnCompleteListener { result ->
                 result.result?.documents?.firstOrNull()?.let { document ->
+                    Log.d(TAG, "subscribeForMetrics: result ${document.data}")
                     val key = document.reference.path.split("/").last()
                     val response = DefaultScannersResponse(0f)
                     document.data.let {
@@ -144,9 +158,10 @@ object FirebaseAPI {
                             }
                             else -> Log.d(TAG, "subscribeForMetrics: response $response")
                         }
-                        callback(response)
+                        liveData.postValue(response)
                     }
                 }
             }
+        return liveData
     }
 }

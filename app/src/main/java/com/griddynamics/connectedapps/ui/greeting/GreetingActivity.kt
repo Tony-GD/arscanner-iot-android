@@ -85,10 +85,10 @@ class GreetingActivity : Activity() {
                     account?.idToken,
                     account?.givenName,
                     account?.familyName,
-                    account?.email
+                    account?.email,
+                    account?.photoUrl.toString()
                 )
             )
-            Log.d(TAG, "handleSignInResult: ${account?.givenName}")
         } catch (e: ApiException) {
             Snackbar.make(greeting_root, "Google Authentication Failed.", Snackbar.LENGTH_SHORT)
                 .show()

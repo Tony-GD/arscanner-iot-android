@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
@@ -146,14 +145,15 @@ class MapFragment : DaggerFragment() {
                     }
                 }
             }
-            FirebaseAPI.subscribeForMetrics("${device.deviceId}") {
-                val map = HashMap<String, List<Map<String, String>>>()
-                map["[default]"] = listOf(HashMap<String, String>().apply{ this["000"] = "${it.value}" } )
-                showDetails(map, device)
-            }
-            true
+            FirebaseAPI.subscribeForMetrics("${device.deviceId}")
+                .observe(viewLifecycleOwner, Observer {
+                    val map = HashMap<String, List<Map<String, String>>>()
+                    map["[default]"] =
+                        listOf(HashMap<String, String>().apply { this["000"] = "${it.value}" })
+                    showDetails(map, device)
+                })
+            false
         }
-
         elementMarker.icon = requireContext().getDrawable(R.drawable.green)
 
 
@@ -173,14 +173,7 @@ class MapFragment : DaggerFragment() {
         AndroidSupportInjection.inject(this)
         mapViewModel =
             ViewModelProvider(this, viewModelFactory).get(MapViewModel::class.java)
-        mapViewModel.devices.observe(viewLifecycleOwner, Observer {
-            map.overlays.clear()
-            it.forEach { device ->
-                generateMarkers(device) { marker ->
-                    map.overlays.add(marker)
-                }
-            }
-        })
+
         mapViewModel.loadDevices()
 
         mapViewModel.loadGateways()
@@ -192,12 +185,21 @@ class MapFragment : DaggerFragment() {
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
 
         super.onViewCreated(view, savedInstanceState)
+        mapViewModel.devices.observe(viewLifecycleOwner, Observer {
+            map.overlays.clear()
+            it.forEach { device ->
+                generateMarkers(device) { marker ->
+                    map.overlays.add(marker)
+                }
+            }
+        })
         setupMap()
     }
 
     private fun showDetails(metricsMap: MetricsMap, device: DeviceResponse) {
+        Log.d(TAG, "showDetails() called with: metricsMap = [$metricsMap], device = [$device]")
         val bottomSheetDialogFragment =
-            BottomSheetDeviceDetailsFragment().apply { setDeviceInfo(metricsMap, device ) }
+            BottomSheetDeviceDetailsFragment().apply { setDeviceInfo(metricsMap, device) }
         bottomSheetDialogFragment.show(
             requireActivity().supportFragmentManager,
             bottomSheetDialogFragment.tag

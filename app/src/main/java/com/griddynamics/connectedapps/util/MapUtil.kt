@@ -1,6 +1,7 @@
 package com.griddynamics.connectedapps.util
 
 import android.location.Address
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.GeoPoint
@@ -15,8 +16,13 @@ object MapUtil {
     fun getAddressFrom(location: GeoPoint): LiveData<String> {
         val data = MutableLiveData<String>()
         GlobalScope.launch {
-            downloadInfo(location).forEach { address ->
-                data.postValue(address.getAddressLine())
+            try {
+                downloadInfo(location).firstOrNull()?.let { address ->
+                    data.postValue(address.getAddressLine())
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "MapUtil: getAddressFrom:", e)
+                data.postValue("Address temporary unavailable")
             }
         }
         return data

@@ -41,10 +41,9 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/transparent"
             android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}"
-            android:src="@android:drawable/ic_menu_mylocation"
-            tools:src="@android:drawable/ic_menu_mylocation" />
+            android:src="@android:drawable/ic_menu_mylocation" />
 
         <EditText
             android:layout_width="match_parent"

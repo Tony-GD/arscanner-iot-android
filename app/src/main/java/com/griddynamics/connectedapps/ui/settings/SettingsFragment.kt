@@ -19,6 +19,7 @@ import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.user_info_layout.view.*
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class SettingsFragment : DaggerFragment() {
     private lateinit var settingsViewModel: SettingsViewModel
     private var onDeviceSelectedListener = object : SettingsItemsAdapter.OnDeviceSelectedListener {
         override fun onDeviceSelected(deviceId: String) {
-//            navigateToChartFragment(deviceId)
+            navigateToChartFragment(deviceId)
         }
 
         override fun onGatewaySelected(gatewayId: String) {
@@ -71,22 +72,24 @@ class SettingsFragment : DaggerFragment() {
                 (requireActivity() as MainActivity).logout()
             }.show()
         }
+        btn_settings_add.setOnClickListener { navigateToHomeFragment() }
+        ib_header_back_arrow.setOnClickListener { activity?.onBackPressed() }
         val items = mutableListOf<SettingsDeviceItem>()
         rv_settings_devices.adapter = SettingsItemsAdapter(items, onDeviceSelectedListener)
         rv_settings_devices.layoutManager = LinearLayoutManager(requireContext())
         settingsViewModel.loadUserGateways().observe(viewLifecycleOwner, Observer { gateways ->
-            items.addAll(gateways.map {
-                SettingsDeviceItem(
+            gateways.forEach {
+                items.add(SettingsDeviceItem(
                     "${it.gatewayId}",
                     SettingsDeviceItem.TYPE_GATEWAY,
                     "${it.displayName}",
                     ""
-                )
-            })
+                ))
+            }
             (rv_settings_devices.adapter as SettingsItemsAdapter).notifyDataSetChanged()
         })
         settingsViewModel.loadUserDevices().observe(viewLifecycleOwner, Observer { devices ->
-            items.addAll(devices.map {
+            devices.forEach {
                 val item = SettingsDeviceItem(
                     "${it.deviceId}",
                     SettingsDeviceItem.TYPE_DEVICE,
@@ -98,9 +101,15 @@ class SettingsFragment : DaggerFragment() {
                         item.address = address
                         (rv_settings_devices.adapter as SettingsItemsAdapter).notifyDataSetChanged()
                     })
-                return@map item
-            })
+                items.add(item)
+            }
         })
+    }
+
+    private fun navigateToHomeFragment() {
+        val actionGlobalNavigationHome =
+            SettingsFragmentDirections.ActionNavigationSettingsToNavigationHome()
+        findNavController().navigate(actionGlobalNavigationHome)
     }
 
     private fun getLogoutDialog(callback: Callback): AlertDialog {

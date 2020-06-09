@@ -1,5 +1,6 @@
 package com.griddynamics.connectedapps.ui.settings
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,7 @@ class SettingsItemsAdapter(
         holder.name = item.displayName
         holder.address = item.address
         holder.listener = View.OnClickListener {
+            Log.d("TAG", "onBindViewHolder: click")
             when (item.type) {
                 SettingsDeviceItem.TYPE_DEVICE -> deviceSelectedListener.onDeviceSelected(item.id)
                 else -> deviceSelectedListener.onGatewaySelected(item.id)

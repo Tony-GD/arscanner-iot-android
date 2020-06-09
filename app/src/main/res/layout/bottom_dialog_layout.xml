@@ -41,7 +41,7 @@
                 android:fontFamily="@font/fira_sans_bold"
                 android:paddingStart="@dimen/padding_5"
                 android:text="Title"
-                android:textAppearance="@style/AppText.White.16"
+                android:textAppearance="@style/AppText.FiraSans.White.16"
                 android:textColor="@color/white" />
         </LinearLayout>
 

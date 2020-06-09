@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/light_gray</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textViewStyle">@style/AppText.White.16</item>
-<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
     </style>
     <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.Light.BottomSheetDialog">
@@ -19,35 +17,41 @@
         <item name="behavior_peekHeight">@dimen/bottom_sheet_height_200</item>
     </style>
 
-    <style name="AppText.SourceSansPro" parent="TextAppearance.AppCompat">
-        <item name="fontFamily">/font/source_ans_pro_regular.ttf</item>
+    <style name="AppText.SourceSansPro" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">/font/source_ans_pro_regular.ttf</item>
     </style>
 
     <style name="AppText.SourceSansPro.White" parent="AppText.SourceSansPro">
-        <item name="color">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="AppText.SourceSansPro.White.14" parent="AppText.SourceSansPro.White">
         <item name="android:textSize">14sp</item>
-        <item name="lineHeight">24dp</item>
     </style>
 
-    <style name="AppText" parent="TextAppearance.AppCompat">
-        <item name="fontFamily">/font/fira_sans_bold.ttf</item>
+    <style name="AppText.FiraSans" parent="@android:style/TextAppearance.Medium">
+        <item name="android:fontFamily">/font/fira_sans_bold.ttf</item>
     </style>
 
-    <style name="AppText.White" parent="AppText">
-        <item name="color">@color/white</item>
+    <style name="AppText.FiraSans.White" parent="AppText.FiraSans">
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="AppText.White.16" parent="AppText.White">
+    <style name="AppText.FiraSans.White.24" parent="AppText.FiraSans.White">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="AppText.FiraSans.White.24.Bold" parent="AppText.FiraSans.White.24">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppText.FiraSans.White.16" parent="AppText.FiraSans.White">
         <item name="android:textSize">16sp</item>
-        <item name="lineHeight">24dp</item>
     </style>
 
     <style name="AppDialog" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="cornerRadius">4dp</item>
-        <item name="background">@color/colorDialogPrimary</item>
+        <item name="android:radius">4dp</item>
+        <item name="android:background">@color/colorDialogPrimary</item>
     </style>
 
 </resources>

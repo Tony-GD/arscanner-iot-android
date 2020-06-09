@@ -55,8 +55,8 @@
 
     <ImageButton
         android:id="@+id/ib_settings_item_open"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/padding_42"
+        android:layout_height="@dimen/padding_42"
         android:src="@drawable/ic_arrow_down"
         android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"

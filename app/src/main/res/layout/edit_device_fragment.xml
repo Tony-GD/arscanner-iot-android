@@ -15,37 +15,55 @@
         android:id="@+id/ll_edit_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/colorBaseDark"
+        android:orientation="vertical"
         tools:context=".ui.edit.device.EditDeviceFragment">
 
         <EditText
             android:id="@+id/et_edit_display_name"
+            style="@style/AppText.SourceSansPro.White.18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/display_name"
             android:text="@={viewModel.device.displayName}" />
 
-        <EditText
-            android:id="@+id/lat"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/lat" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/lat"
+                    style="@style/AppText.SourceSansPro.White.18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/lat" />
+
+                <EditText
+                    android:id="@+id/lon"
+                    style="@style/AppText.SourceSansPro.White.18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/longitude" />
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/transparent"
+                android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}"
+                android:src="@android:drawable/ic_menu_mylocation" />
+        </LinearLayout>
 
         <EditText
-            android:id="@+id/lon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/longitude" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}"
-            android:src="@android:drawable/ic_menu_mylocation" />
-
-        <EditText
+            style="@style/AppText.SourceSansPro.White.18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
@@ -56,12 +74,14 @@
             android:layout_height="wrap_content">
 
             <TextView
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/gateway" />
 
             <Spinner
                 android:id="@+id/sp_edit_gateways"
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/demo_gateways" />
@@ -72,12 +92,14 @@
             android:layout_height="wrap_content">
 
             <TextView
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/data_format" />
 
             <Spinner
                 android:id="@+id/sp_edit_format"
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/data_format_values" />
@@ -90,30 +112,35 @@
             android:orientation="vertical">
 
             <CheckBox
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={viewModel.isPM2_5Enabled}"
                 android:text="@string/pm2_5" />
 
             <CheckBox
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={viewModel.isPM1_0Enabled}"
                 android:text="@string/pm1_0" />
 
             <CheckBox
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={viewModel.isPM10Enabled}"
                 android:text="@string/pm10" />
 
             <CheckBox
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={viewModel.isCo2Enabled}"
                 android:text="@string/co2_label" />
 
             <CheckBox
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={viewModel.isTempEnabled}"
@@ -134,35 +161,38 @@
 
             <EditText
                 android:id="@+id/et_edit_single_name"
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/display_name" />
 
             <EditText
                 android:id="@+id/et_edit_single_value"
+                style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Button
-            android:background="@drawable/ic_normal"
-            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="true"
             android:layout_marginHorizontal="@dimen/marker_size_12"
+            android:background="@drawable/ic_normal"
+            android:enabled="true"
             android:onClick="@{()-> viewModel.saveEditedDevice()}"
-            android:text="@string/save" />
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
         <Button
-            android:background="@drawable/ic_normal"
-            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="true"
             android:layout_marginHorizontal="@dimen/marker_size_12"
+            android:background="@drawable/ic_normal"
+            android:enabled="true"
             android:onClick="@{()->viewModel.deleteDevice()}"
             android:text="@string/remove_title"
+            android:textColor="@color/white"
             android:visibility="@{viewModel.isAdding() ? View.GONE : View.VISIBLE}" />
 
     </LinearLayout>

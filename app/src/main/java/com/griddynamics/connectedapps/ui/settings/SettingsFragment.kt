@@ -35,7 +35,7 @@ class SettingsFragment : DaggerFragment() {
         }
 
         override fun onGatewaySelected(gatewayId: String) {
-            TODO("Not yet implemented")
+//            TODO("Not yet implemented")
         }
 
     }

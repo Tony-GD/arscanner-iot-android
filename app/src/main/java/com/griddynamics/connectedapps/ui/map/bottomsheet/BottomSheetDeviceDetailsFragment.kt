@@ -42,24 +42,28 @@ class BottomSheetDeviceDetailsFragment : BottomSheetDialogFragment() {
             tv_bottom_title.text = device?.displayName
             it[CO2]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
                 progress_container_1.visibility = View.VISIBLE
+                progress_container_1.progress_view.maxValue = 1000f
                 progress_container_1.progress_view.progress = it
                 progress_container_1.tv_progress_text.text = it.toString()
                 progress_container_0.tv_label.text = CO2
             }
             it[TEMP]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
                 progress_container_2.visibility = View.VISIBLE
+                progress_container_2.progress_view.maxValue = 60f
                 progress_container_2.progress_view.progress = it
                 progress_container_2.tv_progress_text.text = it.toString()
                 progress_container_0.tv_label.text = TEMP
             }
             it[HUMIDITY]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
                 progress_container_3.visibility = View.VISIBLE
+                progress_container_3.progress_view.maxValue = 100f
                 progress_container_3.progress_view.progress = it
                 progress_container_3.tv_progress_text.text = it.toString()
                 progress_container_0.tv_label.text = HUMIDITY
             }
             it[PM2_5]?.firstOrNull()?.values?.firstOrNull()?.toSafeFloat()?.let {
                 progress_container_0.visibility = View.VISIBLE
+                progress_container_0.progress_view.maxValue = 10f
                 progress_container_0.progress_view.progress = it
                 progress_container_0.tv_progress_text.text = it.toString()
                 progress_container_0.tv_label.text = PM2_5
@@ -71,6 +75,7 @@ class BottomSheetDeviceDetailsFragment : BottomSheetDialogFragment() {
                 progress_container_1.visibility = View.GONE
                 progress_container_2.visibility = View.GONE
                 progress_container_3.visibility = View.GONE
+                progress_container_0.progress_view.maxValue = 1000f
                 progress_container_0.progress_view.progress = it
                 progress_container_0.tv_progress_text.text = it.toString()
                 progress_container_0.tv_label.text = DEFAULT

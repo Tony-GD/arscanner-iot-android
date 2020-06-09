@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.progress.progressview.ProgressView
+        <com.griddynamics.connectedapps.di.ui.cutom.ColorAdaptedProgressView
             android:id="@+id/progress_view"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/progress_bar_diameter"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -65,6 +66,8 @@ class SettingsFragment : DaggerFragment() {
             .load(user.photoUrl)
             .transform(CircleCrop())
             .into(settings_user_layout.iv_settings_user)
+        settings_header.findViewById<TextView>(R.id.tv_header_title).text =
+            requireContext().getText(R.string.settings)
         settings_user_layout.tv_settings_email.text = user.email
         settings_user_layout.tv_settings_username.text = "${user.givenName} ${user.familyName}"
         home_logout.setOnClickListener {
@@ -79,12 +82,14 @@ class SettingsFragment : DaggerFragment() {
         rv_settings_devices.layoutManager = LinearLayoutManager(requireContext())
         settingsViewModel.loadUserGateways().observe(viewLifecycleOwner, Observer { gateways ->
             gateways.forEach {
-                items.add(SettingsDeviceItem(
-                    "${it.gatewayId}",
-                    SettingsDeviceItem.TYPE_GATEWAY,
-                    "${it.displayName}",
-                    ""
-                ))
+                items.add(
+                    SettingsDeviceItem(
+                        "${it.gatewayId}",
+                        SettingsDeviceItem.TYPE_GATEWAY,
+                        "${it.displayName}",
+                        ""
+                    )
+                )
             }
             (rv_settings_devices.adapter as SettingsItemsAdapter).notifyDataSetChanged()
         })

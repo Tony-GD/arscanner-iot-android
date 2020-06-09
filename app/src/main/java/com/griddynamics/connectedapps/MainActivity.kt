@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,12 +12,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.EmptyUser
 import com.griddynamics.connectedapps.service.ScannerDataUpdateService
 import com.griddynamics.connectedapps.ui.greeting.GreetingActivity
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
@@ -45,6 +46,14 @@ class MainActivity : DaggerAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         ScannerDataUpdateService.startActionStart(applicationContext)
+    }
+
+    fun hideTabBar() {
+        nav_view.visibility = View.GONE
+    }
+
+    fun showTabBar() {
+        nav_view.visibility = View.VISIBLE
     }
 
     fun logout() {

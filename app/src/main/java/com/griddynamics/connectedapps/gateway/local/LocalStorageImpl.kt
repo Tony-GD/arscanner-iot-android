@@ -8,6 +8,7 @@ import com.orhanobut.hawk.Hawk
 private const val TAG: String = "LocalStorageImpl"
 private const val USER_KEY = "USER_KEY"
 private const val FIREBASE_TOKEN_KEY = "FIREBASE_TOKEN_KEY"
+private const val WIDGET_TRACKED_DEVICE_ID = "WIDGET_TRACKED_DEVICE_ID"
 
 class LocalStorageImpl : LocalStorage {
     override fun saveUser(user: User) {
@@ -21,6 +22,14 @@ class LocalStorageImpl : LocalStorage {
 
     override fun getFirebaseToken(): String? {
         return Hawk.get(FIREBASE_TOKEN_KEY)
+    }
+
+    override fun saveWidgetTrackedDevice(deviceId: String?) {
+        Hawk.put(WIDGET_TRACKED_DEVICE_ID, deviceId)
+    }
+
+    override fun getWidgetTrackedDevice(): String? {
+        return Hawk.get<String?>(WIDGET_TRACKED_DEVICE_ID)
     }
 
     override fun getUser(): User {

@@ -7,4 +7,6 @@ interface LocalStorage {
     fun getUser(): User
     fun saveFirebaseToken(token: String?)
     fun getFirebaseToken(): String?
+    fun saveWidgetTrackedDevice(deviceId: String?)
+    fun getWidgetTrackedDevice(): String?
 }

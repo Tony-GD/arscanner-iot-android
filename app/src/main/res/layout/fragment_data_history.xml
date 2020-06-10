@@ -1,33 +1,50 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/history_root"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.griddynamics.connectedapps.ui.history.DataHistoryFragment">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_history_pager"
+    <FrameLayout
+        android:id="@+id/history_header"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/header_layout"/>
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/tl_history_tabs" />
+        app:layout_constraintTop_toBottomOf="@id/history_header">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tl_history_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/marker_size_12"
-        android:layout_marginTop="@dimen/marker_size_12"
-        android:minHeight="?actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabBackground="@drawable/tab_background"
-        app:tabGravity="fill"
-        app:tabIndicatorHeight="4dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/whiteTransparent" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_history_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/tl_history_tabs" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_history_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/marker_size_12"
+            android:layout_marginTop="@dimen/marker_size_12"
+            android:minHeight="?actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabBackground="@drawable/tab_background"
+            app:tabGravity="fill"
+
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/whiteTransparent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

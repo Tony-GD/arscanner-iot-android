@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabBackground="@drawable/tab_background"
                 app:tabGravity="fill"
-                app:tabIndicatorHeight="4dp"
+                app:tabIndicatorHeight="0dp"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextColor="@color/whiteTransparent" />

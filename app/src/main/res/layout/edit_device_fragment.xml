@@ -15,7 +15,7 @@
         android:id="@+id/ll_edit_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBaseDark"
+        android:background="@color/ghost_gray"
         android:orientation="vertical"
         tools:context=".ui.edit.device.EditDeviceFragment">
 

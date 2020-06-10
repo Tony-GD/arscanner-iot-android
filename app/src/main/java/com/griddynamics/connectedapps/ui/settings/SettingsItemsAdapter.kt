@@ -18,7 +18,7 @@ class SettingsItemsAdapter(
     RecyclerView.Adapter<SettingsItemsAdapter.SettingsItemViewHolder>() {
 
     interface OnDeviceSelectedListener {
-        fun onDeviceSelected(deviceId: String)
+        fun onDeviceSelected(deviceId: String, address: String)
         fun onGatewaySelected(gatewayId: String)
     }
 
@@ -69,7 +69,7 @@ class SettingsItemsAdapter(
         holder.listener = View.OnClickListener {
             Log.d("TAG", "onBindViewHolder: click")
             when (item.type) {
-                SettingsDeviceItem.TYPE_DEVICE -> deviceSelectedListener.onDeviceSelected(item.id)
+                SettingsDeviceItem.TYPE_DEVICE -> deviceSelectedListener.onDeviceSelected(item.id, item.address)
                 else -> deviceSelectedListener.onGatewaySelected(item.id)
             }
         }

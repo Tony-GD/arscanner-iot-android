@@ -30,8 +30,8 @@ class SettingsFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var settingsViewModel: SettingsViewModel
     private var onDeviceSelectedListener = object : SettingsItemsAdapter.OnDeviceSelectedListener {
-        override fun onDeviceSelected(deviceId: String) {
-            navigateToChartFragment(deviceId)
+        override fun onDeviceSelected(deviceId: String, address: String) {
+            navigateToChartFragment(deviceId, address)
         }
 
         override fun onGatewaySelected(gatewayId: String) {
@@ -40,9 +40,10 @@ class SettingsFragment : DaggerFragment() {
 
     }
 
-    private fun navigateToChartFragment(deviceId: String) {
+    private fun navigateToChartFragment(deviceId: String, address: String) {
         val actionGlobalNavigationHistory =
             SettingsFragmentDirections.ActionNavigationSettingsToNavigationHistory()
+        actionGlobalNavigationHistory.setAddress(address)
         actionGlobalNavigationHistory.setDevice(deviceId)
         findNavController().navigate(actionGlobalNavigationHistory)
     }

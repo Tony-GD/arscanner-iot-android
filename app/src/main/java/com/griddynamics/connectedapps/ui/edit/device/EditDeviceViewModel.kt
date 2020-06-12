@@ -32,7 +32,7 @@ class EditDeviceViewModel @Inject constructor(
 ) :
     ViewModel() {
     var device: DeviceResponse? = null
-    var isSingleValue: Boolean = false
+    var isSingleValue = ObservableBoolean(false)
     var isAdding = ObservableBoolean()
     var onMapPickerRequest: Callback? = null
     var singleMetricName: String? = null
@@ -49,7 +49,8 @@ class EditDeviceViewModel @Inject constructor(
 
     fun loadUserGateways() {
         userGateways.addSource(FirebaseAPI.getUserGateways(localStorage.getUser()))
-        { _ ->
+        { gateways ->
+            userGateways.value = gateways
         }
     }
 
@@ -72,7 +73,7 @@ class EditDeviceViewModel @Inject constructor(
     }
 
     private fun DeviceResponse.saveMetrics() {
-        if (isSingleValue) {
+        if (isSingleValue.get()) {
             if (metrics == null) {
                 metrics = mutableMapOf()
             }

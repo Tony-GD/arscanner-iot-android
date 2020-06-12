@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -15,6 +16,7 @@
         android:id="@+id/ll_edit_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_10"
         android:background="@color/ghost_gray"
         android:orientation="vertical"
         tools:context=".ui.edit.device.EditDeviceFragment">
@@ -39,14 +41,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/lat"
                     style="@style/AppText.SourceSansPro.White.18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lat" />
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/lon"
                     style="@style/AppText.SourceSansPro.White.18"
                     android:layout_width="match_parent"
@@ -55,11 +57,11 @@
             </LinearLayout>
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/transparent"
+                android:layout_width="18dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="@dimen/margin_10"
                 android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}"
-                android:src="@android:drawable/ic_menu_mylocation" />
+                android:background="@drawable/ic_location" />
         </LinearLayout>
 
         <EditText
@@ -77,6 +79,7 @@
                 style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/radius_4"
                 android:text="@string/gateway" />
 
             <Spinner
@@ -88,6 +91,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="@{viewModel.isAdding() ? View.VISIBLE : View.GONE }"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -95,6 +99,7 @@
                 style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/radius_4"
                 android:text="@string/data_format" />
 
             <Spinner
@@ -105,56 +110,16 @@
                 android:entries="@array/data_format_values" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_edit_json"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_edit_json_metrics"
+            android:visibility="@{viewModel.isSingleValue ? View.GONE : View.VISIBLE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <CheckBox
-                style="@style/AppText.SourceSansPro.White.18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.isPM2_5Enabled}"
-                android:text="@string/pm2_5" />
-
-            <CheckBox
-                style="@style/AppText.SourceSansPro.White.18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.isPM1_0Enabled}"
-                android:text="@string/pm1_0" />
-
-            <CheckBox
-                style="@style/AppText.SourceSansPro.White.18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.isPM10Enabled}"
-                android:text="@string/pm10" />
-
-            <CheckBox
-                style="@style/AppText.SourceSansPro.White.18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.isCo2Enabled}"
-                android:text="@string/co2_label" />
-
-            <CheckBox
-                style="@style/AppText.SourceSansPro.White.18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.isTempEnabled}"
-                android:text="@string/temperature_label" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.humidityEnabled}"
-                android:text="@string/humidity_label" />
-        </LinearLayout>
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/ll_edit_single"
+            android:visibility="@{viewModel.isSingleValue ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -177,6 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/marker_size_12"
+            android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/ic_normal"
             android:enabled="true"
             android:onClick="@{()-> viewModel.saveEditedDevice()}"
@@ -188,6 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/marker_size_12"
+            android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/ic_normal"
             android:enabled="true"
             android:onClick="@{()->viewModel.deleteDevice()}"

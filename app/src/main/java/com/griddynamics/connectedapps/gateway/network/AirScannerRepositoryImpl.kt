@@ -28,7 +28,9 @@ class AirScannerRepositoryImpl
                 "${request.gatewayId}",
                 "${request.location?.latitude}",
                 "${request.location?.longitude}",
-                "${request.locationDescription}"
+                "${request.locationDescription}",
+                request.publicMetrics,
+                request.metricsConfig
             )
         )
     }
@@ -44,7 +46,9 @@ class AirScannerRepositoryImpl
                 "${request.gatewayId}",
                 "${request.location?.latitude}",
                 "${request.location?.longitude}",
-                "${request.locationDescription}"
+                "${request.locationDescription}",
+                request.publicMetrics,
+                request.metricsConfig
             )
         )
     }

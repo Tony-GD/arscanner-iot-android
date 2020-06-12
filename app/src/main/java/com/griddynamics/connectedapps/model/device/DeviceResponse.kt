@@ -26,7 +26,9 @@ data class DeviceResponse(
     var gatewayId: String?,
     @SerializedName("json_metrics_field")
     var jsonMetricsField: MutableMetricsMap?,
-    var metrics: MutableMetricsMap?
+    var metrics: MutableMetricsMap?,
+    var publicMetrics: List<String>?,
+    var metricsConfig: Map<String, MetricConfig>?
 )
 
 val EMPTY_DEVICE = DeviceResponse(
@@ -40,5 +42,7 @@ val EMPTY_DEVICE = DeviceResponse(
     null,
     null,
     mutableMapOf(),
-    mutableMapOf()
+    mutableMapOf(),
+    emptyList(),
+    emptyMap()
 )

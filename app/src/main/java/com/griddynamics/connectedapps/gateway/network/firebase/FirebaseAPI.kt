@@ -14,6 +14,7 @@ import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import com.griddynamics.connectedapps.model.device.MetricConfig
 import kotlin.math.log
 
 private const val TAG: String = "FirebaseAPI"
@@ -75,6 +76,8 @@ object FirebaseAPI {
                 val location = it.data?.get("location")
                 val gatewayId = it.data?.get("gateway_id")
                 val locationDescription = it.data?.get("location_description")
+                val publicMetrics = it.data?.get("publicMetrics")
+                val metricsConfig = it.data?.get("metricsConfig")
                 val deviceId = it.reference.path.split("/").last()
                 val device = DeviceResponse(
                     deviceId = deviceId,
@@ -87,7 +90,9 @@ object FirebaseAPI {
                     createdAt = createdAt as Timestamp?,
                     gatewayId = gatewayId as String?,
                     jsonMetricsField = null,
-                    metrics = null
+                    metrics = null,
+                    publicMetrics = publicMetrics as List<String>?,
+                    metricsConfig = metricsConfig as Map<String, MetricConfig>?
                 )
                 Log.d(TAG, "getPublicDevices: $device")
                 devices.add(device)

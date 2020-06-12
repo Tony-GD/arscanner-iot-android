@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="viewState"
+            type="com.griddynamics.connectedapps.model.metrics.JsonMetricViewState" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ghost_background"
+        android:layout_marginTop="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:paddingVertical="@dimen/margin_10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/sp_json_metric_type"
+                style="@style/AppText.SourceSansPro.White.14"
+                android:entries="@array/metric_types"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_json_name"
+                style="@style/AppText.SourceSansPro.White.14"
+                android:text="@={viewState.name}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@={viewState.isPublic}"
+                style="@style/AppText.SourceSansPro.White.14"
+                android:text="@string/is_public" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_json_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/AppText.SourceSansPro.White.14"
+            android:background="@drawable/ic_rectangle"
+            android:textAllCaps="false"
+            android:text="@string/add" />
+    </LinearLayout>
+</layout>

@@ -1,12 +1,15 @@
 package com.griddynamics.connectedapps.model.device
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
 const val ADD_DEVICE_REQUEST_KEY = "ADD_DEVICE_REQUEST_KEY"
 
-@Parcelize
+data class MetricConfig(
+    @SerializedName("is_public") var isPublic: Boolean,
+    @SerializedName("measurement") var measurement: String
+)
+typealias MetricsConfig = Map<String, MetricConfig>
+
 data class DeviceRequest(
     @SerializedName("display_name")
     var displayName: String,
@@ -23,8 +26,11 @@ data class DeviceRequest(
     @SerializedName("loc_lon")
     var locLong: String,
     @SerializedName("loc_desc")
-    var locDesc: String
-): Parcelable
+    var locDesc: String,
+    var publicMetrics: List<String>?,
+    var metricsConfig: Map<String, MetricConfig>?
+)
+
 var EMPTY_DEVICE_REQUEST =
     DeviceRequest(
         "",
@@ -34,5 +40,8 @@ var EMPTY_DEVICE_REQUEST =
         "",
         "json",
         "Empty user id",
-        "Empty gateway id"
+        "Empty gateway id",
+        emptyList(),
+        emptyMap()
     )
+

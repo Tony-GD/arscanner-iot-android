@@ -22,12 +22,12 @@ import com.griddynamics.connectedapps.model.device.DEFAULT_LAT
 import com.griddynamics.connectedapps.model.device.DEFAULT_LONG
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.EMPTY_DEVICE
+import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.edit_device_fragment.*
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.location_picker_layout.view.*
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -113,17 +113,21 @@ class EditDeviceFragment : DaggerFragment() {
 
     private fun getSuccessDialog(): AlertDialog {
         return AlertDialog.Builder(requireContext())
-            .setView(LayoutInflater
-                .from(requireContext())
-                .inflate(R.layout.alert_success_layout, null))
+            .setView(
+                LayoutInflater
+                    .from(requireContext())
+                    .inflate(R.layout.alert_success_layout, null)
+            )
             .create()
     }
 
     private fun getErrorDialog(): AlertDialog {
         return AlertDialog.Builder(requireContext())
-            .setView(LayoutInflater
-                .from(requireContext())
-                .inflate(R.layout.alert_success_layout, null))
+            .setView(
+                LayoutInflater
+                    .from(requireContext())
+                    .inflate(R.layout.alert_success_layout, null)
+            )
             .create()
     }
 
@@ -133,17 +137,23 @@ class EditDeviceFragment : DaggerFragment() {
             "onViewCreated() called with: view = [$view], savedInstanceState = [$savedInstanceState]"
         )
         super.onViewCreated(view, savedInstanceState)
+        binding.rvEditJsonMetrics.adapter =
+            JsonMetricsAdapter(mutableListOf(JsonMetricViewState().apply {
+                name.set("My PM25")
+                measurement.set("PM2.5")
+                isPublic.set(true)
+            }))
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditDeviceViewModel::class.java)
         viewModel.networkResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is NetworkResponse.Success<*> -> getSuccessDialog().apply {
                     show()
-                    Handler().postDelayed({ dismiss()}, 2000)
+                    Handler().postDelayed({ dismiss() }, 2000)
                 }
-                    else -> getErrorDialog().apply {
-                        show()
-                        Handler().postDelayed({ dismiss()}, 2000)
-                    }
+                else -> getErrorDialog().apply {
+                    show()
+                    Handler().postDelayed({ dismiss() }, 2000)
+                }
             }
         })
         viewModel.onMapPickerRequest = { showLocationPicker() }
@@ -151,35 +161,33 @@ class EditDeviceFragment : DaggerFragment() {
         viewModel.userGateways.observe(viewLifecycleOwner, Observer {
             val gatewayNames = it.map { gateway ->
                 gateway.displayName
-            }
-            val adapter = ArrayAdapter<String>(
-                requireContext(),
-                R.layout.support_simple_spinner_dropdown_item,
-                gatewayNames
+            }.filterNotNull()
+            binding.spEditGateways.adapter = getSpinnerAdapter(
+                (gatewayNames as java.util.List<String>).toArray(
+                    Array(gatewayNames.size) { i -> gatewayNames[i] }
+                )
             )
-            binding.spEditGateways.adapter = adapter
         })
         binding.viewModel = viewModel
         arguments?.apply {
-            val device = EditDeviceFragmentArgs.fromBundle(
+            val deviceJson = EditDeviceFragmentArgs.fromBundle(
                 arguments
             ).device
             val isAdding = EditDeviceFragmentArgs.fromBundle(
                 arguments
+
             ).stringIsAdding
             viewModel.isAdding.set(isAdding)
-            val fromJson = Gson().fromJson(device, DeviceResponse::class.java)
-            viewModel.device = fromJson
+            val device = Gson().fromJson(deviceJson, DeviceResponse::class.java)
+            viewModel.device = device
         }
         if (viewModel.device == null) {
             viewModel.isAdding.set(true)
-            viewModel.userGateways?.observe(viewLifecycleOwner, Observer {
+            viewModel.userGateways.observe(viewLifecycleOwner, Observer {
                 viewModel.device = EMPTY_DEVICE.apply {
                     gatewayId = it.firstOrNull()?.gatewayId
                 }
             })
-
-
         }
         viewModel.device?.let { device ->
             requireContext().resources.getStringArray(R.array.data_format_values).firstOrNull()
@@ -200,8 +208,8 @@ class EditDeviceFragment : DaggerFragment() {
                 Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
             }
         }
-        binding.lat.setText("${viewModel.device?.location?.latitude}")
-        binding.lon.setText("${viewModel.device?.location?.longitude}")
+        binding.lat.setText("${viewModel.device?.location?.latitude ?: ""}")
+        binding.lon.setText("${viewModel.device?.location?.longitude ?: ""}")
         binding.lat.addTextChangedListener { text ->
             try {
                 viewModel.device?.location?.let {
@@ -213,7 +221,7 @@ class EditDeviceFragment : DaggerFragment() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "EditDeviceFragment: latitude", e)
-                Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.llEditRoot, "${e.message}", Snackbar.LENGTH_LONG).show()
             }
         }
         binding.lon.addTextChangedListener { text ->
@@ -227,67 +235,81 @@ class EditDeviceFragment : DaggerFragment() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "EditDeviceFragment: longitude", e)
-                Snackbar.make(ll_edit_root, "${e.message}", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.llEditRoot, "${e.message}", Snackbar.LENGTH_LONG).show()
             }
         }
-        binding.spEditFormat.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    //NOP
-                }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val formatValues =
-                        requireContext().resources.getStringArray(R.array.data_format_values)
-                    viewModel.device?.let {
-                        val format = formatValues[position]
-                        it.dataFormat = format
-                        viewModel.isSingleValue = format != "json"
-                        setDataVisibility()
-                    }
+        binding.spEditFormat.apply {
+            val array = context.resources.getStringArray(R.array.data_format_values)
+            adapter = getSpinnerAdapter(array)
+            viewModel.device?.let {
+                if (it.dataFormat == null) {
+                    it.dataFormat = array[0]
                 }
-
+                setSelection(array.indexOf(it.dataFormat))
             }
-        binding.spEditGateways.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    //NOP
-                }
+            onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //NOP
+                    }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val selectedGateway = viewModel.userGateways.value?.get(position)
-                    viewModel.device?.let {
-                        it.gatewayId = selectedGateway?.gatewayId
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val format = array[position]
+                        viewModel.isSingleValue.set(format != "json")
+                        viewModel.device?.let {
+                            it.dataFormat = format
+                        }
                     }
-                    viewModel.device?.dataFormat?.let {
-                        viewModel.isSingleValue = it != "json"
-                        setDataVisibility()
+
+                }
+        }
+        binding.spEditGateways.apply {
+            adapter = getSpinnerAdapter(context.resources.getStringArray(R.array.demo_gateways))
+            onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //NOP
+                    }
+
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedGateway = viewModel.userGateways.value?.get(position)
+                        viewModel.device?.let {
+                            it.gatewayId = selectedGateway?.gatewayId
+                        }
+
                     }
                 }
-            }
+        }
         setDataVisibility()
     }
 
+    private fun getSpinnerAdapter(array: Array<out String>): ArrayAdapter<String> {
+        return ArrayAdapter(
+            requireContext(),
+            R.layout.spinner_item_layout,
+            array
+        ).apply {
+            setDropDownViewResource(R.layout.spinner_item_layout)
+        }
+    }
+
     fun setDataVisibility() {
-        binding.llEditJson.visibility = if (viewModel.isAdding.get() && !viewModel.isSingleValue) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        binding.llEditSingle.visibility = if (viewModel.isAdding.get() && viewModel.isSingleValue) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+//        binding.llEditSingle.visibility =
+//            if (viewModel.isSingleValue.get()) {
+//                View.VISIBLE
+//            } else {
+//                View.GONE
+//            }
     }
 }

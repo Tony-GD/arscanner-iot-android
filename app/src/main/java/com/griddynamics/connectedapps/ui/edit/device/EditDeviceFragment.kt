@@ -137,13 +137,50 @@ class EditDeviceFragment : DaggerFragment() {
             "onViewCreated() called with: view = [$view], savedInstanceState = [$savedInstanceState]"
         )
         super.onViewCreated(view, savedInstanceState)
-        binding.rvEditJsonMetrics.adapter =
-            JsonMetricsAdapter(mutableListOf(JsonMetricViewState().apply {
-                name.set("My PM25")
-                measurement.set("PM2.5")
-                isPublic.set(true)
-            }))
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditDeviceViewModel::class.java)
+        arguments?.apply {
+            val deviceJson = EditDeviceFragmentArgs.fromBundle(
+                arguments
+            ).device
+            val isAdding = EditDeviceFragmentArgs.fromBundle(
+                arguments
+            ).stringIsAdding
+            viewModel.isAdding.set(isAdding)
+            val device = Gson().fromJson(deviceJson, DeviceResponse::class.java)
+            viewModel.device = device
+            device?.let {
+            if (it.dataFormat == "single_value") {
+                viewModel.isSingleValue.set(true)
+                it.metricsConfig?.keys?.firstOrNull()?.let { name->
+                    viewModel.singleMetricName.set(name)
+                    viewModel.singleMetricMeasurement.set(it.metricsConfig?.get(name)?.measurement)
+                    viewModel.isSingleValuePublic.set(it.metricsConfig?.get(name)?.isPublic == true)
+                }
+            }
+        }
+
+        }
+        if (viewModel.device == null) {
+            viewModel.isAdding.set(true)
+            viewModel.userGateways.observe(viewLifecycleOwner, Observer {
+                viewModel.device = EMPTY_DEVICE.apply {
+                    gatewayId = it.firstOrNull()?.gatewayId
+                }
+            })
+        }
+        viewModel.device?.metricsConfig?.let { config ->
+            config.keys.forEach { key ->
+                viewModel.configViewStateList += JsonMetricViewState().apply {
+                    this.name.set(key)
+                    this.isPublic.set(config[key]?.isPublic == true)
+                    this.measurement.set(config[key]?.measurement)
+                }
+            }
+        }
+        if (viewModel.configViewStateList.isEmpty()) {
+            viewModel.configViewStateList += JsonMetricViewState()
+        }
+        binding.rvEditJsonMetrics.adapter = JsonMetricsAdapter(viewModel.configViewStateList)
         viewModel.networkResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is NetworkResponse.Success<*> -> getSuccessDialog().apply {
@@ -169,26 +206,7 @@ class EditDeviceFragment : DaggerFragment() {
             )
         })
         binding.viewModel = viewModel
-        arguments?.apply {
-            val deviceJson = EditDeviceFragmentArgs.fromBundle(
-                arguments
-            ).device
-            val isAdding = EditDeviceFragmentArgs.fromBundle(
-                arguments
 
-            ).stringIsAdding
-            viewModel.isAdding.set(isAdding)
-            val device = Gson().fromJson(deviceJson, DeviceResponse::class.java)
-            viewModel.device = device
-        }
-        if (viewModel.device == null) {
-            viewModel.isAdding.set(true)
-            viewModel.userGateways.observe(viewLifecycleOwner, Observer {
-                viewModel.device = EMPTY_DEVICE.apply {
-                    gatewayId = it.firstOrNull()?.gatewayId
-                }
-            })
-        }
         viewModel.device?.let { device ->
             requireContext().resources.getStringArray(R.array.data_format_values).firstOrNull()
                 ?.let {
@@ -291,7 +309,6 @@ class EditDeviceFragment : DaggerFragment() {
                     }
                 }
         }
-        setDataVisibility()
     }
 
     private fun getSpinnerAdapter(array: Array<out String>): ArrayAdapter<String> {
@@ -302,14 +319,5 @@ class EditDeviceFragment : DaggerFragment() {
         ).apply {
             setDropDownViewResource(R.layout.spinner_item_layout)
         }
-    }
-
-    fun setDataVisibility() {
-//        binding.llEditSingle.visibility =
-//            if (viewModel.isSingleValue.get()) {
-//                View.VISIBLE
-//            } else {
-//                View.GONE
-//            }
     }
 }

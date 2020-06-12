@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps.ui.edit.device
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,8 @@ import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
 import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import com.griddynamics.connectedapps.model.device.MetricConfig
+import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.ui.home.Callback
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,18 +35,14 @@ class EditDeviceViewModel @Inject constructor(
 ) :
     ViewModel() {
     var device: DeviceResponse? = null
-    var isSingleValue = ObservableBoolean(false)
-    var isAdding = ObservableBoolean()
+    val configViewStateList = mutableListOf<JsonMetricViewState>()
+    val isSingleValue = ObservableBoolean(false)
+    val isAdding = ObservableBoolean()
     var onMapPickerRequest: Callback? = null
-    var singleMetricName: String? = null
-    var singleMetricMesurement: String? = null
-    var isCo2Enabled = ObservableBoolean()
-    var isTempEnabled = ObservableBoolean()
-    var isHumidityEnabled = ObservableBoolean()
-    var isPM2_5Enabled = ObservableBoolean()
-    var isPM1_0Enabled = ObservableBoolean()
-    var isPM10Enabled = ObservableBoolean()
-    var networkResponse = MutableLiveData<NetworkResponse<Any, Any>>()
+    val singleMetricName = ObservableField<String>()
+    val isSingleValuePublic = ObservableBoolean()
+    val singleMetricMeasurement = ObservableField<String>()
+    val networkResponse = MutableLiveData<NetworkResponse<Any, Any>>()
 
     val userGateways = MediatorLiveData<List<GatewayResponse>>()
 
@@ -73,55 +72,26 @@ class EditDeviceViewModel @Inject constructor(
     }
 
     private fun DeviceResponse.saveMetrics() {
+
+        val tempMetricsConfig = mutableMapOf<String, MetricConfig>()
+        val tempPublicMetrics = mutableListOf<String>()
         if (isSingleValue.get()) {
-            if (metrics == null) {
-                metrics = mutableMapOf()
+            tempMetricsConfig[singleMetricName.get() ?: DEFAULT] =
+                MetricConfig(isSingleValuePublic.get(), "${singleMetricMeasurement.get()}")
+            if (isSingleValuePublic.get()) {
+                tempPublicMetrics += "${singleMetricName.get()}"
             }
-            metrics?.put("default", mutableListOf(mutableMapOf(Pair("string", "number"))))
         } else {
-            if (jsonMetricsField == null) {
-                jsonMetricsField = mutableMapOf()
-            }
-            if (!isCo2Enabled.get()) {
-                jsonMetricsField?.remove(CO2)
-            } else {
-                jsonMetricsField?.put(CO2, mutableListOf(mutableMapOf(Pair("string", "number"))))
-            }
-            if (!isTempEnabled.get()) {
-                jsonMetricsField?.remove(TEMP)
-            } else {
-                jsonMetricsField?.put(TEMP, mutableListOf(mutableMapOf(Pair("string", "number"))))
-            }
-            if (!isHumidityEnabled.get()) {
-                jsonMetricsField?.remove(HUMIDITY)
-            } else {
-                jsonMetricsField?.put(
-                    HUMIDITY,
-                    mutableListOf(mutableMapOf(Pair("string", "number")))
-                )
-            }
-            if (!isPM2_5Enabled.get()) {
-                jsonMetricsField?.remove(PM2_5)
-            } else {
-                jsonMetricsField?.put(
-                    PM2_5,
-                    mutableListOf(mutableMapOf(Pair("string", "number")))
-                )
-            }
-            if (!isPM1_0Enabled.get()) {
-                jsonMetricsField?.remove(PM1_0)
-            } else {
-                jsonMetricsField?.put(
-                    PM1_0,
-                    mutableListOf(mutableMapOf(Pair("string", "number")))
-                )
-            }
-            if (!isPM10Enabled.get()) {
-                jsonMetricsField?.remove(PM10)
-            } else {
-                jsonMetricsField?.put(PM10, mutableListOf(mutableMapOf(Pair("string", "number"))))
+            configViewStateList.forEach { config ->
+                tempMetricsConfig["${config.name.get()}"] =
+                    MetricConfig(config.isPublic.get(), "${config.measurement.get()}")
+                if (config.isPublic.get()) {
+                    tempPublicMetrics += "${config.name.get()}"
+                }
             }
         }
+        this.metricsConfig = tempMetricsConfig
+        this.publicMetrics = tempPublicMetrics
     }
 
     fun deleteDevice() {

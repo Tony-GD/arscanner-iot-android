@@ -129,13 +129,23 @@
                 style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.singleMetricName}"
                 android:hint="@string/display_name" />
 
             <EditText
                 android:id="@+id/et_edit_single_value"
                 style="@style/AppText.SourceSansPro.White.18"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.singleMetricMeasurement}"
+                android:hint="@string/measurement"/>
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.isSingleValuePublic}"
+                style="@style/AppText.SourceSansPro.White.14"
+                android:text="@string/is_public" />
         </LinearLayout>
 
         <Button

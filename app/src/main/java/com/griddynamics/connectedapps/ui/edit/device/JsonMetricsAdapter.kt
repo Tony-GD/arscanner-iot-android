@@ -9,13 +9,13 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.databinding.JsonFormLayoutBinding
+import com.griddynamics.connectedapps.databinding.JsonFormItemLayoutBinding
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 
 class JsonMetricsAdapter(private val metrics: MutableList<JsonMetricViewState>) :
     RecyclerView.Adapter<JsonMetricsAdapter.JsonMetricsViewHolder>() {
 
-    class JsonMetricsViewHolder(val binding: JsonFormLayoutBinding) :
+    class JsonMetricsViewHolder(val binding: JsonFormItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
     }
@@ -24,7 +24,7 @@ class JsonMetricsAdapter(private val metrics: MutableList<JsonMetricViewState>) 
         return JsonMetricsViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.json_form_layout,
+                R.layout.json_form_item_layout,
                 parent,
                 false
             )

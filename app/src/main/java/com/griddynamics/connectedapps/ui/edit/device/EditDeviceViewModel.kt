@@ -97,7 +97,7 @@ class EditDeviceViewModel @Inject constructor(
     fun deleteDevice() {
         GlobalScope.launch {
             device?.let {
-                repository.deleteDevice(it)
+                repository.deleteDevice("${it.deviceId}")
             }
         }
     }

@@ -153,7 +153,7 @@ class EditDeviceFragment : DaggerFragment() {
                 viewModel.isSingleValue.set(true)
                 it.metricsConfig?.keys?.firstOrNull()?.let { name->
                     viewModel.singleMetricName.set(name)
-                    viewModel.singleMetricMeasurement.set(it.metricsConfig?.get(name)?.measurement)
+                    viewModel.singleMetricMeasurement.set(it.metricsConfig?.get(name)?.measurementType)
                     viewModel.isSingleValuePublic.set(it.metricsConfig?.get(name)?.isPublic == true)
                 }
             }
@@ -173,7 +173,7 @@ class EditDeviceFragment : DaggerFragment() {
                 viewModel.configViewStateList += JsonMetricViewState().apply {
                     this.name.set(key)
                     this.isPublic.set(config[key]?.isPublic == true)
-                    this.measurement.set(config[key]?.measurement)
+                    this.measurement.set(config[key]?.measurementType)
                 }
             }
         }

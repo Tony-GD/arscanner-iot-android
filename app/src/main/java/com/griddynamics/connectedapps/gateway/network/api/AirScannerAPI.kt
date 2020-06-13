@@ -24,7 +24,7 @@ interface AirScannerAPI {
     suspend fun addDevice(@Body device: DeviceRequest): GenericResponse<Any>
 
     @DELETE("$deleteDevice/{id}")
-    suspend fun deleteDevice(@Body device: DeviceResponse): GenericResponse<Any>
+    suspend fun deleteDevice(@Path("id") deviceId: String): GenericResponse<Any>
 
     @PUT("$editDevice/{id}")
     suspend fun editDevice(@Path("id") id: String, @Body device: DeviceRequest): GenericResponse<Any>
@@ -32,8 +32,8 @@ interface AirScannerAPI {
     @POST(addGateway)
     suspend fun addGateway(@Body device: GatewayRequest): GenericResponse<Any>
 
-    @DELETE(deleteGateway)
-    suspend fun deleteGateway(@Body device: GatewayRequest): GenericResponse<Any>
+    @DELETE("$deleteGateway/{id}")
+    suspend fun deleteGateway(@Path("id") gatewayId: String): GenericResponse<Any>
 
     @PUT(editGateway)
     suspend fun editGateway(@Body device: GatewayRequest): GenericResponse<Any>

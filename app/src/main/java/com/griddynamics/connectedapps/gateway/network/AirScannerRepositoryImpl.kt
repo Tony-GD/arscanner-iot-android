@@ -53,8 +53,8 @@ class AirScannerRepositoryImpl
         )
     }
 
-    override suspend fun deleteDevice(request: DeviceResponse): GenericResponse<Any> {
-        return api.deleteDevice(request)
+    override suspend fun deleteDevice(deviceId: String): GenericResponse<Any> {
+        return api.deleteDevice(deviceId)
     }
 
     override suspend fun addGateway(request: GatewayResponse): GenericResponse<Any> {
@@ -65,8 +65,8 @@ class AirScannerRepositoryImpl
         return api.editGateway(request)
     }
 
-    override suspend fun deleteGateway(request: GatewayRequest): GenericResponse<Any> {
-        return api.deleteGateway(request)
+    override suspend fun deleteGateway(gatewayId: String): GenericResponse<Any> {
+        return api.deleteGateway(gatewayId)
     }
 
     override suspend fun getMetrics(request: MetricsRequest): GenericResponse<MetricsMap> {

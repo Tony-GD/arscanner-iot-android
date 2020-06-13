@@ -6,7 +6,7 @@ const val ADD_DEVICE_REQUEST_KEY = "ADD_DEVICE_REQUEST_KEY"
 
 data class MetricConfig(
     @SerializedName("is_public") var isPublic: Boolean,
-    @SerializedName("measurement") var measurement: String
+    @SerializedName("measurementType") var measurementType: String
 )
 typealias MetricsConfig = Map<String, MetricConfig>
 

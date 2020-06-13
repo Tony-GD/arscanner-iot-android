@@ -1,5 +1,6 @@
 package com.griddynamics.connectedapps.di
 
+import com.google.gson.GsonBuilder
 import com.griddynamics.connectedapps.di.gateway.LocalStorageModule
 import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import com.griddynamics.connectedapps.gateway.network.api.NetworkResponseAdapterFactory
@@ -58,11 +59,16 @@ object RetrofitModule {
         client: OkHttpClient,
         callAdapterFactory: NetworkResponseAdapterFactory
     ): Retrofit {
+        val builder = GsonBuilder()
+            .serializeNulls()
+            .serializeSpecialFloatingPointValues()
+            .setLenient()
+            .create()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addCallAdapterFactory(callAdapterFactory)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(builder))
             .build()
     }
 }

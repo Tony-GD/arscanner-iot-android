@@ -16,6 +16,7 @@ import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
 import com.griddynamics.connectedapps.model.metrics.MetricsResponse
+import com.griddynamics.connectedapps.ui.map.filter.FilterViewState
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class MapViewModel @Inject constructor(
     private val metricsStream: MetricsStream,
     private val repository: AirScannerRepository
 ) : ViewModel() {
+    val filterViewState = FilterViewState()
     val devices = MediatorLiveData<List<DeviceResponse>>()
     val gateways = MediatorLiveData<List<GatewayResponse>>()
     val metrics = MutableLiveData<MetricsResponse>()

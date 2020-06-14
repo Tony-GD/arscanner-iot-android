@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/margin_17"
+    android:paddingTop="@dimen/padding_22">
+
+    <com.griddynamics.connectedapps.ui.common.DrawableClickableEditText
+        android:id="@+id/et_search"
+        style="@style/AppText.SourceSansPro.White.18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_34"
+        android:layout_marginEnd="@dimen/margin_17"
+        android:layout_weight="10"
+        android:background="@drawable/search_bar_background"
+        android:drawableLeft="@drawable/ic_filter"
+        android:drawableStart="@drawable/ic_filter"
+        android:drawableEnd="@drawable/ic_baseline_search_24"
+        android:drawablePadding="@dimen/padding_5"
+        android:paddingHorizontal="@dimen/margin_10" />
+
+    <ImageButton
+        android:id="@+id/ib_search_location"
+        android:layout_width="@dimen/padding_22"
+        android:layout_height="@dimen/padding_22"
+        android:layout_weight="1"
+        android:background="@color/transparent"
+        android:contentDescription="@string/my_location"
+        android:src="@drawable/ic_locator"
+        android:tint="@color/transparent" />
+
+</LinearLayout>

@@ -1,5 +1,7 @@
 package com.griddynamics.connectedapps.ui.edit.device
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -119,6 +121,9 @@ class EditDeviceFragment : DaggerFragment() {
                     .inflate(R.layout.alert_success_layout, null)
             )
             .create()
+            .apply {
+                this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            }
     }
 
     private fun getErrorDialog(): AlertDialog {
@@ -129,6 +134,9 @@ class EditDeviceFragment : DaggerFragment() {
                     .inflate(R.layout.alert_success_layout, null)
             )
             .create()
+            .apply {
+                this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

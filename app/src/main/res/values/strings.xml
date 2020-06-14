@@ -28,12 +28,12 @@
     <string name="is_public">Is Public</string>
     <string name="gateway">Gateway:</string>
     <string name="data_format">Data format:</string>
-    <string name="co2_label">CO2</string>
-    <string name="pm2_5">PM2.5</string>
-    <string name="pm1_0">PM1.0</string>
-    <string name="pm10">PM10</string>
-    <string name="temperature_label">Temperature</string>
-    <string name="humidity_label">Humidity</string>
+    <string name="co2_label">&#160;CO2</string>
+    <string name="pm2_5">&#160;PM2.5</string>
+    <string name="pm1_0">&#160;PM1.0</string>
+    <string name="pm10">&#160;PM10</string>
+    <string name="temperature_label">&#160;Temperature</string>
+    <string name="humidity_label">&#160;Humidity</string>
     <string name="save">Save</string>
     <string-array name="demo_gateways">
         <item>A</item>
@@ -91,4 +91,6 @@ frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
     <string name="now">Now</string>
     <string name="week">Week</string>
     <string name="today">Today</string>
+    <string name="all">&#160;All</string>
+    <string name="apply">Apply</string>
 </resources>

@@ -3,6 +3,8 @@ package com.griddynamics.connectedapps.ui.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -13,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,9 +23,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.databinding.FilterLayoutBinding
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import com.griddynamics.connectedapps.ui.common.DrawableClickableEditText
 import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDeviceDetailsFragment
 import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
@@ -34,6 +39,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.search_layout.view.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -58,6 +64,18 @@ class MapFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private val onDrawableClickListener =
+        object : DrawableClickableEditText.DrawableClickListener {
+            override fun onClick(
+                target:
+                DrawableClickableEditText.DrawableClickListener.DrawablePosition
+            ) {
+                if (target == DrawableClickableEditText.DrawableClickListener.DrawablePosition.LEFT) {
+                    getFilterDialog().show()
+                }
+            }
+        }
 
     private val onDeviceSelectedListener = object : OnDeviceSelectedListener {
         override fun onDeviceSelected(device: DeviceResponse) {
@@ -249,6 +267,30 @@ class MapFragment : DaggerFragment() {
             })
             .check();
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        search_layout.et_search.setDrawableClickListener(onDrawableClickListener)
+    }
+
+    private fun getFilterDialog(): AlertDialog {
+        val binding = DataBindingUtil.inflate<FilterLayoutBinding>(
+            LayoutInflater.from(requireContext()),
+            R.layout.filter_layout,
+            null,
+            false
+        )
+        binding.viewState = mapViewModel.filterViewState
+        return AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .setCancelable(false)
+            .create().apply {
+                this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+                binding.btnFilterApply.setOnClickListener {
+                    this.dismiss()
+                }
+            }
     }
 
     override fun onResume() {

@@ -41,6 +41,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="AppText.SourceSansPro.White.18.Bold" parent="AppText.SourceSansPro.White.18">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="AppText.FiraSans" parent="@android:style/TextAppearance.Medium">
         <item name="android:fontFamily">/font/fira_sans_bold.ttf</item>
     </style>

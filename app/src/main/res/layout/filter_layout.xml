@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewState"
+            type="com.griddynamics.connectedapps.ui.map.filter.FilterViewState" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/success_dialog_background"
+        android:orientation="vertical"
+        android:padding="@dimen/description_padding_15">
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isAll}"
+            android:text="@string/all" />
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isCo2}"
+            android:text="@string/co2_label" />
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isPm25}"
+            android:text="@string/pm2_5" />
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isTemp}"
+            android:text="@string/temperature_label" />
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isHumidity}"
+            android:text="@string/humidity_label" />
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isPm1()}"
+            android:text="@string/pm1_0" />
+
+        <CheckBox
+            style="@style/AppText.SourceSansPro.White.18.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:button="@drawable/check_box_bg"
+            android:checked="@={viewState.isPm10}"
+            android:text="@string/pm10" />
+
+        <Button
+            android:id="@+id/btn_filter_apply"
+            style="@style/AppText.FiraSans.White.24.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_22"
+            android:layout_marginTop="@dimen/margin_20"
+            android:background="@drawable/search_bar_background"
+            android:gravity="center"
+            android:text="@string/apply"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</layout>

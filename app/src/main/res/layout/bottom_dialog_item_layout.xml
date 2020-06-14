@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="response"
+            type="com.griddynamics.connectedapps.model.DefaultScannersResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/progress_container"
+            layout="@layout/circular_bar_layout"
+            app:label="@{response.metricName}"
+            app:maxValue="@{response.maxValue}"
+            app:progress="@{response.value}"
+            app:textProgress="@{`` + response.value}" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

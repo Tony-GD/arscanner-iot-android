@@ -21,8 +21,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDeviceDetailsFragment
@@ -118,47 +116,36 @@ class MapFragment : DaggerFragment() {
         findNavController().navigate(actionGlobalNavigationHistory)
     }
 
-    private fun generateMarkers(
+    private fun generateMarker(
         device: DeviceResponse,
         onMarkerReadyCallback: (marker: Marker) -> Unit
     ) {
-        val binding: MapInfoViewLayoutBinding =
-            DataBindingUtil.inflate(
-                LayoutInflater.from(requireContext()),
-                R.layout.map_info_view_layout,
-                map,
-                false
-            )
-        binding.item = device
-        binding.listener = onDeviceSelectedListener
-        val info = MapInfoWindow(binding.root, map)
-        val elementMarker = Marker(map)
-        elementMarker.setOnMarkerClickListener { marker, mapView ->
-            mapView.overlays.forEach { overlay ->
-                if (overlay is Marker) {
-                    if (overlay != marker) {
-                        overlay.icon = requireContext().getDrawable(R.drawable.green)
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-                    } else {
-                        marker.icon = requireContext().getDrawable(R.drawable.green_selected)
-                        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        device.location?.let {
+            val binding: MapInfoViewLayoutBinding =
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(requireContext()),
+                    R.layout.map_info_view_layout,
+                    map,
+                    false
+                )
+            binding.item = device
+//            binding.listener = onDeviceSelectedListener
+            val greenIcon = requireContext().getDrawable(R.drawable.green)
+            val selectedIcon = requireContext().getDrawable(R.drawable.green_selected)
+            val elementMarker = Marker(map)
+            elementMarker.setOnMarkerClickListener { selectedMarker, mapView ->
+                Log.d(TAG, "generateMarker: inCLick $selectedMarker")
+                selectedMarker.icon = selectedIcon
+                showDetails(device)
+                mapView.overlays.forEach { overlay ->
+                    if (overlay is Marker && overlay != selectedMarker) {
+                        overlay.icon = greenIcon
                     }
                 }
+                true
             }
-            FirebaseAPI.subscribeForMetrics("${device.deviceId}")
-                .observe(viewLifecycleOwner, Observer {
-                    val map = HashMap<String, List<Map<String, String>>>()
-                    map["[default]"] =
-                        listOf(HashMap<String, String>().apply { this["000"] = "${it.value}" })
-                    showDetails(map, device)
-                })
-            false
-        }
-        elementMarker.icon = requireContext().getDrawable(R.drawable.green)
-
-
-        elementMarker.infoWindow = null
-        device.location?.let {
+            elementMarker.icon = greenIcon
+            elementMarker.infoWindow = null
             elementMarker.position = GeoPoint(it.latitude, it.longitude)
             elementMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             onMarkerReadyCallback(elementMarker)
@@ -188,7 +175,7 @@ class MapFragment : DaggerFragment() {
         mapViewModel.devices.observe(viewLifecycleOwner, Observer {
             map.overlays.clear()
             it.forEach { device ->
-                generateMarkers(device) { marker ->
+                generateMarker(device) { marker ->
                     map.overlays.add(marker)
                 }
             }
@@ -196,10 +183,10 @@ class MapFragment : DaggerFragment() {
         setupMap()
     }
 
-    private fun showDetails(metricsMap: MetricsMap, device: DeviceResponse) {
-        Log.d(TAG, "showDetails() called with: metricsMap = [$metricsMap], device = [$device]")
+    private fun showDetails(device: DeviceResponse) {
+        Log.d(TAG, "showDetails() called with: device = [$device]")
         val bottomSheetDialogFragment =
-            BottomSheetDeviceDetailsFragment().apply { setDeviceInfo(metricsMap, device) }
+            BottomSheetDeviceDetailsFragment().apply { setDeviceInfo(device) }
         bottomSheetDialogFragment.show(
             requireActivity().supportFragmentManager,
             bottomSheetDialogFragment.tag

@@ -12,6 +12,10 @@ class ColorAdaptedProgressView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ProgressView(context, attributeSet, defStyleAttr) {
     var maxValue = 1f
+    fun setPvProgress(progress: Float) {
+        setProgress(progress)
+    }
+
     override fun setProgress(progress: Float) {
         if (progress > maxValue) throw IllegalArgumentException("Progress [$progress] should not overhead maxValue [$maxValue]")
         val normalizedProgress: Float = 1 - (progress / maxValue)
@@ -20,7 +24,10 @@ class ColorAdaptedProgressView @JvmOverloads constructor(
             in 0.25f..0.5f -> intArrayOf(Color.BLUE, Color.GREEN)
             in 0.5f..0.75f -> intArrayOf(Color.GREEN, Color.YELLOW)
             in 0.75f..1f -> intArrayOf(Color.YELLOW, Color.RED)
-            else -> intArrayOf(context.getColor(R.color.transparent), context.getColor(R.color.transparent))
+            else -> intArrayOf(
+                context.getColor(R.color.transparent),
+                context.getColor(R.color.transparent)
+            )
         }
         super.setProgress(normalizedProgress)
         applyGradient(colors)

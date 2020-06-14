@@ -15,7 +15,6 @@ import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.device.MetricConfig
-import kotlin.math.log
 
 private const val TAG: String = "FirebaseAPI"
 typealias DevicesCallback = (devices: List<DeviceResponse>) -> Unit
@@ -38,7 +37,7 @@ object FirebaseAPI {
         return liveData
     }
 
-    fun getUserDevices(user: User ): LiveData<List<DeviceResponse>> {
+    fun getUserDevices(user: User): LiveData<List<DeviceResponse>> {
         Log.d(TAG, "getUserDevices() called with: user = [$user]")
         FirebaseFirestore.setLoggingEnabled(true)
         val liveData = MutableLiveData<List<DeviceResponse>>()
@@ -139,30 +138,43 @@ object FirebaseAPI {
         }
     }
 
+    private fun Any.getSafeNumber(): Float {
+        return try {
+            (this as Double).toFloat()
+        } catch (e: ClassCastException) {
+            (this as Long).toFloat()
+        }
+    }
+
     fun subscribeForMetrics(id: String): LiveData<DefaultScannersResponse> {
         val liveData = MutableLiveData<DefaultScannersResponse>()
-
         firestore
             .collection("devices")
             .document(id)
             .collection("metrics")
-            .get().addOnCompleteListener { result ->
-                result.result?.documents?.firstOrNull()?.let { document ->
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException != null) {
+                    Log.e(TAG, "FirebaseAPI: addSnapshotListener", firebaseFirestoreException)
+                    return@addSnapshotListener
+                }
+                querySnapshot?.documents?.forEach { document ->
                     Log.d(TAG, "subscribeForMetrics: result ${document.data}")
-                    val key = document.reference.path.split("/").last()
-                    val response = DefaultScannersResponse(0f)
-                    document.data.let {
-                        Log.d(TAG, "subscribeForMetrics: data [$it]")
-                        when (key) {
+                    val metricName = document.reference.path.split("/").last()
+                    val response = DefaultScannersResponse(metricName, 0f)
+                    document.data?.let {
+                        Log.d(
+                            TAG,
+                            "subscribeForMetrics: data [${it.get("value")}] key [${it.keys.last()}] value [${it.values.last()}]"
+                        )
+                        when (metricName) {
                             "[default]" -> {
-                                response.value = (it?.get("value") as Number).toFloat()
-                                Log.d(
-                                    TAG,
-                                    "subscribeForMetrics: key = [$key] response = [${response.value}]"
-                                )
+                                response.value = it.values.last().getSafeNumber()
                             }
-                            else -> Log.d(TAG, "subscribeForMetrics: response $response")
+                            else -> {
+                                response.value = (it.values.last() as Number).toFloat()
+                            }
                         }
+                        Log.d(TAG, "subscribeForMetrics: response $response")
                         liveData.postValue(response)
                     }
                 }

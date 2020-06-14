@@ -45,55 +45,11 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bottom_metrics_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_bottom_title_container">
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/progress_container_0"
-                layout="@layout/circular_bar_layout" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/progress_container_1"
-                layout="@layout/circular_bar_layout" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/progress_container_2"
-                layout="@layout/circular_bar_layout" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/progress_container_3"
-                layout="@layout/circular_bar_layout" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
+            app:layout_constraintTop_toBottomOf="@id/ll_bottom_title_container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

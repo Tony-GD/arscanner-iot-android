@@ -157,15 +157,22 @@ class EditDeviceFragment : DaggerFragment() {
             val device = Gson().fromJson(deviceJson, DeviceResponse::class.java)
             viewModel.device = device
             device?.let {
-            if (it.dataFormat == "single_value") {
-                viewModel.isSingleValue.set(true)
-                it.metricsConfig?.keys?.firstOrNull()?.let { name->
-                    viewModel.singleMetricName.set(name)
-                    viewModel.singleMetricMeasurement.set(it.metricsConfig?.get(name)?.measurementType)
-                    viewModel.isSingleValuePublic.set(it.metricsConfig?.get(name)?.isPublic == true)
+                if (it.dataFormat == "single_value") {
+                    viewModel.isSingleValue.set(true)
+                    it.metricsConfig?.keys?.firstOrNull()?.let { name ->
+                        viewModel.singleMetricName.set(name)
+                        viewModel.singleMetricMeasurement.set(
+                            (it.metricsConfig?.get(name) as Map<String, String>?)?.get("measurementType")
+                                .toString()
+                        )
+                        viewModel.isSingleValuePublic.set(
+                            (it.metricsConfig?.get(name) as Map<String, Boolean>?)?.get(
+                                "is_public"
+                            ) == true
+                        )
+                    }
                 }
             }
-        }
 
         }
         if (viewModel.device == null) {
@@ -180,8 +187,8 @@ class EditDeviceFragment : DaggerFragment() {
             config.keys.forEach { key ->
                 viewModel.configViewStateList += JsonMetricViewState().apply {
                     this.name.set(key)
-                    this.isPublic.set(config[key]?.isPublic == true)
-                    this.measurement.set(config[key]?.measurementType)
+                    this.isPublic.set((config[key] as Map<String, Boolean>)?.get("is_public") == true)
+                    this.measurement.set((config[key] as Map<String, String>)?.get("measurementType"))
                 }
             }
         }

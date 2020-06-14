@@ -6,6 +6,7 @@ import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import com.griddynamics.connectedapps.model.device.MetricConfig
 import com.griddynamics.connectedapps.model.gateway.GatewayRequest
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class AirScannerRepositoryImpl
                 "${request.location?.longitude}",
                 "${request.locationDescription}",
                 request.publicMetrics,
-                request.metricsConfig
+                request.metricsConfig as Map<String, MetricConfig>
             )
         )
     }
@@ -48,7 +49,7 @@ class AirScannerRepositoryImpl
                 "${request.location?.longitude}",
                 "${request.locationDescription}",
                 request.publicMetrics,
-                request.metricsConfig
+                request.metricsConfig as Map<String, MetricConfig>
             )
         )
     }

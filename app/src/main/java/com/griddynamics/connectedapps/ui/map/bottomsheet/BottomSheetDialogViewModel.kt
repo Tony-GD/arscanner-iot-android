@@ -1,11 +1,12 @@
 package com.griddynamics.connectedapps.ui.map.bottomsheet
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.device.DeviceResponse
+
+private const val TAG: String = "BottomSheetDialogViewMo"
 
 class BottomSheetDialogViewModel : ViewModel() {
     var device: DeviceResponse? = null

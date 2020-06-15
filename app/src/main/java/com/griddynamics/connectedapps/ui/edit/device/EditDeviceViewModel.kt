@@ -18,12 +18,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val CO2 = "co2"
+const val CO2 = "CO2"
 const val TEMP = "Temperature"
+const val TEMP_SHORT = "Temp"
 const val HUMIDITY = "Humidity"
-const val PM2_5 = "pm2.5"
-const val PM1_0 = "pm1.0"
-const val PM10 = "pm10"
+const val PM2_5 = "PM2,5"
+const val PM2 = "pm2"
+const val PM1_0 = "PM1,0"
+const val PM1 = "pm1"
+const val PM10 = "PM10"
 const val DEFAULT = "[default]"
 
 private const val TAG: String = "EditDeviceViewModel"

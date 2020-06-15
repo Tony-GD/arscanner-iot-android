@@ -42,8 +42,8 @@
     </string-array>
     <string-array name="metric_types">
         <item>CO2</item>
-        <item>PM2.5</item>
-        <item>PM1.0</item>
+        <item>PM2,5</item>
+        <item>PM1,0</item>
         <item>PM10</item>
         <item>Temperature</item>
         <item>Humidity</item>

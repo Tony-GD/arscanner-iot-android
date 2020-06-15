@@ -310,29 +310,27 @@ class MapFragment : DaggerFragment() {
 
     private fun filterDevices(devices: List<DeviceResponse>): List<DeviceResponse> {
         val filteredDevices = mutableSetOf<DeviceResponse>()
-        when {
-            mapViewModel.filterViewState.isCo2.get() -> {
+            if(mapViewModel.filterViewState.isCo2.get()){
                 filteredDevices.addAll(devices.getDevicesWith(CO2))
             }
-            mapViewModel.filterViewState.isTemp.get() -> {
+            if (mapViewModel.filterViewState.isTemp.get()) {
                 filteredDevices.addAll(devices.getDevicesWith(TEMP))
             }
-            mapViewModel.filterViewState.isHumidity.get() -> {
+            if (mapViewModel.filterViewState.isHumidity.get()) {
                 filteredDevices.addAll(devices.getDevicesWith(HUMIDITY))
             }
-            mapViewModel.filterViewState.isPm25.get() -> {
+            if (mapViewModel.filterViewState.isPm25.get()) {
                 filteredDevices.addAll(devices.getDevicesWith(PM2_5))
             }
-            mapViewModel.filterViewState.isPm1.get() -> {
+            if (mapViewModel.filterViewState.isPm1.get()) {
                 filteredDevices.addAll(devices.getDevicesWith(PM1_0))
             }
-            mapViewModel.filterViewState.isPm10.get() -> {
+            if (mapViewModel.filterViewState.isPm10.get()) {
                 filteredDevices.addAll(devices.getDevicesWith(PM10))
             }
-            mapViewModel.filterViewState.isAll.get() -> {
+            if (mapViewModel.filterViewState.isAll.get()) {
                 filteredDevices.addAll(devices)
             }
-        }
         Toast.makeText(context, "Filtered ${filteredDevices.size} items", Toast.LENGTH_SHORT).show()
         return filteredDevices.toList()
     }
@@ -340,16 +338,8 @@ class MapFragment : DaggerFragment() {
     private fun List<DeviceResponse>.getDevicesWith(metric: String): List<DeviceResponse> {
         return this.filter { device ->
             var containsMetric = false
-            device.metricsConfig?.keys?.forEach { key ->
-                containsMetric = (device
-                    .metricsConfig
-                    ?.get(key)as Map<String, String>?)
-                    ?.get("measurementType")
-                    ?.equals(
-                        metric,
-                        true
-                    ) == true
-            }
+            containsMetric = device.publicMetrics?.contains(metric) == true
+            Log.d(TAG, "getDevicesWith: contains = [$containsMetric]")
             containsMetric
         }
     }

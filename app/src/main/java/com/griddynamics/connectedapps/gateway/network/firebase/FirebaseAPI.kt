@@ -147,6 +147,7 @@ object FirebaseAPI {
     }
 
     fun subscribeForMetrics(id: String): LiveData<DefaultScannersResponse> {
+        Log.d(TAG, "subscribeForMetrics() called with: id = [$id]")
         val liveData = MutableLiveData<DefaultScannersResponse>()
         firestore
             .collection("devices")
@@ -158,14 +159,9 @@ object FirebaseAPI {
                     return@addSnapshotListener
                 }
                 querySnapshot?.documents?.forEach { document ->
-                    Log.d(TAG, "subscribeForMetrics: result ${document.data}")
                     val metricName = document.reference.path.split("/").last()
                     val response = DefaultScannersResponse(metricName, 0f)
                     document.data?.let {
-                        Log.d(
-                            TAG,
-                            "subscribeForMetrics: data [${it.get("value")}] key [${it.keys.last()}] value [${it.values.last()}]"
-                        )
                         when (metricName) {
                             "[default]" -> {
                                 response.value = it.values.last().getSafeNumber()
@@ -175,7 +171,7 @@ object FirebaseAPI {
                             }
                         }
                         Log.d(TAG, "subscribeForMetrics: response $response")
-                        liveData.postValue(response)
+                        liveData.value = response
                     }
                 }
             }

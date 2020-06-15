@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/navigation_history"
-        android:name="com.griddynamics.connectedapps.ui.history.DataHistoryFragment"
+        android:name="com.griddynamics.connectedapps.ui.history.HistoryFragment"
         android:label="@string/history"
         tools:layout="@layout/fragment_data_history">
 

@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
-import com.griddynamics.connectedapps.model.metrics.MetricsResponse
-import com.griddynamics.connectedapps.ui.history.HistoryFragmentViewModel
+import com.griddynamics.connectedapps.model.metrics.MetricChartItem
+import com.griddynamics.connectedapps.ui.history.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_week_history.*
 
 private const val TAG: String = "WeekHistoryFragment"
 
-class WeekHistoryFragment(private val viewModel: HistoryFragmentViewModel) : Fragment() {
+class WeekHistoryFragment(private val viewModel: HistoryViewModel) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,18 +28,24 @@ class WeekHistoryFragment(private val viewModel: HistoryFragmentViewModel) : Fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val metrics = listOf<MetricsResponse>(
-            MetricsResponse(listOf(), listOf(), listOf()),
-            MetricsResponse(listOf(), listOf(), listOf()),
-            MetricsResponse(listOf(), listOf(), listOf()),
-            MetricsResponse(listOf(), listOf(), listOf()),
-            MetricsResponse(listOf(), listOf(), listOf())
-        )
-        viewModel.getMetrics("${viewModel.deviceId}")
+        val metrics = mutableListOf<MetricChartItem>()
+        rv_week_history_charts.layoutManager = GridLayoutManager(requireContext(), 2)
+        rv_week_history_charts.adapter = HistoryItemsAdapter(metrics)
+
+        viewModel.getWeekMetrics("${viewModel.deviceId}")
             .observe(viewLifecycleOwner, Observer {
                 when (it) {
                     is NetworkResponse.Success<MetricsMap> -> {
                         Log.d(TAG, "onViewCreated: result ${it.body}")
+                        it.body.keys.forEach { metricName ->
+                            metrics.add(MetricChartItem().apply {
+                                this.name = metricName
+                                it.body[metricName]?.let {
+                                    this.data = it
+                                }
+                            })
+                        }
+                        rv_week_history_charts.adapter?.notifyDataSetChanged()
                     }
                     is NetworkResponse.UnknownError -> {
                         Log.e(TAG, "WeekHistoryFragment: ", it.error)
@@ -49,7 +55,5 @@ class WeekHistoryFragment(private val viewModel: HistoryFragmentViewModel) : Fra
                     }
                 }
             })
-        rv_week_history_charts.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_week_history_charts.adapter = WeekHistoryItemsAdapter(metrics)
     }
 }

@@ -10,7 +10,7 @@ import com.griddynamics.connectedapps.di.ui.cutom.ColorAdaptedProgressView
 import com.griddynamics.connectedapps.model.settings.hour.HourHistoryItem
 
 class HourHistoryItemsAdapter(
-    private val dataItems: List<HourHistoryItem>
+    private val dataItems: Collection<HourHistoryItem>
 ) :
     RecyclerView.Adapter<HourHistoryItemsAdapter.HourHistoryViewHolder>() {
     class HourHistoryViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -36,6 +36,7 @@ class HourHistoryItemsAdapter(
     }
 
     override fun onBindViewHolder(holder: HourHistoryViewHolder, position: Int) {
-        holder.setItem(dataItems[position])
+        val metric = dataItems.toTypedArray()[position]
+        holder.setItem(metric)
     }
 }

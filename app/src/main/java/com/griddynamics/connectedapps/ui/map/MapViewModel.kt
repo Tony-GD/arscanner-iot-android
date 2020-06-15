@@ -32,7 +32,6 @@ class MapViewModel @Inject constructor(
     val filterViewState = FilterViewState()
     val devices = MediatorLiveData<List<DeviceResponse>>()
     val gateways = MediatorLiveData<List<GatewayResponse>>()
-    val metrics = MutableLiveData<MetricsResponse>()
 
     fun loadDevices() {
         devices.addSource(

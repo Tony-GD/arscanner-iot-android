@@ -27,10 +27,10 @@ import kotlinx.android.synthetic.main.fragment_data_history.*
 import kotlinx.android.synthetic.main.header_layout.view.*
 import javax.inject.Inject
 
-private const val TAG: String = "DataHistoryFragment"
+private const val TAG: String = "HistoryFragment"
 
-class DataHistoryFragment : DaggerFragment() {
-    private lateinit var viewModel: HistoryFragmentViewModel
+class HistoryFragment : DaggerFragment() {
+    private lateinit var viewModel: HistoryViewModel
     private lateinit var adapter: TabAdapter
     private var address: String? = null
 
@@ -51,10 +51,10 @@ class DataHistoryFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)[HistoryFragmentViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[HistoryViewModel::class.java]
         arguments?.let {
-            viewModel.deviceId = DataHistoryFragmentArgs.fromBundle(it).device
-            address = DataHistoryFragmentArgs.fromBundle(it).address
+            viewModel.deviceId = HistoryFragmentArgs.fromBundle(it).device
+            address = HistoryFragmentArgs.fromBundle(it).address
         }
         history_header.tv_header_comment.setOnClickListener { navigateToEdit() }
         history_header.ib_header_back_arrow.setOnClickListener { requireActivity().onBackPressed() }
@@ -94,7 +94,7 @@ class DataHistoryFragment : DaggerFragment() {
             }.show()
         }
         adapter = TabAdapter(this)
-        adapter.addFragment(HourHistoryFragment(), getString(R.string.now))
+        adapter.addFragment(HourHistoryFragment(viewModel), getString(R.string.now))
         adapter.addFragment(DayHistoryFragment(viewModel), getString(R.string.today))
         adapter.addFragment(WeekHistoryFragment(viewModel), getString(R.string.week))
         vp_history_pager.adapter = adapter
@@ -104,7 +104,7 @@ class DataHistoryFragment : DaggerFragment() {
     }
 
     private fun navigateToEdit() {
-        val action = DataHistoryFragmentDirections.ActionNavigationHistoryToNavigationEdit()
+        val action = HistoryFragmentDirections.ActionNavigationHistoryToNavigationEdit()
         action.setDevice("${viewModel.deviceId}")
         action.setStringIsAdding(false)
         findNavController().navigate(action)

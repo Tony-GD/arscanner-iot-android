@@ -15,12 +15,8 @@ import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment
 import com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment
-import com.griddynamics.connectedapps.ui.history.DataHistoryFragment
-import com.griddynamics.connectedapps.ui.history.hour.HourHistoryFragment
-import com.griddynamics.connectedapps.ui.history.week.WeekHistoryFragment
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_data_history.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 

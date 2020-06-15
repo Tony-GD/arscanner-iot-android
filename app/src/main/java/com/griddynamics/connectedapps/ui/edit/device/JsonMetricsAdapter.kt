@@ -67,11 +67,15 @@ class JsonMetricsAdapter(private val metrics: MutableList<JsonMetricViewState>) 
 
                 }
         }
-        holder.binding.btnJsonAdd.setOnClickListener {
-            Toast.makeText(holder.binding.root.context, "$metric", Toast.LENGTH_SHORT).show()
-            it.visibility = View.GONE
-            metrics.add(JsonMetricViewState())
-            notifyDataSetChanged()
+        holder.binding.btnJsonAdd.apply {
+            visibility =
+                if (position == itemCount - 1) View.VISIBLE else View.GONE
+            setOnClickListener {
+                Toast.makeText(holder.binding.root.context, "$metric", Toast.LENGTH_SHORT).show()
+                it.visibility = View.GONE
+                metrics.add(JsonMetricViewState())
+                notifyDataSetChanged()
+            }
         }
     }
 }

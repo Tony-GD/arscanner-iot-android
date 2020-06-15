@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/margin_10">
 
-        <include layout="@layout/header_layout" />
+        <include
+            layout="@layout/header_layout" />
     </FrameLayout>
 
     <ScrollView

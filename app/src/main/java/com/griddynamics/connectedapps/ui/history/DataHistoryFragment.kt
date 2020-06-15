@@ -56,6 +56,7 @@ class DataHistoryFragment : DaggerFragment() {
             deviceId = DataHistoryFragmentArgs.fromBundle(it).device
             address = DataHistoryFragmentArgs.fromBundle(it).address
         }
+        history_header.tv_header_comment.setOnClickListener { navigateToEdit() }
         history_header.ib_header_back_arrow.setOnClickListener { requireActivity().onBackPressed() }
         history_header.tv_header_title.text = getString(R.string.history)
         history_header.ll_header_extra_container.visibility = View.VISIBLE
@@ -101,6 +102,13 @@ class DataHistoryFragment : DaggerFragment() {
         TabLayoutMediator(tl_history_tabs, vp_history_pager) { tab, position ->
             tab.text = adapter.getTabTitle(position)
         }.attach()
+    }
+
+    private fun navigateToEdit() {
+        val action = DataHistoryFragmentDirections.ActionNavigationHistoryToNavigationEdit()
+        action.setDevice("$deviceId")
+        action.setStringIsAdding(false)
+        findNavController().navigate(action)
     }
 
     private fun getRemoveAlertDialog(action: Callback): AlertDialog {

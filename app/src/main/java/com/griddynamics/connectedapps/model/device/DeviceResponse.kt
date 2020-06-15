@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.gateway.network.api.MutableMetricsMap
 
+const val METRIC_TYPE_JSON = "json"
+const val METRIC_TYPE_SINGLE = "single_value"
+
 data class DeviceResponse(
     @SerializedName("device_id")
     var deviceId: String?,

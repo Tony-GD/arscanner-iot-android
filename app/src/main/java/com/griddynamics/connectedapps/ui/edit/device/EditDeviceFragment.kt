@@ -10,26 +10,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
 import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
-import com.griddynamics.connectedapps.model.device.DEFAULT_LAT
-import com.griddynamics.connectedapps.model.device.DEFAULT_LONG
-import com.griddynamics.connectedapps.model.device.DeviceResponse
-import com.griddynamics.connectedapps.model.device.EMPTY_DEVICE
+import com.griddynamics.connectedapps.model.device.*
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.edit_device_fragment.*
+import kotlinx.android.synthetic.main.header_layout.view.*
 import kotlinx.android.synthetic.main.location_picker_layout.view.*
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -154,10 +155,14 @@ class EditDeviceFragment : DaggerFragment() {
                 arguments
             ).stringIsAdding
             viewModel.isAdding.set(isAdding)
-            val device = Gson().fromJson(deviceJson, DeviceResponse::class.java)
+            val device = try {
+                Gson().fromJson(deviceJson, DeviceResponse::class.java)
+            } catch (e: JsonSyntaxException) {
+                viewModel.getDeviceById(deviceJson)
+            }
             viewModel.device = device
             device?.let {
-                if (it.dataFormat == "single_value") {
+                if (it.dataFormat == METRIC_TYPE_SINGLE) {
                     viewModel.isSingleValue.set(true)
                     it.metricsConfig?.keys?.firstOrNull()?.let { name ->
                         viewModel.singleMetricName.set(name)
@@ -183,6 +188,8 @@ class EditDeviceFragment : DaggerFragment() {
                 }
             })
         }
+        header_layout.tv_header_title.text = viewModel.device?.displayName
+        header_layout.ib_header_back_arrow.setOnClickListener { findNavController().popBackStack() }
         viewModel.device?.metricsConfig?.let { config ->
             config.keys.forEach { key ->
                 viewModel.configViewStateList += JsonMetricViewState().apply {
@@ -272,35 +279,17 @@ class EditDeviceFragment : DaggerFragment() {
             }
         }
 
-        binding.spEditFormat.apply {
-            val array = context.resources.getStringArray(R.array.data_format_values)
-            adapter = getSpinnerAdapter(array)
-            viewModel.device?.let {
-                if (it.dataFormat == null) {
-                    it.dataFormat = array[0]
-                }
-                setSelection(array.indexOf(it.dataFormat))
+        binding.tbEditFormat.setOnCheckedChangeListener { buttonView, isChecked ->
+            Toast.makeText(
+                context,
+                "onViewCreated() called with: isChecked = [$isChecked]",
+                Toast.LENGTH_SHORT
+            ).show()
+            if (isChecked) {
+                viewModel.device?.dataFormat = METRIC_TYPE_JSON
+            } else {
+                viewModel.device?.dataFormat = METRIC_TYPE_SINGLE
             }
-            onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //NOP
-                    }
-
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val format = array[position]
-                        viewModel.isSingleValue.set(format != "json")
-                        viewModel.device?.let {
-                            it.dataFormat = format
-                        }
-                    }
-
-                }
         }
         binding.spEditGateways.apply {
             adapter = getSpinnerAdapter(context.resources.getStringArray(R.array.demo_gateways))

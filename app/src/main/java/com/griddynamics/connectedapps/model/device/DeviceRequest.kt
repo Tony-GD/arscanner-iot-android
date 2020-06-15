@@ -38,9 +38,9 @@ var EMPTY_DEVICE_REQUEST =
         "",
         "",
         "",
-        "json",
-        "Empty user id",
-        "Empty gateway id",
+        "",
+        "",
+        "",
         emptyList(),
         emptyMap()
     )

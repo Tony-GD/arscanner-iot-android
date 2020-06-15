@@ -10,9 +10,8 @@ import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
 import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
 import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
-import com.griddynamics.connectedapps.model.device.DeviceResponse
-import com.griddynamics.connectedapps.model.device.GatewayResponse
-import com.griddynamics.connectedapps.model.device.MetricConfig
+import com.griddynamics.connectedapps.gateway.stream.DeviceStream
+import com.griddynamics.connectedapps.model.device.*
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.ui.home.Callback
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val CO2 = "co2"
-const val TEMP = "Temp"
+const val TEMP = "Temperature"
 const val HUMIDITY = "Humidity"
 const val PM2_5 = "pm2.5"
 const val PM1_0 = "pm1.0"
@@ -30,6 +29,7 @@ const val DEFAULT = "[default]"
 private const val TAG: String = "EditDeviceViewModel"
 
 class EditDeviceViewModel @Inject constructor(
+    private val deviceStream: DeviceStream,
     private val localStorage: LocalStorage,
     private val repository: AirScannerRepository
 ) :
@@ -45,6 +45,16 @@ class EditDeviceViewModel @Inject constructor(
     val networkResponse = MutableLiveData<NetworkResponse<Any, Any>>()
 
     val userGateways = MediatorLiveData<List<GatewayResponse>>()
+
+    fun getDeviceById(id: String): DeviceResponse {
+        lateinit var deviceById: DeviceResponse
+        deviceStream.scannerData.value?.forEach { device->
+            if (device.deviceId == id) {
+                deviceById = device
+            }
+        }
+        return deviceById
+    }
 
     fun loadUserGateways() {
         userGateways.addSource(FirebaseAPI.getUserGateways(localStorage.getUser()))
@@ -90,6 +100,7 @@ class EditDeviceViewModel @Inject constructor(
                 }
             }
         }
+        this.dataFormat = if (isSingleValue.get()) METRIC_TYPE_SINGLE else METRIC_TYPE_JSON
         this.metricsConfig = tempMetricsConfig
         this.publicMetrics = tempPublicMetrics
     }

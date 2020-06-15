@@ -33,7 +33,6 @@ class DataHistoryFragment : DaggerFragment() {
     private lateinit var viewModel: HistoryFragmentViewModel
     private lateinit var adapter: TabAdapter
     private var address: String? = null
-    private var deviceId: String? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -52,8 +51,9 @@ class DataHistoryFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)[HistoryFragmentViewModel::class.java]
         arguments?.let {
-            deviceId = DataHistoryFragmentArgs.fromBundle(it).device
+            viewModel.deviceId = DataHistoryFragmentArgs.fromBundle(it).device
             address = DataHistoryFragmentArgs.fromBundle(it).address
         }
         history_header.tv_header_comment.setOnClickListener { navigateToEdit() }
@@ -63,7 +63,7 @@ class DataHistoryFragment : DaggerFragment() {
         history_header.tv_header_address.text = address
         btn_history_remove.setOnClickListener {
             getRemoveAlertDialog {
-                viewModel.removeDevice("$deviceId")
+                viewModel.removeDevice("${viewModel.deviceId}")
                     .observe(viewLifecycleOwner, Observer {
                         when (it) {
                             is NetworkResponse.Success<*> -> {
@@ -93,11 +93,10 @@ class DataHistoryFragment : DaggerFragment() {
                     })
             }.show()
         }
-        viewModel = ViewModelProvider(this, viewModelFactory)[HistoryFragmentViewModel::class.java]
         adapter = TabAdapter(this)
         adapter.addFragment(HourHistoryFragment(), getString(R.string.now))
         adapter.addFragment(DayHistoryFragment(viewModel), getString(R.string.today))
-        adapter.addFragment(WeekHistoryFragment(), getString(R.string.week))
+        adapter.addFragment(WeekHistoryFragment(viewModel), getString(R.string.week))
         vp_history_pager.adapter = adapter
         TabLayoutMediator(tl_history_tabs, vp_history_pager) { tab, position ->
             tab.text = adapter.getTabTitle(position)
@@ -106,7 +105,7 @@ class DataHistoryFragment : DaggerFragment() {
 
     private fun navigateToEdit() {
         val action = DataHistoryFragmentDirections.ActionNavigationHistoryToNavigationEdit()
-        action.setDevice("$deviceId")
+        action.setDevice("${viewModel.deviceId}")
         action.setStringIsAdding(false)
         findNavController().navigate(action)
     }

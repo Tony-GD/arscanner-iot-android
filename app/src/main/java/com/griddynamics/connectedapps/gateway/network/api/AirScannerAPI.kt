@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps.gateway.network.api
 
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse
+import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.gateway.GatewayRequest
 import retrofit2.http.*
 
@@ -36,10 +37,11 @@ interface AirScannerAPI {
     suspend fun deleteGateway(@Path("id") gatewayId: String): GenericResponse<Any>
 
     @PUT(editGateway)
-    suspend fun editGateway(@Body device: GatewayRequest): GenericResponse<Any>
+    suspend fun editGateway(@Body device: GatewayResponse): GenericResponse<Any>
 
-    @GET("""$metrics/{id}/$lastHour""")
-    suspend fun getLastHourMetrics(
-        @Path("id") id: String
+    @GET("""$metrics/{id}/{timeSpan}""")
+    suspend fun getInfluxMetrics(
+        @Path("id") id: String,
+        @Path("timeSpan") timeSpan: String
     ): GenericResponse<MetricsMap>
 }

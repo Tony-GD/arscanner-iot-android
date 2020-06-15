@@ -62,7 +62,7 @@ class AirScannerRepositoryImpl
         return api.addGateway(GatewayRequest(key = request.key, displayName = request.displayName))
     }
 
-    override suspend fun editGateway(request: GatewayRequest): GenericResponse<Any> {
+    override suspend fun editGateway(request: GatewayResponse): GenericResponse<Any> {
         return api.editGateway(request)
     }
 
@@ -71,7 +71,7 @@ class AirScannerRepositoryImpl
     }
 
     override suspend fun getMetrics(request: MetricsRequest): GenericResponse<MetricsMap> {
-        return api.getLastHourMetrics(request.id)
+        return api.getInfluxMetrics(request.id, request.timeSpan)
     }
 
 

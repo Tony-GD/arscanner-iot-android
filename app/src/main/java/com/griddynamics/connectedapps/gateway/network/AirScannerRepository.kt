@@ -12,7 +12,7 @@ interface AirScannerRepository {
     suspend fun editDevice(request: DeviceResponse): GenericResponse<Any>
     suspend fun deleteDevice(deviceId: String): GenericResponse<Any>
     suspend fun addGateway(request: GatewayResponse): GenericResponse<Any>
-    suspend fun editGateway(request: GatewayRequest): GenericResponse<Any>
+    suspend fun editGateway(request: GatewayResponse): GenericResponse<Any>
     suspend fun deleteGateway(gatewayId: String): GenericResponse<Any>
     suspend fun getMetrics(request: MetricsRequest): GenericResponse<MetricsMap>
 }

@@ -56,7 +56,7 @@ class MapViewModel @Inject constructor(
     fun loadMetrics(id: String): LiveData<MetricsMap> {
         val data = MutableLiveData<MetricsMap>()
         GlobalScope.launch {
-            when (val result = repository.getMetrics(MetricsRequest(id, 2, ""))) {
+            when (val result = repository.getMetrics(MetricsRequest(id, 2, "", "lastHour"))) {
                 is NetworkResponse.Success<MetricsMap> -> {
                     metricsStream.metricsData[id] = result.body
                     data.postValue(result.body)

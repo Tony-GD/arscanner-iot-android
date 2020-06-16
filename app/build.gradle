@@ -32,7 +32,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
-        setProperty("archivesBaseName", applicationId + "(" + versionName + ")-" + versionCode)
+        setProperty("archivesBaseName", applicationId + "(" + versionName + ")-v" + versionCode)
     }
 
     buildTypes {
@@ -62,6 +62,7 @@ android {
 
 repositories {
     mavenCentral()
+    maven { url "https://repository.mulesoft.org/releases/"}
 }
 
 dependencies {
@@ -87,7 +88,7 @@ dependencies {
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     // Dynamic Feature Module Support
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
@@ -143,4 +144,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    testImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    // https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
+    testImplementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.0'
+    // https://mvnrepository.com/artifact/ca.juliusdavies/not-yet-commons-ssl
+    testImplementation group: 'ca.juliusdavies', name: 'not-yet-commons-ssl', version: '0.3.17'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16
+    testImplementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
 }

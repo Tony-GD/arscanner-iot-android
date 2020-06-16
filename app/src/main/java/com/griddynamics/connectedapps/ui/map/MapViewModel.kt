@@ -1,10 +1,8 @@
 package com.griddynamics.connectedapps.ui.map
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.griddynamics.connectedapps.gateway.local.LocalStorage
 import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
 import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
 import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
@@ -15,15 +13,14 @@ import com.griddynamics.connectedapps.gateway.stream.MetricsStream
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
-import com.griddynamics.connectedapps.model.metrics.MetricsResponse
 import com.griddynamics.connectedapps.ui.map.filter.FilterViewState
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG: String = "MapViewModel"
 
 class MapViewModel @Inject constructor(
+    private val localStorage: LocalStorage,
     private val deviceStream: DeviceStream,
     private val gatewayStream: GatewayStream,
     private val metricsStream: MetricsStream,
@@ -37,9 +34,15 @@ class MapViewModel @Inject constructor(
         devices.addSource(
             FirebaseAPI.getPublicDevices()
         ) { devices ->
-            Log.d(TAG, "loadDevices: ")
+            Log.d(TAG, "loadDevices() publicDevices called with: devices = [$devices]")
             this.devices.value = devices
-            deviceStream.scannerData.postValue(devices)
+            deviceStream.publicDevices.postValue(devices)
+        }
+        deviceStream.userDevices.addSource(
+            FirebaseAPI.getUserDevices(localStorage.getUser())
+        ) { devices ->
+            Log.d(TAG, "loadDevices() userDevices called with: devices = [$devices]")
+            deviceStream.userDevices.value = devices
         }
     }
 
@@ -54,7 +57,7 @@ class MapViewModel @Inject constructor(
 
     fun loadMetrics(id: String): LiveData<MetricsMap> {
         val data = MutableLiveData<MetricsMap>()
-        GlobalScope.launch {
+        viewModelScope.launch {
             when (val result = repository.getMetrics(MetricsRequest(id, 2, "", "lastHour"))) {
                 is NetworkResponse.Success<MetricsMap> -> {
                     metricsStream.metricsData[id] = result.body

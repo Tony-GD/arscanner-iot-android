@@ -23,10 +23,10 @@
         tools:context=".ui.edit.device.EditDeviceFragment">
 
         <FrameLayout
-            android:visibility="@{viewModel.isAdding ? View.GONE : View.VISIBLE}"
             android:id="@+id/header_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isAdding ? View.GONE : View.VISIBLE}">
 
             <include layout="@layout/header_layout" />
         </FrameLayout>
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/display_name"
+            android:textColorHint="@color/whiteTransparent"
             android:text="@={viewModel.device.displayName}" />
 
         <LinearLayout
@@ -49,13 +50,14 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/lat"
                     style="@style/AppText.SourceSansPro.White.18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColorHint="@color/whiteTransparent"
                     android:hint="@string/lat" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -63,6 +65,7 @@
                     style="@style/AppText.SourceSansPro.White.18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColorHint="@color/whiteTransparent"
                     android:hint="@string/longitude" />
             </LinearLayout>
 
@@ -79,7 +82,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
+            android:textColorHint="@color/whiteTransparent"
             android:text="@={viewModel.device.locationDescription}" />
+
+        <EditText
+            style="@style/AppText.SourceSansPro.White.18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="@dimen/scanner_item_height_50"
+            android:hint="@string/key"
+            android:textColorHint="@color/whiteTransparent"
+            android:text="@={viewModel.observableKey}"
+            android:visibility="@{viewModel.isAdding() ? View.VISIBLE : View.GONE}" />
 
         <LinearLayout
             android:layout_width="wrap_content"

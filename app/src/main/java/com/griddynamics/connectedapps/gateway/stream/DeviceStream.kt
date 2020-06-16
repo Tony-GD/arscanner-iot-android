@@ -1,8 +1,10 @@
 package com.griddynamics.connectedapps.gateway.stream
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 
 interface DeviceStream {
-    val scannerData: MutableLiveData<List<DeviceResponse>>
+    val publicDevices: MutableLiveData<List<DeviceResponse>>
+    val userDevices: MediatorLiveData<List<DeviceResponse>>
 }

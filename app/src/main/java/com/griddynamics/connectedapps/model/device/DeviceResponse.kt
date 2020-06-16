@@ -31,7 +31,8 @@ data class DeviceResponse(
     var jsonMetricsField: MutableMetricsMap?,
     var metrics: MutableMetricsMap?,
     var publicMetrics: List<String>?,
-    var metricsConfig: Map<String, Any>?
+    var metricsConfig: Map<String, Any>?,
+    var key: String? = null
 )
 
 val EMPTY_DEVICE = DeviceResponse(

@@ -15,6 +15,10 @@ import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.device.MetricConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG: String = "FirebaseAPI"
 typealias DevicesCallback = (devices: List<DeviceResponse>) -> Unit
@@ -64,6 +68,7 @@ object FirebaseAPI {
 
     private fun deviceEventListener(callback: MutableLiveData<List<DeviceResponse>>): EventListener<QuerySnapshot> {
         return EventListener { snapshot, exception ->
+            Log.d(TAG, "deviceEventListener() called with: snapshot = [${snapshot}], exception = [$exception]")
             val devices = mutableListOf<DeviceResponse>()
             snapshot?.documents?.forEach {
                 Log.d(TAG, "getPublicDevices: ${it.data}")

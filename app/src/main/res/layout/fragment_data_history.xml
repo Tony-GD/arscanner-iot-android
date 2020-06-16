@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.griddynamics.connectedapps.ui.history.DataHistoryFragment">
+    tools:context="com.griddynamics.connectedapps.ui.history.HistoryFragment">
 
     <FrameLayout
         android:id="@+id/history_header"

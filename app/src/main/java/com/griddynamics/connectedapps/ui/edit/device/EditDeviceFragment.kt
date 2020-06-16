@@ -207,7 +207,10 @@ class EditDeviceFragment : DaggerFragment() {
             when (it) {
                 is NetworkResponse.Success<*> -> getSuccessDialog().apply {
                     show()
-                    Handler().postDelayed({ dismiss() }, 2000)
+                    Handler().postDelayed({
+                        dismiss()
+                        findNavController().popBackStack()
+                    }, 2000)
                 }
                 else -> getErrorDialog().apply {
                     show()
@@ -218,9 +221,9 @@ class EditDeviceFragment : DaggerFragment() {
         viewModel.onMapPickerRequest = { showLocationPicker() }
         viewModel.loadUserGateways()
         viewModel.userGateways.observe(viewLifecycleOwner, Observer {
-            val gatewayNames = it.map { gateway ->
+            val gatewayNames = it.mapNotNull { gateway ->
                 gateway.displayName
-            }.filterNotNull()
+            }
             binding.spEditGateways.adapter = getSpinnerAdapter(
                 (gatewayNames as java.util.List<String>).toArray(
                     Array(gatewayNames.size) { i -> gatewayNames[i] }

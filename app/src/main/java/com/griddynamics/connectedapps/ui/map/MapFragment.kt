@@ -96,9 +96,11 @@ class MapFragment : DaggerFragment() {
 
     private val locationChangeListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            val mapController = map.controller as MapController
-            val startPoint = GeoPoint(location.latitude, location.longitude)
-            mapController.animateTo(startPoint)
+            map?.let {
+                val mapController = it.controller as MapController
+                val startPoint = GeoPoint(location.latitude, location.longitude)
+                mapController.animateTo(startPoint)
+            }
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {

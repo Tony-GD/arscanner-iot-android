@@ -11,6 +11,18 @@
         parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
+    
+    <style name="AppEditText" parent="AppText.SourceSansPro.White.18">
+        <item name="android:background">@drawable/ghost_background</item>
+        <item name="android:padding">@dimen/marker_size_12</item>
+        <item name="android:textColorHint">@color/whiteTransparent</item>
+        <item name="android:layout_marginBottom">@dimen/margin_10</item>
+    </style>
+
+    <style name="AppTitleText" parent="AppText.SourceSansPro.White.18">
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+        <item name="android:layout_marginBottom">@dimen/padding_5</item>
+    </style>
 
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">

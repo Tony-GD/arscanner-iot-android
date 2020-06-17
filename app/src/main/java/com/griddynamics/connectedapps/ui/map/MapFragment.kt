@@ -44,6 +44,7 @@ import kotlinx.android.synthetic.main.search_layout.view.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapController
 import org.osmdroid.views.overlay.Marker
 import javax.inject.Inject
@@ -216,8 +217,9 @@ class MapFragment : DaggerFragment() {
 
     private fun setupMap() {
         map.setTileSource(TileSourceFactory.MAPNIK)
+        map.setTileSource(TileSourceFactory.OpenTopo)
         val mapController = map.controller as MapController
-        map.setBuiltInZoomControls(true)
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
         mapController.zoomTo(10)
         map.setUseDataConnection(true)
         map.setMultiTouchControls(true)

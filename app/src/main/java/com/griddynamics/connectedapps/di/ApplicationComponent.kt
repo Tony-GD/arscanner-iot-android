@@ -2,12 +2,14 @@ package com.griddynamics.connectedapps.di
 
 import android.app.Application
 import com.griddynamics.connectedapps.BaseApp
-import com.griddynamics.connectedapps.di.gateway.GatewayModule
-import com.griddynamics.connectedapps.di.gateway.StreamModule
+import com.griddynamics.connectedapps.di.repository.RepositoryModule
+import com.griddynamics.connectedapps.di.repository.StreamModule
 import com.griddynamics.connectedapps.di.ui.edit.device.EditFragmentContributor
 import com.griddynamics.connectedapps.di.ui.edit.device.EditModule
 import com.griddynamics.connectedapps.di.ui.edit.gateway.EditGatewayFragmentContributor
 import com.griddynamics.connectedapps.di.ui.edit.gateway.EditGatewayModule
+import com.griddynamics.connectedapps.di.ui.gateway.GatewayDetailsFragmentContributor
+import com.griddynamics.connectedapps.di.ui.gateway.GatewayDetailsModule
 import com.griddynamics.connectedapps.di.ui.greeting.GreetingActivityContributor
 import com.griddynamics.connectedapps.di.ui.history.HistoryFragmentContributor
 import com.griddynamics.connectedapps.di.ui.history.HistoryModule
@@ -30,7 +32,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidSupportInjectionModule::class,
-        GatewayModule::class,
+        RepositoryModule::class,
         StreamModule::class,
         ViewModelFactoryModule::class,
         HomeModule::class,
@@ -47,7 +49,9 @@ import javax.inject.Singleton
         SettingsModule::class,
         SettingsFragmentContributor::class,
         EditGatewayFragmentContributor::class,
-        MainActivityContributor::class]
+        MainActivityContributor::class,
+        GatewayDetailsFragmentContributor::class,
+        GatewayDetailsModule::class]
 )
 interface ApplicationComponent : AndroidInjector<BaseApp> {
 

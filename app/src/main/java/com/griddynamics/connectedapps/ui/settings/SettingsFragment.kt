@@ -35,7 +35,7 @@ class SettingsFragment : DaggerFragment() {
         }
 
         override fun onGatewaySelected(gatewayId: String) {
-//            TODO("Not yet implemented")
+            navigateToGatewayDetailsFragment(gatewayId)
         }
 
     }
@@ -46,6 +46,12 @@ class SettingsFragment : DaggerFragment() {
         actionGlobalNavigationHistory.setAddress(address)
         actionGlobalNavigationHistory.setDevice(deviceId)
         findNavController().navigate(actionGlobalNavigationHistory)
+    }
+
+    private fun navigateToGatewayDetailsFragment(gatewayId: String) {
+        val action = SettingsFragmentDirections.ActionNavigationSettingsToGatewayDetailsFragment()
+        action.setGatewayId(gatewayId)
+        findNavController().navigate(action)
     }
 
     override fun onCreateView(

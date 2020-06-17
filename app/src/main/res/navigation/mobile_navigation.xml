@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_navigation_settings_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_settings_to_gatewayDetailsFragment"
+            app:destination="@id/gatewayDetailsFragment" />
     </fragment>
 
 
@@ -92,5 +95,14 @@
         <action
             android:id="@+id/action_navigation_history_to_navigation_edit"
             app:destination="@id/navigation_edit" />
+    </fragment>
+    <fragment
+        android:id="@+id/gatewayDetailsFragment"
+        android:name="com.griddynamics.connectedapps.ui.gateway.GatewayDetailsFragment"
+        android:label="GatewayDetailsFragment" >
+        <argument
+            android:name="gatewayId"
+            android:defaultValue="null"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.di.gateway
+package com.griddynamics.connectedapps.di.repository
 
 import com.griddynamics.connectedapps.gateway.stream.*
 import dagger.Module

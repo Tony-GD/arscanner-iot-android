@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.griddynamics.connectedapps.model.DefaultScannersResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="@dimen/width_98"
+        android:layout_height="@dimen/height_54"
+        android:background="@drawable/gateway_device_item_bg"
+        android:padding="@dimen/padding_8">
+
+        <TextView
+            android:id="@+id/tv_gateway_device_item_title"
+            style="@style/AppText.FiraSans.White.16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.metricName}"
+            android:textColor="@color/light_gray"
+            app:layout_constraintBottom_toTopOf="@id/tv_gateway_device_item_value"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_gateway_device_item_value"
+            style="@style/AppText.FiraSans.White.16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`` + item.value}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_gateway_device_item_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

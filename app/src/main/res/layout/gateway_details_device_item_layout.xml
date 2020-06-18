@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="address"
+            type="String" />
+
+        <variable
+            name="metric"
+            type="com.griddynamics.connectedapps.model.DefaultScannersResponse" />
+
+        <variable
+            name="device"
+            type="com.griddynamics.connectedapps.model.device.DeviceResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ghost_background">
+
+        <include
+            android:id="@+id/gateway_device_item_progress"
+            layout="@layout/circular_bar_layout"
+            app:label="@{metric.metricName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:maxValue="@{metric.maxValue}"
+            app:progress="@{metric.value}"
+            app:textProgress="@{`` + metric.value}" />
+
+        <include
+            layout="@layout/gateway_details_device_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/gateway_device_item_progress"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_gateway_details_items_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/gateway_device_item_progress" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

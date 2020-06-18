@@ -7,11 +7,11 @@
         <item name="colorPrimaryDark">@color/light_gray</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
-    
+
     <style name="AppEditText" parent="AppText.SourceSansPro.White.18">
         <item name="android:background">@drawable/ghost_background</item>
         <item name="android:padding">@dimen/marker_size_12</item>
@@ -24,8 +24,7 @@
         <item name="android:layout_marginBottom">@dimen/padding_5</item>
     </style>
 
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="behavior_peekHeight">@dimen/bottom_sheet_height_200</item>
     </style>
 
@@ -80,6 +79,10 @@
 
     <style name="AppText.FiraSans.White.16" parent="AppText.FiraSans.White">
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppText.FiraSans.White.16.Bold" parent="AppText.FiraSans.White.16">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppDialog" parent="ThemeOverlay.AppCompat.Dialog">

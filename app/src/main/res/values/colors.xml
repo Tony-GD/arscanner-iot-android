@@ -13,4 +13,6 @@
     <color name="light_gray">#6A6A6A</color>
     <color name="dark_gray">#242C35</color>
     <color name="ghost_gray">#30363D</color>
+    <color name="green_dark">#47de26</color>
+    <color name="green_yellow">#ded526</color>
 </resources>

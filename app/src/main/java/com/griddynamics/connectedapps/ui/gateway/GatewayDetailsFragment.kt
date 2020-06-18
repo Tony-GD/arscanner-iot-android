@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.gateway_details_fragment.*
+import kotlinx.android.synthetic.main.header_layout.view.*
 import javax.inject.Inject
 
 class GatewayDetailsFragment : DaggerFragment() {
@@ -34,7 +36,13 @@ class GatewayDetailsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)[GatewayDetailsViewModel::class.java]
         arguments?.let {
-            tv_gateway_details_id.text = GatewayDetailsFragmentArgs.fromBundle(it).gatewayId
+            val gatewayId = GatewayDetailsFragmentArgs.fromBundle(it).gatewayId
+            val gateway = viewModel.getGateway(gatewayId)
+            val devices = viewModel.getGatewayDevices(gatewayId)
+            gateway_details_header.tv_header_title.text = gateway?.displayName
+            rv_gateway_details_devices_container.layoutManager = LinearLayoutManager(context)
+            rv_gateway_details_devices_container.adapter =
+                GatewayDetailsDevicesAdapter(viewLifecycleOwner, devices, viewModel)
         }
     }
 }

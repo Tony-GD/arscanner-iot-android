@@ -34,4 +34,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="padding_100">100dp</dimen>
+    <dimen name="width_98">98dp</dimen>
+    <dimen name="height_54">54dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
 </resources>

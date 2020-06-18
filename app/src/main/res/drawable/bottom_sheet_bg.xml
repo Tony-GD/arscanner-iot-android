@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:bottomLeftRadius="0dp"
-        android:topLeftRadius="@dimen/radius_4"
-        android:topRightRadius="@dimen/radius_4"
-        android:bottomRightRadius="0dp"/>
-    <solid android:color="@color/ghost_gray"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/colorMapBlack" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp"
+                android:topLeftRadius="@dimen/radius_4"
+                android:topRightRadius="@dimen/radius_4" />
+            <solid android:color="@color/ghost_gray" />
+        </shape>
+    </item>
+</layer-list>

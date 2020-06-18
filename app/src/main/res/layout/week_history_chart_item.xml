@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/size_154"
-    android:layout_height="@dimen/size_154"
+<com.github.florent37.shapeofview.shapes.RoundRectView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:shape_roundRect_bottomLeftRadius="@dimen/radius_4"
+    app:shape_roundRect_bottomRightRadius="@dimen/radius_4"
+    app:shape_roundRect_topLeftRadius="@dimen/radius_4"
+    app:shape_roundRect_topRightRadius="@dimen/radius_4"
     android:layout_margin="@dimen/margin_20"
-    android:background="@drawable/ghost_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <com.anychart.AnyChartView
-        android:background="@drawable/ghost_background"
-        android:id="@+id/any_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_width="@dimen/size_154"
+    android:layout_height="@dimen/size_154">
 
-    <ProgressBar
-        android:id="@+id/progress_bar_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/size_154"
+        android:layout_height="@dimen/size_154"
+        android:background="@drawable/ghost_background">
+
+        <com.anychart.AnyChartView
+            android:id="@+id/any_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ghost_background"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.github.florent37.shapeofview.shapes.RoundRectView>

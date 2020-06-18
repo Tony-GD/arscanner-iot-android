@@ -2,14 +2,14 @@ package com.griddynamics.connectedapps.ui.map
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
-import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
-import com.griddynamics.connectedapps.gateway.stream.DeviceStream
-import com.griddynamics.connectedapps.gateway.stream.GatewayStream
-import com.griddynamics.connectedapps.gateway.stream.MetricsStream
+import com.griddynamics.connectedapps.repository.local.LocalStorage
+import com.griddynamics.connectedapps.repository.network.AirScannerRepository
+import com.griddynamics.connectedapps.repository.network.api.MetricsMap
+import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.repository.stream.DeviceStream
+import com.griddynamics.connectedapps.repository.stream.GatewayStream
+import com.griddynamics.connectedapps.repository.stream.MetricsStream
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest

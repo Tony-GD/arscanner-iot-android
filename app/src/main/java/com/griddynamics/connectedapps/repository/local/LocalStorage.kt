@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.gateway.local
+package com.griddynamics.connectedapps.repository.local
 
 import com.griddynamics.connectedapps.model.User
 

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.FragmentHomeBindingImpl
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment
 import com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment

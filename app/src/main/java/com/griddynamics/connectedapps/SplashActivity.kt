@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.EmptyUser
 import com.griddynamics.connectedapps.ui.greeting.GreetingActivity
 import dagger.android.AndroidInjection

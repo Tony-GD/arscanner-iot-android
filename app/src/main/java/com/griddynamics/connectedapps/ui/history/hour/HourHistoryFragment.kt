@@ -10,9 +10,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.model.settings.hour.HourHistoryItem
 import com.griddynamics.connectedapps.ui.history.HistoryViewModel
+import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStream
 import kotlinx.android.synthetic.main.fragmnet_hour_history.*
 
-class HourHistoryFragment(private val viewModel: HistoryViewModel) : Fragment() {
+class HourHistoryFragment(
+    private val viewModel: HistoryViewModel,
+    private val historyEventsStream: HourHistoryEventsStream
+) : Fragment() {
+
+    private val metrics = mutableMapOf<String, HourHistoryItem>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,13 +28,26 @@ class HourHistoryFragment(private val viewModel: HistoryViewModel) : Fragment() 
         return inflater.inflate(R.layout.fragmnet_hour_history, container, false)
     }
 
+    private fun handleLoading() {
+        pb_hour_loading.visibility = View.VISIBLE
+    }
+
+    private fun handleDefault() {
+        pb_hour_loading.visibility = View.GONE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val metrics = mutableMapOf<String, HourHistoryItem>()
         rv_hour_item_metrics.layoutManager = GridLayoutManager(requireContext(), 2)
         rv_hour_item_metrics.adapter = HourHistoryItemsAdapter(metrics.values)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleLoading()
         viewModel.subscribeForMetrics("${viewModel.deviceId}")
             .observe(viewLifecycleOwner, Observer { response ->
+                handleDefault()
                 metrics[response.metricName] = HourHistoryItem(
                     response.metricName,
                     "Normal range: < 1000",
@@ -36,6 +56,5 @@ class HourHistoryFragment(private val viewModel: HistoryViewModel) : Fragment() 
                 )
                 rv_hour_item_metrics.adapter?.notifyDataSetChanged()
             })
-
     }
 }

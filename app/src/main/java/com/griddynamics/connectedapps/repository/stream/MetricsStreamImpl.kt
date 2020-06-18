@@ -1,8 +1,7 @@
-package com.griddynamics.connectedapps.gateway.stream
+package com.griddynamics.connectedapps.repository.stream
 
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.internal.LinkedTreeMap
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
+import com.griddynamics.connectedapps.repository.network.api.MetricsMap
 import javax.inject.Singleton
 
 @Singleton

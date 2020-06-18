@@ -3,8 +3,8 @@ package com.griddynamics.connectedapps.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
+import com.griddynamics.connectedapps.repository.local.LocalStorage
+import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import javax.inject.Inject

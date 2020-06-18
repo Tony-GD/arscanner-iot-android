@@ -3,8 +3,10 @@
     android:layout_width="@dimen/size_154"
     android:layout_height="@dimen/size_154"
     android:layout_margin="@dimen/margin_20"
+    android:background="@drawable/ghost_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.anychart.AnyChartView
+        android:background="@drawable/ghost_background"
         android:id="@+id/any_chart_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

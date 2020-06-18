@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.GeoPoint
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.repository.local.LocalStorage
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.util.MapUtil
 import javax.inject.Inject

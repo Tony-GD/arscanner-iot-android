@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.gateway.network.api
+package com.griddynamics.connectedapps.repository.network.api
 
 import java.io.IOException
 

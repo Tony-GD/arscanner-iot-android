@@ -22,9 +22,11 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
-import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
 import com.griddynamics.connectedapps.model.device.*
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
+import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
+import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
+import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
 import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
@@ -47,10 +49,11 @@ class EditDeviceFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var eventsStream: HomeScreenEventsStream
     private lateinit var binding: EditDeviceFragmentBinding
     private lateinit var viewModel: EditDeviceViewModel
-    private var selectedLat: Float = 0f
-    private var selectedLong: Float = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,8 +75,8 @@ class EditDeviceFragment : DaggerFragment() {
             }
 
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
-                selectedLat = p.latitude.toFloat()
-                selectedLong = p.longitude.toFloat()
+                viewModel.selectedLat = p.latitude.toFloat()
+                viewModel.selectedLong = p.longitude.toFloat()
                 view.map_picker.overlays.clear()
                 val elementMarker = Marker(view.map_picker)
                 elementMarker.icon = requireContext().getDrawable(R.drawable.ic_pin)
@@ -96,8 +99,8 @@ class EditDeviceFragment : DaggerFragment() {
             .setView(view)
             .create()
         view.picker_ok_btn.setOnClickListener {
-            binding.lat.setText(this.selectedLat.toString())
-            binding.lon.setText(this.selectedLong.toString())
+            binding.lat.setText(viewModel.selectedLat.toString())
+            binding.lon.setText(viewModel.selectedLong.toString())
             dialog.dismiss()
         }
         dialog.show()
@@ -106,7 +109,7 @@ class EditDeviceFragment : DaggerFragment() {
     private fun setupMap(map: MapView) {
         map.setTileSource(TileSourceFactory.MAPNIK)
         val mapController = map.controller as MapController
-        map.setBuiltInZoomControls(true)
+        map.setBuiltInZoomControls(false)
         mapController.zoomTo(10)
         map.setUseDataConnection(true)
         map.setMultiTouchControls(true)
@@ -140,12 +143,24 @@ class EditDeviceFragment : DaggerFragment() {
             }
     }
 
+    private fun handleLoading() {
+        binding.btnSaveDevice.isEnabled = false
+        binding.pbLoading.visibility = View.VISIBLE
+    }
+
+    private fun handleDefault() {
+        binding.btnSaveDevice.isEnabled = true
+        binding.pbLoading.visibility = View.GONE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(
-            TAG,
-            "onViewCreated() called with: view = [$view], savedInstanceState = [$savedInstanceState]"
-        )
         super.onViewCreated(view, savedInstanceState)
+        eventsStream.events.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is HomeScreenEvent.LOADING -> handleLoading()
+                is HomeScreenEvent.DEFAULT -> handleDefault()
+            }
+        })
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditDeviceViewModel::class.java)
         arguments?.apply {
             val deviceJson = EditDeviceFragmentArgs.fromBundle(

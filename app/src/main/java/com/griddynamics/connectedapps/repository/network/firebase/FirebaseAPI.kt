@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.gateway.network.firebase
+package com.griddynamics.connectedapps.repository.network.firebase
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -15,10 +15,6 @@ import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.device.MetricConfig
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private const val TAG: String = "FirebaseAPI"
 typealias DevicesCallback = (devices: List<DeviceResponse>) -> Unit

@@ -1,7 +1,7 @@
 package com.griddynamics.connectedapps.di.repository
 
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.local.LocalStorageImpl
+import com.griddynamics.connectedapps.repository.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorageImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

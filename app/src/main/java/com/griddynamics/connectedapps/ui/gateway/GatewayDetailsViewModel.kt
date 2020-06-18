@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.GeoPoint
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
-import com.griddynamics.connectedapps.gateway.stream.DeviceStream
-import com.griddynamics.connectedapps.gateway.stream.GatewayStream
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.repository.stream.DeviceStream
+import com.griddynamics.connectedapps.repository.stream.GatewayStream
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse

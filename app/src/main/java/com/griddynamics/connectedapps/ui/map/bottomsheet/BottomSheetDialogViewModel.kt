@@ -2,7 +2,7 @@ package com.griddynamics.connectedapps.ui.map.bottomsheet
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 

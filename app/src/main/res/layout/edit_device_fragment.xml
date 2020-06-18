@@ -12,220 +12,224 @@
             type="com.griddynamics.connectedapps.ui.edit.device.EditDeviceViewModel" />
     </data>
 
-
-    <LinearLayout
-        android:id="@+id/ll_edit_root"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/ghost_gray"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/margin_10"
-        tools:context=".ui.edit.device.EditDeviceFragment">
-
-        <FrameLayout
-            android:id="@+id/header_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewModel.isAdding ? View.GONE : View.VISIBLE}">
-
-            <include layout="@layout/header_layout" />
-        </FrameLayout>
-
-        <TextView
-            style="@style/AppTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/display_name" />
-
-        <EditText
-            android:id="@+id/et_edit_display_name"
-            style="@style/AppEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/display_name"
-            android:text="@={viewModel.device.displayName}" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll_edit_root"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@color/ghost_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_10"
+            tools:context=".ui.edit.device.EditDeviceFragment">
+
+            <FrameLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isAdding ? View.GONE : View.VISIBLE}">
+
+                <include layout="@layout/header_layout" />
+            </FrameLayout>
+
+            <TextView
+                style="@style/AppTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/display_name" />
+
+            <EditText
+                android:id="@+id/et_edit_display_name"
+                style="@style/AppEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/display_name"
+                android:text="@={viewModel.device.displayName}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/AppTitleText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/location" />
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/lat"
-                        style="@style/AppEditText"
+                    <TextView
+                        style="@style/AppTitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_5"
-                        android:layout_marginBottom="0dp"
-                        android:layout_weight="1"
-                        android:hint="@string/lat"
-                        android:textColorHint="@color/whiteTransparent" />
+                        android:text="@string/location" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/lon"
-                        style="@style/AppEditText"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
-                        android:layout_weight="1"
-                        android:hint="@string/longitude"
-                        android:textColorHint="@color/whiteTransparent" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <ImageButton
-                        android:layout_width="18dp"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="@dimen/margin_10"
-                        android:background="@drawable/ic_location"
-                        android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/lat"
+                            style="@style/AppEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/padding_5"
+                            android:layout_marginBottom="0dp"
+                            android:layout_weight="1"
+                            android:hint="@string/lat"
+                            android:textColorHint="@color/whiteTransparent" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/lon"
+                            style="@style/AppEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="0dp"
+                            android:layout_weight="1"
+                            android:hint="@string/longitude"
+                            android:textColorHint="@color/whiteTransparent" />
+
+                        <ImageButton
+                            android:layout_width="18dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="@dimen/margin_10"
+                            android:background="@drawable/ic_location"
+                            android:onClick="@{()-> viewModel.onMapPickerRequest.invoke()}" />
+                    </LinearLayout>
                 </LinearLayout>
+
+
             </LinearLayout>
-
-
-        </LinearLayout>
-
-        <TextView
-            style="@style/AppTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/description" />
-
-        <EditText
-            style="@style/AppEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/description"
-            android:text="@={viewModel.device.locationDescription}" />
-
-        <TextView
-            style="@style/AppTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/key" />
-
-        <EditText
-            style="@style/AppEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/key"
-            android:maxHeight="@dimen/scanner_item_height_50"
-            android:text="@={viewModel.observableKey}"
-            android:visibility="@{viewModel.isAdding() ? View.VISIBLE : View.GONE}" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <TextView
                 style="@style/AppTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
+
+            <EditText
+                style="@style/AppEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description"
+                android:text="@={viewModel.device.locationDescription}" />
+
+            <TextView
+                style="@style/AppTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/key" />
+
+            <EditText
+                style="@style/AppEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/key"
+                android:maxHeight="@dimen/scanner_item_height_50"
+                android:text="@={viewModel.observableKey}"
+                android:visibility="@{viewModel.isAdding() ? View.VISIBLE : View.GONE}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/AppTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/radius_4"
+                    android:text="@string/gateway" />
+
+                <Spinner
+                    android:id="@+id/sp_edit_gateways"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ghost_background"
+                    android:entries="@array/demo_gateways" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/radius_4"
-                android:text="@string/gateway" />
+                android:layout_marginVertical="@dimen/margin_10"
+                android:visibility="@{viewModel.isAdding() ? View.VISIBLE : View.GONE }">
 
-            <Spinner
-                android:id="@+id/sp_edit_gateways"
+                <ToggleButton
+                    android:id="@+id/tb_edit_format"
+                    android:layout_width="210dp"
+                    android:layout_height="36dp"
+                    android:button="@drawable/data_format_button_background"
+                    android:checked="@={viewModel.isSingleValue}" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_edit_json_metrics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ghost_background"
-                android:entries="@array/demo_gateways" />
+                android:visibility="@{viewModel.isSingleValue || viewModel.isAdding ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:id="@+id/ll_edit_single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.isSingleValue &amp;&amp; !viewModel.isAdding ? View.VISIBLE : View.GONE}">
+
+                <EditText
+                    android:id="@+id/et_edit_single_name"
+                    style="@style/AppEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/display_name"
+                    android:text="@={viewModel.singleMetricName}" />
+
+                <EditText
+                    android:id="@+id/et_edit_single_value"
+                    style="@style/AppEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/measurement"
+                    android:text="@={viewModel.singleMetricMeasurement}" />
+
+                <Switch
+                    style="@style/AppText.SourceSansPro.White.14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.isSingleValuePublic}"
+                    android:text="@string/is_public" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_save_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/marker_size_12"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/ic_normal"
+                android:enabled="true"
+                android:onClick="@{()-> viewModel.saveEditedDevice()}"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+
         </LinearLayout>
 
-        <LinearLayout
+        <ProgressBar
+            android:id="@+id/pb_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_10"
-            android:visibility="@{viewModel.isAdding() ? View.VISIBLE : View.GONE }">
-
-            <ToggleButton
-                android:id="@+id/tb_edit_format"
-                android:layout_width="210dp"
-                android:layout_height="36dp"
-                android:button="@drawable/data_format_button_background"
-                android:checked="@={viewModel.isSingleValue}" />
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_edit_json_metrics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewModel.isSingleValue || viewModel.isAdding ? View.GONE : View.VISIBLE}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <LinearLayout
-            android:id="@+id/ll_edit_single"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.isSingleValue &amp;&amp; !viewModel.isAdding ? View.VISIBLE : View.GONE}">
-
-            <EditText
-                android:id="@+id/et_edit_single_name"
-                style="@style/AppEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/display_name"
-                android:text="@={viewModel.singleMetricName}" />
-
-            <EditText
-                android:id="@+id/et_edit_single_value"
-                style="@style/AppEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/measurement"
-                android:text="@={viewModel.singleMetricMeasurement}" />
-
-            <Switch
-                style="@style/AppText.SourceSansPro.White.14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.isSingleValuePublic}"
-                android:text="@string/is_public" />
-        </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/marker_size_12"
-            android:layout_marginTop="@dimen/margin_10"
-            android:background="@drawable/ic_normal"
-            android:enabled="true"
-            android:onClick="@{()-> viewModel.saveEditedDevice()}"
-            android:text="@string/save"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/marker_size_12"
-            android:layout_marginTop="@dimen/margin_10"
-            android:background="@drawable/ic_hover"
-            android:enabled="true"
-            android:onClick="@{()->viewModel.deleteDevice()}"
-            android:text="@string/remove_title"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:visibility="gone" />
-
-    </LinearLayout>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,8 +2,8 @@ package com.griddynamics.connectedapps.di
 
 import com.google.gson.GsonBuilder
 import com.griddynamics.connectedapps.di.repository.LocalStorageModule
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.network.api.NetworkResponseAdapterFactory
+import com.griddynamics.connectedapps.repository.local.LocalStorage
+import com.griddynamics.connectedapps.repository.network.api.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor

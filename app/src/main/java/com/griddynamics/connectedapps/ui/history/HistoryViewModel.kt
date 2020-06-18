@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
-import com.griddynamics.connectedapps.gateway.network.api.GenericResponse
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
-import com.griddynamics.connectedapps.gateway.network.firebase.FirebaseAPI
-import com.griddynamics.connectedapps.gateway.stream.MetricsStream
+import com.griddynamics.connectedapps.repository.network.AirScannerRepository
+import com.griddynamics.connectedapps.repository.network.api.GenericResponse
+import com.griddynamics.connectedapps.repository.network.api.MetricsMap
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.repository.stream.MetricsStream
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
 import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_DAY

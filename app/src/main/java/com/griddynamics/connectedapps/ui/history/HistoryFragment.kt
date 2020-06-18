@@ -13,10 +13,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.gateway.network.api.NetworkResponse
+import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.ui.history.day.DayHistoryFragment
+import com.griddynamics.connectedapps.ui.history.day.events.DayHistoryEventsStream
 import com.griddynamics.connectedapps.ui.history.hour.HourHistoryFragment
+import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStream
 import com.griddynamics.connectedapps.ui.history.week.WeekHistoryFragment
+import com.griddynamics.connectedapps.ui.history.week.events.WeekHistoryEventsStream
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.ui.home.TabAdapter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
@@ -36,6 +39,15 @@ class HistoryFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var dayHistoryEventsStream: DayHistoryEventsStream
+
+    @Inject
+    lateinit var hourHistoryEventsStream: HourHistoryEventsStream
+
+    @Inject
+    lateinit var weekHistoryEventsStream: WeekHistoryEventsStream
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,9 +106,9 @@ class HistoryFragment : DaggerFragment() {
             }.show()
         }
         adapter = TabAdapter(this)
-        adapter.addFragment(HourHistoryFragment(viewModel), getString(R.string.now))
-        adapter.addFragment(DayHistoryFragment(viewModel), getString(R.string.today))
-        adapter.addFragment(WeekHistoryFragment(viewModel), getString(R.string.week))
+        adapter.addFragment(HourHistoryFragment(viewModel, hourHistoryEventsStream), getString(R.string.now))
+        adapter.addFragment(DayHistoryFragment(viewModel, dayHistoryEventsStream), getString(R.string.today))
+        adapter.addFragment(WeekHistoryFragment(viewModel, weekHistoryEventsStream), getString(R.string.week))
         vp_history_pager.adapter = adapter
         TabLayoutMediator(tl_history_tabs, vp_history_pager) { tab, position ->
             tab.text = adapter.getTabTitle(position)

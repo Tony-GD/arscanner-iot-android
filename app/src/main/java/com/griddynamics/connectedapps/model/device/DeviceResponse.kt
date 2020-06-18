@@ -3,8 +3,7 @@ package com.griddynamics.connectedapps.model.device
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.google.gson.annotations.SerializedName
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
-import com.griddynamics.connectedapps.gateway.network.api.MutableMetricsMap
+import com.griddynamics.connectedapps.repository.network.api.MutableMetricsMap
 
 const val METRIC_TYPE_JSON = "json"
 const val METRIC_TYPE_SINGLE = "single_value"

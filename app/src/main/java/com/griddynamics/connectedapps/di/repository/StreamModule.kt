@@ -1,6 +1,6 @@
 package com.griddynamics.connectedapps.di.repository
 
-import com.griddynamics.connectedapps.gateway.stream.*
+import com.griddynamics.connectedapps.repository.stream.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

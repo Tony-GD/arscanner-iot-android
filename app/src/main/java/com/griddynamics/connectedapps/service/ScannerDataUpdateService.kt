@@ -14,8 +14,8 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
-import com.griddynamics.connectedapps.gateway.local.LocalStorageImpl
+import com.griddynamics.connectedapps.repository.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorageImpl
 import com.griddynamics.connectedapps.model.SpecialScannerResponse
 import com.griddynamics.connectedapps.ui.widget.AirScannerSubscriptionWidget
 

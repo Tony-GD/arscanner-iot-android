@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.gateway.stream
+package com.griddynamics.connectedapps.repository.stream
 
 import androidx.lifecycle.MutableLiveData
 import com.griddynamics.connectedapps.model.device.GatewayResponse

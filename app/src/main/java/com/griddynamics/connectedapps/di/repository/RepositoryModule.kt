@@ -1,7 +1,7 @@
 package com.griddynamics.connectedapps.di.repository
 
-import com.griddynamics.connectedapps.gateway.network.AirScannerRepository
-import com.griddynamics.connectedapps.gateway.network.AirScannerRepositoryImpl
+import com.griddynamics.connectedapps.repository.network.AirScannerRepository
+import com.griddynamics.connectedapps.repository.network.AirScannerRepositoryImpl
 import dagger.Module
 import dagger.Provides
 

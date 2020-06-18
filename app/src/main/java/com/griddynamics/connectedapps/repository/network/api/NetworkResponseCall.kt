@@ -1,8 +1,8 @@
-package com.griddynamics.connectedapps.gateway.network.api
+package com.griddynamics.connectedapps.repository.network.api
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import okhttp3.Request
 import okhttp3.ResponseBody
 import retrofit2.Call

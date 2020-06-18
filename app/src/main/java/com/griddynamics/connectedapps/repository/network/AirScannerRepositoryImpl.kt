@@ -1,8 +1,8 @@
-package com.griddynamics.connectedapps.gateway.network
+package com.griddynamics.connectedapps.repository.network
 
-import com.griddynamics.connectedapps.gateway.network.api.AirScannerAPI
-import com.griddynamics.connectedapps.gateway.network.api.GenericResponse
-import com.griddynamics.connectedapps.gateway.network.api.MetricsMap
+import com.griddynamics.connectedapps.repository.network.api.AirScannerAPI
+import com.griddynamics.connectedapps.repository.network.api.GenericResponse
+import com.griddynamics.connectedapps.repository.network.api.MetricsMap
 import com.griddynamics.connectedapps.model.device.DeviceRequest
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse

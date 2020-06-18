@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.gateway.stream.GatewayStream
+import com.griddynamics.connectedapps.repository.stream.GatewayStream
 import com.griddynamics.connectedapps.model.settings.SettingsDeviceItem
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory

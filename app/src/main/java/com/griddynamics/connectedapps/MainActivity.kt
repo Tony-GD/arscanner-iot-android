@@ -11,7 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.EmptyUser
 import com.griddynamics.connectedapps.service.ScannerDataUpdateService
 import com.griddynamics.connectedapps.ui.greeting.GreetingActivity

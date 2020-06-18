@@ -1,7 +1,6 @@
-package com.griddynamics.connectedapps.gateway.network.api
+package com.griddynamics.connectedapps.repository.network.api
 
 import com.griddynamics.connectedapps.model.device.DeviceRequest
-import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.gateway.GatewayRequest
 import retrofit2.http.*

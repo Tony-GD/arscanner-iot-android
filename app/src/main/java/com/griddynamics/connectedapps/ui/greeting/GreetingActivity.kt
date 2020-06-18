@@ -13,13 +13,11 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.ktx.Firebase
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.gateway.local.LocalStorage
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.User
 import dagger.android.AndroidInjection
-import dagger.android.DaggerActivity
 import kotlinx.android.synthetic.main.activity_greeting.*
 import javax.inject.Inject
 

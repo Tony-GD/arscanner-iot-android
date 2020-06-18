@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.gateway.stream.GatewayStream
 import com.griddynamics.connectedapps.model.settings.SettingsDeviceItem
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
@@ -28,6 +29,9 @@ class SettingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var gatewayStream: GatewayStream
     private lateinit var settingsViewModel: SettingsViewModel
     private var onDeviceSelectedListener = object : SettingsItemsAdapter.OnDeviceSelectedListener {
         override fun onDeviceSelected(deviceId: String, address: String) {
@@ -88,6 +92,7 @@ class SettingsFragment : DaggerFragment() {
         rv_settings_devices.adapter = SettingsItemsAdapter(items, onDeviceSelectedListener)
         rv_settings_devices.layoutManager = LinearLayoutManager(requireContext())
         settingsViewModel.loadUserGateways().observe(viewLifecycleOwner, Observer { gateways ->
+            gatewayStream.gatewayData.value = gateways
             gateways.forEach {
                 items.add(
                     SettingsDeviceItem(

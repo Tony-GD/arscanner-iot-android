@@ -12,6 +12,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/width_98"
         android:layout_height="@dimen/height_54"
+        android:layout_marginStart="@dimen/margin_10"
         android:background="@drawable/gateway_device_item_bg"
         android:padding="@dimen/padding_8">
 

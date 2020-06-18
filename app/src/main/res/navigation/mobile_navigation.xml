@@ -104,5 +104,11 @@
             android:name="gatewayId"
             android:defaultValue="null"
             app:argType="string" />
+        <action
+            android:id="@+id/action_gatewayDetailsFragment_to_navigation_history"
+            app:destination="@id/navigation_history" />
+        <action
+            android:id="@+id/action_gatewayDetailsFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 </navigation>

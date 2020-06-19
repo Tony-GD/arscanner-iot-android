@@ -110,5 +110,8 @@
         <action
             android:id="@+id/action_gatewayDetailsFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_gatewayDetailsFragment_to_navigation_edit_gateway"
+            app:destination="@id/navigation_edit_gateway" />
     </fragment>
 </navigation>

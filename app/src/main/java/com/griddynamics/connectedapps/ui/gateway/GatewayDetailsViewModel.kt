@@ -1,7 +1,10 @@
 package com.griddynamics.connectedapps.ui.gateway
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.GeoPoint
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
 import com.griddynamics.connectedapps.model.device.DeviceResponse
@@ -28,21 +31,14 @@ class GatewayDetailsViewModel @Inject constructor(
 
     var gateway: GatewayResponse? = null
 
-    fun loadDevices() {
-        val liveData = MediatorLiveData<List<DeviceResponse>>()
-        liveData.addSource(FirebaseAPI.getPublicDevices(), Observer {
-            liveData.value = it
-            deviceStream.publicDevices.value = it
-        })
+    fun loadDevices(): LiveData<List<DeviceResponse>> {
+        return FirebaseAPI.getPublicDevices()
     }
 
     fun onOpenDeviceDetails(deviceId: String, address: String) {
         eventsStream.event.value =
             GatewayDetailsScreenEvent.NavigateToDeviceDetailsScreenEvent(deviceId, address)
     }
-
-    fun getGatewayDevices(gatewayId: String): List<DeviceResponse> =
-        deviceStream.publicDevices.value?.filter { it.gatewayId == gatewayId } ?: emptyList()
 
     fun getGateway(gatewayId: String): GatewayResponse? {
         return gatewayStream.gatewayData.value?.firstOrNull {

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
+import com.griddynamics.connectedapps.repository.stream.GatewayStream
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
 import kotlinx.coroutines.launch
@@ -13,15 +14,19 @@ import javax.inject.Inject
 
 class EditGatewayViewModel @Inject constructor(
     private val repository: AirScannerRepository,
-    private val eventsStream: HomeScreenEventsStream
+    private val eventsStream: HomeScreenEventsStream,
+    private val gatewayStream: GatewayStream
 ) :
     ViewModel() {
 
     val isLoading = ObservableBoolean(false)
 
-    val isAdding = ObservableBoolean()
+    val isAdding = ObservableBoolean(true)
 
     var gateway: GatewayResponse? = null
+
+    fun getGateway(id: String): GatewayResponse? =
+        gatewayStream.gatewayData.value?.firstOrNull { it.gatewayId == id }
 
     var key: String?
         get() = gateway?.key

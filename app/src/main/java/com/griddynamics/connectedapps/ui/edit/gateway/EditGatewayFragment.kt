@@ -3,6 +3,7 @@ package com.griddynamics.connectedapps.ui.edit.gateway
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,11 @@ import com.griddynamics.connectedapps.util.getSuccessDialog
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.edit_gateway_fragment.*
+import kotlinx.android.synthetic.main.header_layout.view.*
 import javax.inject.Inject
+
+private const val TAG: String = "EditGatewayFragment"
 
 class EditGatewayFragment : DaggerFragment() {
 
@@ -33,7 +38,6 @@ class EditGatewayFragment : DaggerFragment() {
     @Inject
     lateinit var eventsStream: HomeScreenEventsStream
     private lateinit var binding: EditGatewayFragmentBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +55,19 @@ class EditGatewayFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditGatewayViewModel::class.java)
+        arguments?.let {
+            val gatewayId = EditGatewayFragmentArgs.fromBundle(it).gateway
+            val stringIsAdding = EditGatewayFragmentArgs.fromBundle(it).stringIsAdding
+            Log.d(TAG, "onViewCreated: $stringIsAdding")
+            viewModel.isAdding.set(stringIsAdding)
+            viewModel.gateway = viewModel.getGateway(gatewayId)
+            if (!viewModel.isAdding.get()) {
+                header_layout.tv_header_title.text = viewModel.name
+                header_layout.tv_header_address.visibility = View.GONE
+                header_layout.ib_header_back_arrow.setOnClickListener { findNavController().popBackStack() }
+            }
+        }
+        Log.d(TAG, "onViewCreated: 2 ${viewModel.isAdding.get()}")
         if (viewModel.gateway == null) {
             viewModel.gateway = EMPTY_GATEWAY
         }

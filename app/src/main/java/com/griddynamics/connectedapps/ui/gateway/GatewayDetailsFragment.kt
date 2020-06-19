@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.ui.gateway.events.GatewayDetailsEventsStream
 import com.griddynamics.connectedapps.ui.gateway.events.GatewayDetailsScreenEvent
 import com.griddynamics.connectedapps.ui.home.Callback
@@ -32,6 +33,7 @@ class GatewayDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var eventsStream: GatewayDetailsEventsStream
+    private val devices = mutableListOf<DeviceResponse>()
     private lateinit var viewModel: GatewayDetailsViewModel
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,7 +50,12 @@ class GatewayDetailsFragment : DaggerFragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadDevices()
+        viewModel.loadDevices().observe(viewLifecycleOwner, Observer {
+            devices.clear()
+            devices.addAll(it?.filter { it.gatewayId == viewModel.gateway?.gatewayId }
+                ?: emptyList())
+            rv_gateway_details_devices_container.adapter?.notifyDataSetChanged()
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,8 +65,10 @@ class GatewayDetailsFragment : DaggerFragment() {
         arguments?.let {
             val gatewayId = GatewayDetailsFragmentArgs.fromBundle(it).gatewayId
             viewModel.gateway = viewModel.getGateway(gatewayId)
-            val devices = viewModel.getGatewayDevices(gatewayId)
             gateway_details_header.tv_header_title.text = viewModel.gateway?.displayName
+            gateway_details_header.ll_header_extra_container.visibility = View.VISIBLE
+            gateway_details_header.tv_header_address.visibility = View.GONE
+            gateway_details_header.tv_header_comment.setOnClickListener { navigateToEditGateway() }
             rv_gateway_details_devices_container.layoutManager = LinearLayoutManager(context)
             rv_gateway_details_devices_container.adapter =
                 GatewayDetailsDevicesAdapter(viewLifecycleOwner, devices, viewModel)
@@ -94,6 +103,14 @@ class GatewayDetailsFragment : DaggerFragment() {
                 }
             }
         })
+    }
+
+    private fun navigateToEditGateway() {
+        val action =
+            GatewayDetailsFragmentDirections.ActionGatewayDetailsFragmentToNavigationEditGateway()
+        action.setGateway("${viewModel.gateway?.gatewayId}")
+        action.setStringIsAdding(false)
+        findNavController().navigate(action)
     }
 
     private fun getRemoveAlertDialog(action: Callback): AlertDialog {

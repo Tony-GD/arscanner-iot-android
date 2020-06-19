@@ -25,6 +25,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context="com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment">
 
+            <FrameLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isAdding ? View.GONE : View.VISIBLE}">
+
+                <include layout="@layout/header_layout" />
+            </FrameLayout>
+
             <TextView
                 style="@style/AppTitleText"
                 android:layout_width="match_parent"
@@ -46,7 +55,7 @@
                 style="@style/AppTitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/display_name" />
+                android:text="@string/key" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_gateway_key"

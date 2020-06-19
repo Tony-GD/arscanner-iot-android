@@ -46,6 +46,7 @@
             <TextView
                 android:id="@+id/tv_header_comment"
                 android:drawablePadding="8dp"
+                android:text="@string/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_edit_small"

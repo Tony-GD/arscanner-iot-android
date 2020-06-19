@@ -60,6 +60,7 @@
     <string name="by">by</string>
     <string name="success">Success!</string>
     <string name="the_device_was_added_now_you_can_track_it">The device was added. Now you can track it.</string>
+    <string name="the_gateway_was_added_now_you_can_track_it">The gateway was added. Now you can track it.</string>
     <string name="something_weird_happened">Something weird happened. Keep calm and try again.</string>
     <string name="key_cert">-----BEGIN CERTIFICATE-----
 MIICnjCCAYYCCQDeJVYFfCh18TANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZ1

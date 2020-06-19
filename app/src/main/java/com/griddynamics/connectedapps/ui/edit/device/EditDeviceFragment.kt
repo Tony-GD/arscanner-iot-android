@@ -1,7 +1,5 @@
 package com.griddynamics.connectedapps.ui.edit.device
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -25,9 +23,10 @@ import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
 import com.griddynamics.connectedapps.model.device.*
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
+import com.griddynamics.connectedapps.util.getErrorDialog
 import com.griddynamics.connectedapps.util.getMapColorFilter
+import com.griddynamics.connectedapps.util.getSuccessDialog
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
@@ -117,50 +116,8 @@ class EditDeviceFragment : DaggerFragment() {
         mapController.animateTo(startPoint)
     }
 
-    private fun getSuccessDialog(): AlertDialog {
-        return AlertDialog.Builder(requireContext())
-            .setView(
-                LayoutInflater
-                    .from(requireContext())
-                    .inflate(R.layout.alert_success_layout, null)
-            )
-            .create()
-            .apply {
-                this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            }
-    }
-
-    private fun getErrorDialog(): AlertDialog {
-        return AlertDialog.Builder(requireContext())
-            .setView(
-                LayoutInflater
-                    .from(requireContext())
-                    .inflate(R.layout.alert_success_layout, null)
-            )
-            .create()
-            .apply {
-                this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            }
-    }
-
-    private fun handleLoading() {
-        binding.btnSaveDevice.isEnabled = false
-        binding.pbLoading.visibility = View.VISIBLE
-    }
-
-    private fun handleDefault() {
-        binding.btnSaveDevice.isEnabled = true
-        binding.pbLoading.visibility = View.GONE
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        eventsStream.events.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is HomeScreenEvent.LOADING -> handleLoading()
-                is HomeScreenEvent.DEFAULT -> handleDefault()
-            }
-        })
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditDeviceViewModel::class.java)
         arguments?.apply {
             val deviceJson = EditDeviceFragmentArgs.fromBundle(
@@ -220,14 +177,17 @@ class EditDeviceFragment : DaggerFragment() {
         binding.rvEditJsonMetrics.adapter = JsonMetricsAdapter(viewModel.configViewStateList)
         viewModel.networkResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is NetworkResponse.Success<*> -> getSuccessDialog().apply {
+                is NetworkResponse.Success<*> -> getSuccessDialog(
+                    requireContext(),
+                    getString(R.string.the_device_was_added_now_you_can_track_it)
+                ).apply {
                     show()
                     Handler().postDelayed({
                         dismiss()
                         findNavController().popBackStack()
                     }, 2000)
                 }
-                else -> getErrorDialog().apply {
+                else -> getErrorDialog(requireContext()).apply {
                     show()
                     Handler().postDelayed({ dismiss() }, 2000)
                 }

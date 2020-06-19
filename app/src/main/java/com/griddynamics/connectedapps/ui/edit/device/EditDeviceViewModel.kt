@@ -46,6 +46,7 @@ class EditDeviceViewModel @Inject constructor(
     val configViewStateList = mutableListOf<JsonMetricViewState>()
     val isSingleValue = ObservableBoolean(false)
     val isAdding = ObservableBoolean()
+    var isLoading = ObservableBoolean(false)
     val observableKey = ObservableField<String>()
     var onMapPickerRequest: Callback? = null
     val singleMetricName = ObservableField<String>()

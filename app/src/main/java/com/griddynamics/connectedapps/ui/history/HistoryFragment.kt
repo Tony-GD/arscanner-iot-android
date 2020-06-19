@@ -22,10 +22,11 @@ import com.griddynamics.connectedapps.ui.history.week.WeekHistoryFragment
 import com.griddynamics.connectedapps.ui.history.week.events.WeekHistoryEventsStream
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.ui.home.TabAdapter
+import com.griddynamics.connectedapps.util.getErrorDialog
+import com.griddynamics.connectedapps.util.getSuccessDialog
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.alert_success_layout.view.*
 import kotlinx.android.synthetic.main.fragment_data_history.*
 import kotlinx.android.synthetic.main.header_layout.view.*
 import javax.inject.Inject
@@ -79,7 +80,10 @@ class HistoryFragment : DaggerFragment() {
                     .observe(viewLifecycleOwner, Observer {
                         when (it) {
                             is NetworkResponse.Success<*> -> {
-                                getSuccessDialog(getString(R.string.device_was_removed)).apply {
+                                getSuccessDialog(
+                                    requireContext(),
+                                    getString(R.string.device_was_removed)
+                                ).apply {
                                     show()
                                     Handler().postDelayed({
                                         requireActivity().runOnUiThread {
@@ -94,7 +98,7 @@ class HistoryFragment : DaggerFragment() {
                             }
                             else -> {
                                 Log.e(TAG, "DataHistoryFragment: error $it")
-                                getErrorDialog().apply {
+                                getErrorDialog(requireContext()).apply {
                                     show()
                                     Handler().postDelayed({
                                         dismiss()
@@ -106,9 +110,18 @@ class HistoryFragment : DaggerFragment() {
             }.show()
         }
         adapter = TabAdapter(this)
-        adapter.addFragment(HourHistoryFragment(viewModel, hourHistoryEventsStream), getString(R.string.now))
-        adapter.addFragment(DayHistoryFragment(viewModel, dayHistoryEventsStream), getString(R.string.today))
-        adapter.addFragment(WeekHistoryFragment(viewModel, weekHistoryEventsStream), getString(R.string.week))
+        adapter.addFragment(
+            HourHistoryFragment(viewModel, hourHistoryEventsStream),
+            getString(R.string.now)
+        )
+        adapter.addFragment(
+            DayHistoryFragment(viewModel, dayHistoryEventsStream),
+            getString(R.string.today)
+        )
+        adapter.addFragment(
+            WeekHistoryFragment(viewModel, weekHistoryEventsStream),
+            getString(R.string.week)
+        )
         vp_history_pager.adapter = adapter
         TabLayoutMediator(tl_history_tabs, vp_history_pager) { tab, position ->
             tab.text = adapter.getTabTitle(position)
@@ -136,28 +149,6 @@ class HistoryFragment : DaggerFragment() {
             .create()
     }
 
-    private fun getErrorDialog(): AlertDialog {
-        return AlertDialog.Builder(requireContext())
-            .setView(
-                LayoutInflater
-                    .from(requireContext())
-                    .inflate(R.layout.alert_error_layout, null)
-            )
-            .create()
-    }
-
-    private fun getSuccessDialog(message: String): AlertDialog {
-        return AlertDialog.Builder(requireContext())
-            .setView(
-                LayoutInflater
-                    .from(requireContext())
-                    .inflate(R.layout.alert_success_layout, null)
-                    .apply {
-                        tv_success_message.text = message
-                    }
-            )
-            .create()
-    }
 
     override fun onStart() {
         super.onStart()

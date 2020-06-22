@@ -11,13 +11,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.EmptyUser
-import com.griddynamics.connectedapps.service.ScannerDataUpdateService
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.ui.greeting.GreetingActivity
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
@@ -36,8 +36,6 @@ class MainActivity : DaggerAppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_map, R.id.navigation_settings
@@ -45,11 +43,17 @@ class MainActivity : DaggerAppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        ScannerDataUpdateService.startActionStart(applicationContext)
     }
 
     fun hideTabBar() {
-        nav_view.visibility = View.GONE
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                delay(100)
+            }
+            withContext(Dispatchers.Main) {
+                nav_view.visibility = View.GONE
+            }
+        }
     }
 
     fun showTabBar() {

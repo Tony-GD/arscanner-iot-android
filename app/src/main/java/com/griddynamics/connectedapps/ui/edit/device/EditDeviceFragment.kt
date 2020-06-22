@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
 import com.griddynamics.connectedapps.model.device.*
@@ -114,6 +115,16 @@ class EditDeviceFragment : DaggerFragment() {
         map.setMultiTouchControls(true)
         val startPoint = GeoPoint(DEFAULT_LAT.toDouble(), DEFAULT_LONG.toDouble())
         mapController.animateTo(startPoint)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).hideTabBar()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as MainActivity).showTabBar()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -258,11 +269,6 @@ class EditDeviceFragment : DaggerFragment() {
         }
 
         binding.tbEditFormat.setOnCheckedChangeListener { buttonView, isChecked ->
-            Toast.makeText(
-                context,
-                "onViewCreated() called with: isChecked = [$isChecked]",
-                Toast.LENGTH_SHORT
-            ).show()
             if (isChecked) {
                 viewModel.device?.dataFormat = METRIC_TYPE_JSON
             } else {

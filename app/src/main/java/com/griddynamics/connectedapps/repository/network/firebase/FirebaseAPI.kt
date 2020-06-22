@@ -64,7 +64,10 @@ object FirebaseAPI {
 
     private fun deviceEventListener(callback: MutableLiveData<List<DeviceResponse>>): EventListener<QuerySnapshot> {
         return EventListener { snapshot, exception ->
-            Log.d(TAG, "deviceEventListener() called with: snapshot = [${snapshot}], exception = [$exception]")
+            Log.d(
+                TAG,
+                "deviceEventListener() called with: snapshot = [${snapshot}], exception = [$exception]"
+            )
             val devices = mutableListOf<DeviceResponse>()
             snapshot?.documents?.forEach {
                 Log.d(TAG, "getPublicDevices: ${it.data}")
@@ -77,7 +80,7 @@ object FirebaseAPI {
                 val gatewayId = it.data?.get("gateway_id")
                 val locationDescription = it.data?.get("location_description")
                 val publicMetrics = it.data?.get("publicMetrics")
-                val metricsConfig = it.data?.get("metricsConfig")
+                val metricsConfig = it.data?.get("metricsConfig") as Map<String, Map<String, Any>>?
                 val deviceId = it.reference.path.split("/").last()
                 val device = DeviceResponse(
                     deviceId = deviceId,
@@ -92,7 +95,19 @@ object FirebaseAPI {
                     jsonMetricsField = null,
                     metrics = null,
                     publicMetrics = publicMetrics as List<String>?,
-                    metricsConfig = metricsConfig as Map<String, MetricConfig>?
+                    metricsConfig = (mutableMapOf<String, MetricConfig>().apply {
+                        metricsConfig?.keys?.forEach { key ->
+                            val tempMetric = metricsConfig[key]
+                            tempMetric?.let {
+                                val realMetric: MetricConfig =
+                                    MetricConfig(
+                                        isPublic = tempMetric["is_public"] as Boolean?,
+                                        measurementType = tempMetric["measurementType"] as String?
+                                    )
+                                this[key] = realMetric
+                            }
+                        }
+                    })
                 )
                 Log.d(TAG, "getPublicDevices: $device")
                 devices.add(device)

@@ -5,10 +5,9 @@ import com.google.gson.annotations.SerializedName
 const val ADD_DEVICE_REQUEST_KEY = "ADD_DEVICE_REQUEST_KEY"
 
 data class MetricConfig(
-    @SerializedName("is_public") var isPublic: Boolean,
-    @SerializedName("measurementType") var measurementType: String
+    @SerializedName("is_public") var isPublic: Boolean?,
+    @SerializedName("measurementType") var measurementType: String?
 )
-typealias MetricsConfig = Map<String, MetricConfig>
 
 data class DeviceRequest(
     @SerializedName("display_name")

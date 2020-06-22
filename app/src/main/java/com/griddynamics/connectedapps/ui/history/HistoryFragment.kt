@@ -155,13 +155,13 @@ class HistoryFragment : DaggerFragment() {
     }
 
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         (requireActivity() as MainActivity).hideTabBar()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         (requireActivity() as MainActivity).showTabBar()
     }
 

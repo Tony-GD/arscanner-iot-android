@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.griddynamics.connectedapps.R
@@ -71,7 +70,6 @@ class JsonMetricsAdapter(private val metrics: MutableList<JsonMetricViewState>) 
             visibility =
                 if (position == itemCount - 1) View.VISIBLE else View.GONE
             setOnClickListener {
-                Toast.makeText(holder.binding.root.context, "$metric", Toast.LENGTH_SHORT).show()
                 it.visibility = View.GONE
                 metrics.add(JsonMetricViewState())
                 notifyDataSetChanged()

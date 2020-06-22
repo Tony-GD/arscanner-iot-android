@@ -135,6 +135,9 @@ class EditDeviceViewModel @Inject constructor(
         this.metricsConfig = tempMetricsConfig
         this.publicMetrics = tempPublicMetrics
         this.key = observableKey.get()
+        if (this.key?.isBlank() == false) {
+            this.gatewayId == null
+        }
     }
 
     fun deleteDevice() {

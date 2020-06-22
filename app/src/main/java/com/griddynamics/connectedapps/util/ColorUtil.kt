@@ -1,8 +1,10 @@
 package com.griddynamics.connectedapps.util
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import com.griddynamics.connectedapps.R
 
 fun getMapColorFilter(destinationColor: Int): ColorMatrixColorFilter {
     val inverseMatrix = ColorMatrix(
@@ -67,4 +69,17 @@ fun getMapColorFilter(destinationColor: Int): ColorMatrixColorFilter {
     )
     scaleMatrix.preConcat(tintMatrix)
     return ColorMatrixColorFilter(scaleMatrix)
+}
+
+fun getColorByProgress(context: Context, normalizedProgress: Float): IntArray {
+    return when (normalizedProgress) {
+        in 0.1f..0.25f -> intArrayOf(Color.LTGRAY, Color.BLUE)
+        in 0.25f..0.5f -> intArrayOf(Color.BLUE, Color.GREEN)
+        in 0.5f..0.75f -> intArrayOf(Color.GREEN, Color.YELLOW)
+        in 0.75f..1f -> intArrayOf(Color.YELLOW, Color.RED)
+        else -> intArrayOf(
+            context.getColor(R.color.transparent),
+            context.getColor(R.color.colorAccent)
+        )
+    }
 }

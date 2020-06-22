@@ -8,6 +8,14 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.model.DefaultScannersResponse
+import com.griddynamics.connectedapps.repository.local.LocalStorageImpl
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.util.getColorByProgress
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -38,23 +46,15 @@ internal class StackRemoteViewsFactory(
     intent: Intent
 ) :
     RemoteViewsFactory {
-    private val mWidgetItems: MutableList<WidgetItem> =
-        ArrayList<WidgetItem>()
+    private val localStorage = LocalStorageImpl()
+    private val mWidgetItems: MutableList<DefaultScannersResponse> =
+        ArrayList<DefaultScannersResponse>()
+    private val items = mutableMapOf<String, DefaultScannersResponse>()
     private val mAppWidgetId: Int
     override fun onCreate() {
-        // In onCreate() you setup any connections / cursors to your data source. Heavy lifting,
-        // for example downloading or creating content etc, should be deferred to onDataSetChanged()
-        // or getViewAt(). Taking more than 20 seconds in this call will result in an ANR.
-        for (i in 0 until mCount) {
-            mWidgetItems.add(WidgetItem("$i!"))
-        }
-        // We sleep for 3 seconds here to show how the empty view appears in the interim.
-        // The empty view is set in the StackWidgetProvider and should be a sibling of the
-        // collection view.
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
+
+        FirebaseAPI.subscribeForMetrics("LrzW8eDJbBJu3FN830K4").observeForever {
+            items[it.metricName] = it
         }
     }
 
@@ -72,15 +72,28 @@ internal class StackRemoteViewsFactory(
         // position will always range from 0 to getCount() - 1.
         // We construct a remote views item based on our widget item xml file, and set the
         // text based on the position.
+        if (position >= items.size) {
+            return RemoteViews(mContext.packageName, R.layout.widget_item)
+        }
         val rv = RemoteViews(mContext.packageName, R.layout.widget_item)
-        rv.setTextViewText(R.id.widget_item, mWidgetItems[position].text)
+        val defaultScannersResponse = items.values.toTypedArray()[position]
+        val normalized: Float =
+            1 - (defaultScannersResponse.value / defaultScannersResponse.maxValue)
+        rv.setTextViewText(R.id.widget_item_label, defaultScannersResponse.metricName)
+        rv.setTextColor(
+            R.id.widget_item_value, getColorByProgress(mContext, normalized).last()
+        )
+        rv.setTextViewText(
+            R.id.widget_item_value,
+            defaultScannersResponse.value.toString()
+        )
         // Next, we set a fill-intent which will be used to fill-in the pending intent template
         // which is set on the collection view in StackWidgetProvider.
         val extras = Bundle()
         extras.putInt(StackWidgetProvider.EXTRA_ITEM, position)
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)
-        rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent)
+        rv.setOnClickFillInIntent(R.id.tv_progress_text, fillInIntent)
         // You can do heaving lifting in here, synchronously. For example, if you need to
         // process an image, fetch something from the network, etc., it is ok to do it here,
         // synchronously. A loading view will show up in lieu of the actual contents in the
@@ -114,6 +127,13 @@ internal class StackRemoteViewsFactory(
     }
 
     override fun onDataSetChanged() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                FirebaseAPI.subscribeForMetrics("LrzW8eDJbBJu3FN830K4").observeForever {
+                    items[it.metricName] = it
+                }
+            }
+        }
         // This is triggered when you call AppWidgetManager notifyAppWidgetViewDataChanged
         // on the collection view corresponding to this factory. You can do heaving lifting in
         // here, synchronously. For example, if you need to process an image, fetch something
@@ -123,7 +143,7 @@ internal class StackRemoteViewsFactory(
     }
 
     companion object {
-        private const val mCount = 10
+        private const val mCount = 9
     }
 
     init {

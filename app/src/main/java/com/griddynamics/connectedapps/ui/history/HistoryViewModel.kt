@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.snackbar.Snackbar
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
-import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.metrics.MetricsRequest
 import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_DAY
 import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_HOUR
 import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_WEEK
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.repository.network.api.GenericResponse
 import com.griddynamics.connectedapps.repository.network.api.MetricsMap
 import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
-import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.repository.stream.MetricsStream
 import com.griddynamics.connectedapps.ui.edit.device.DEFAULT
 import kotlinx.coroutines.launch
@@ -22,7 +22,8 @@ import javax.inject.Inject
 
 class HistoryViewModel @Inject constructor(
     private val stream: MetricsStream,
-    private val repository: AirScannerRepository
+    private val repository: AirScannerRepository,
+    private val localStorage: LocalStorage
 ) : ViewModel() {
     var deviceId: String? = null
     fun getWeekMetrics(id: String): LiveData<GenericResponse<MetricsMap>> {
@@ -77,5 +78,9 @@ class HistoryViewModel @Inject constructor(
             liveData.postValue(response)
         }
         return liveData
+    }
+
+    fun addToWidget() {
+        localStorage.saveWidgetTrackedDevice("$deviceId")
     }
 }

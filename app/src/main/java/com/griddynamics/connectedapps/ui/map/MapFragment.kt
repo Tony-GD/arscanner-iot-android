@@ -64,6 +64,50 @@ class MapFragment : DaggerFragment() {
 
     private lateinit var mapViewModel: MapViewModel
 
+    private val multiplePermissionsListener = object : MultiplePermissionsListener {
+        @SuppressLint("MissingPermission")
+        override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+            if (report.areAllPermissionsGranted()) {
+                val locationManager =
+                    getSystemService(requireContext(), LocationManager::class.java)
+
+                locationManager?.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    5000L,
+                    10f,
+                    locationChangeListener
+                )
+            } else {
+                Log.d(
+                    TAG,
+                    "onPermissionsChecked() called with: report =[${report.grantedPermissionResponses.map { it.permissionName }}] [${report.deniedPermissionResponses.map { it.permissionName }}]"
+                )
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.permission_message),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        override fun onPermissionRationaleShouldBeShown(
+            permissions: MutableList<PermissionRequest>,
+            permissionToken: PermissionToken
+        ) {
+            Log.d(
+                TAG,
+                "onPermissionRationaleShouldBeShown() called with: permissions = [$permissions], permissionToken = [$permissionToken]"
+            )
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.permission_message),
+                Toast.LENGTH_LONG
+            ).show()
+            permissionToken.continuePermissionRequest()
+        }
+
+    }
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -235,43 +279,8 @@ class MapFragment : DaggerFragment() {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-            .withListener(object : MultiplePermissionsListener {
-                @SuppressLint("MissingPermission")
-                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                    if (report.areAllPermissionsGranted()) {
-                        val locationManager =
-                            getSystemService(requireContext(), LocationManager::class.java)
-
-                        locationManager?.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER,
-                            5000L,
-                            10f,
-                            locationChangeListener
-                        )
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.permission_message),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-
-                override fun onPermissionRationaleShouldBeShown(
-                    permissions: MutableList<PermissionRequest>,
-                    permissionToken: PermissionToken
-                ) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.permission_message),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    permissionToken.continuePermissionRequest()
-                }
-
-            })
-            .check();
-
+            .withListener(multiplePermissionsListener)
+            .check()
     }
 
     override fun onStart() {
@@ -314,27 +323,27 @@ class MapFragment : DaggerFragment() {
 
     private fun filterDevices(devices: List<DeviceResponse>): List<DeviceResponse> {
         val filteredDevices = mutableSetOf<DeviceResponse>()
-            if(mapViewModel.filterViewState.isCo2.get()){
-                filteredDevices.addAll(devices.getDevicesWith(CO2))
-            }
-            if (mapViewModel.filterViewState.isTemp.get()) {
-                filteredDevices.addAll(devices.getDevicesWith(TEMP))
-            }
-            if (mapViewModel.filterViewState.isHumidity.get()) {
-                filteredDevices.addAll(devices.getDevicesWith(HUMIDITY))
-            }
-            if (mapViewModel.filterViewState.isPm25.get()) {
-                filteredDevices.addAll(devices.getDevicesWith(PM2_5))
-            }
-            if (mapViewModel.filterViewState.isPm1.get()) {
-                filteredDevices.addAll(devices.getDevicesWith(PM1_0))
-            }
-            if (mapViewModel.filterViewState.isPm10.get()) {
-                filteredDevices.addAll(devices.getDevicesWith(PM10))
-            }
-            if (mapViewModel.filterViewState.isAll.get()) {
-                filteredDevices.addAll(devices)
-            }
+        if (mapViewModel.filterViewState.isCo2.get()) {
+            filteredDevices.addAll(devices.getDevicesWith(CO2))
+        }
+        if (mapViewModel.filterViewState.isTemp.get()) {
+            filteredDevices.addAll(devices.getDevicesWith(TEMP))
+        }
+        if (mapViewModel.filterViewState.isHumidity.get()) {
+            filteredDevices.addAll(devices.getDevicesWith(HUMIDITY))
+        }
+        if (mapViewModel.filterViewState.isPm25.get()) {
+            filteredDevices.addAll(devices.getDevicesWith(PM2_5))
+        }
+        if (mapViewModel.filterViewState.isPm1.get()) {
+            filteredDevices.addAll(devices.getDevicesWith(PM1_0))
+        }
+        if (mapViewModel.filterViewState.isPm10.get()) {
+            filteredDevices.addAll(devices.getDevicesWith(PM10))
+        }
+        if (mapViewModel.filterViewState.isAll.get()) {
+            filteredDevices.addAll(devices)
+        }
         Toast.makeText(context, "Filtered ${filteredDevices.size} items", Toast.LENGTH_SHORT).show()
         return filteredDevices.toList()
     }

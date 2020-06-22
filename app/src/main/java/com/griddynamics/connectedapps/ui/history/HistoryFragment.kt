@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
@@ -74,6 +75,10 @@ class HistoryFragment : DaggerFragment() {
         history_header.tv_header_title.text = getString(R.string.history)
         history_header.ll_header_extra_container.visibility = View.VISIBLE
         history_header.tv_header_address.text = address
+        btn_add_to_widget.setOnClickListener {
+            viewModel.addToWidget()
+            Snackbar.make(history_root, getString(R.string.added_to_the_widget), Snackbar.LENGTH_LONG).show()
+        }
         btn_history_remove.setOnClickListener {
             getRemoveAlertDialog {
                 viewModel.removeDevice("${viewModel.deviceId}")

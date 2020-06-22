@@ -10,14 +10,16 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.google.firebase.firestore.EventListener
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.model.DefaultScannersResponse
+import com.griddynamics.connectedapps.model.SpecialScannerResponse
 import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.repository.local.LocalStorageImpl
-import com.griddynamics.connectedapps.model.SpecialScannerResponse
-import com.griddynamics.connectedapps.ui.widget.AirScannerSubscriptionWidget
+import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
+import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDialogMetricsAdapter
 
 
 private const val ACTION_START = "com.griddynamics.connectedapps.service.action.START"
@@ -30,31 +32,11 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
     private lateinit var localStorage: LocalStorage
     private val response = SpecialScannerResponse(0f, 0f, 0f, 0f)
 
-    private val dbEventListener =
-        EventListener<QuerySnapshot> { dataSnapshot, error ->
-            Log.d(TAG, "onSnapshot() called with: dataSnapshot = [${dataSnapshot?.documents}], error = [$error]")
-            dataSnapshot?.documents?.forEach { document ->
-                Log.d(TAG, "data: ${document?.data}")
-                val key = document.reference.path.split("/").last()
-                document.data?.let {
-                    when (key) {
-                        "Humidity" -> {
-                            response.Humidity = (it["value"] as Number).toFloat()
-                        }
-                        "Temp" -> {
-                            response.Temp = (it["value"] as Number).toFloat()
-                        }
-                        "CO2" -> {
-                            response.CO2 = (it["value"] as Number).toFloat()
-                        }
-                        "PM2_5" -> {
-                            response.PM2_5 = (it["value"] as Number).toFloat()
-                        }
-                    }
-                    updateWidget(response)
-                }
-            }
-        }
+    private val metrics = mutableMapOf<String, DefaultScannersResponse>()
+    private val adapter =
+        BottomSheetDialogMetricsAdapter(metrics.values)
+    private lateinit var layoutManager: RecyclerView.LayoutManager
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -82,14 +64,13 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
             startForeground(191, notification)
         }
         localStorage = LocalStorageImpl()
+        layoutManager = GridLayoutManager(applicationContext, 4)
         val widgetTrackedDevice = localStorage.getWidgetTrackedDevice()
         if (widgetTrackedDevice != null) {
-            database = FirebaseFirestore.getInstance()
-            database
-                .collection("devices")
-                .document(widgetTrackedDevice)//AasMOYlQufCQogR14YSa
-                .collection("metrics")
-                .addSnapshotListener(dbEventListener)
+            FirebaseAPI.subscribeForMetrics(widgetTrackedDevice)
+                .observeForever {
+//                    updateWidget(it)
+                }
         }
     }
 
@@ -113,32 +94,6 @@ class ScannerDataUpdateService : IntentService("ScannerDataUpdateService") {
 
     }
 
-    private fun updateWidget(data: SpecialScannerResponse) {
-        Log.d(TAG, "updateWidget() called with: data = [$data]")
-        val updateViews =
-            RemoteViews(packageName, R.layout.air_scanner_subscription_widget)
-        updateViews.setTextViewText(
-            R.id.appwidget_special_text,
-            String.format(getString(R.string.special), "${data.PM2_5}")
-        )
-        updateViews.setTextViewText(
-            R.id.appwidget_special_temp_text,
-            String.format(getString(R.string.temperature), "${data.Temp}")
-        )
-        updateViews.setTextViewText(
-            R.id.appwidget_special_humidity_text,
-            String.format(getString(R.string.humidity), "${data.Humidity}")
-        )
-        updateViews.setTextViewText(
-            R.id.appwidget_special_co2_text,
-            String.format(getString(R.string.co2), "${data.CO2}")
-        )
-
-        val thisWidget =
-            ComponentName(applicationContext, AirScannerSubscriptionWidget::class.java)
-        val manager = AppWidgetManager.getInstance(applicationContext)
-        manager.updateAppWidget(thisWidget, updateViews)
-    }
 
     /**
      * Handle action Baz in the provided background thread with the provided

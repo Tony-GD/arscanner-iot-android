@@ -15,8 +15,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.User
+import com.griddynamics.connectedapps.repository.local.LocalStorage
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_greeting.*
 import javax.inject.Inject
@@ -80,6 +80,7 @@ class GreetingActivity : Activity() {
             firebaseAuth(account?.idToken)
             localStorage.saveUser(
                 User(
+                    auth.currentUser?.uid,
                     account?.idToken,
                     account?.givenName,
                     account?.familyName,

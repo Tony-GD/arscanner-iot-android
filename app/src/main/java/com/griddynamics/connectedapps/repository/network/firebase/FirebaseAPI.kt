@@ -15,6 +15,7 @@ import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.model.device.MetricConfig
+import com.griddynamics.connectedapps.repository.local.LocalStorageImpl
 
 private const val TAG: String = "FirebaseAPI"
 typealias DevicesCallback = (devices: List<DeviceResponse>) -> Unit
@@ -22,6 +23,7 @@ typealias GatewaysCallback = (gateways: List<GatewayResponse>) -> Unit
 
 object FirebaseAPI {
     private val firestore = FirebaseFirestore.getInstance()
+    private val localStorage = LocalStorageImpl()
 
     fun getUserGateways(user: User): LiveData<List<GatewayResponse>> {
         Log.d(TAG, "getUserGateways() called with: user = [$user]")
@@ -112,7 +114,7 @@ object FirebaseAPI {
                 Log.d(TAG, "getPublicDevices: $device")
                 devices.add(device)
             }
-            callback.postValue(devices)
+            callback.postValue(devices.filterPublicAndUserDevices())
         }
     }
 
@@ -192,5 +194,12 @@ object FirebaseAPI {
                 }
             }
         return liveData
+    }
+
+    private fun List<DeviceResponse>.filterPublicAndUserDevices(): List<DeviceResponse> {
+        return this.filter { device ->
+            device.publicMetrics?.isNotEmpty() == true
+                    || device.userId == localStorage.getUser().uid
+        }
     }
 }

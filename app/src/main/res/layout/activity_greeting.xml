@@ -26,8 +26,18 @@
         <ImageView
             android:id="@+id/auth_logo_image"
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:src="@drawable/airo_logo_dark" />
+            android:layout_height="@dimen/height_250"
+            android:src="@drawable/log_in" />
+        
+        <TextView
+            android:layout_marginTop="@dimen/margin_35"
+            android:layout_marginBottom="@dimen/padding_42"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/margin_10"
+            style="@style/AppText.FiraSans.White.16"
+            android:text="@string/login_sso"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/auth_sign_in_button"
@@ -39,7 +49,8 @@
         android:id="@+id/auth_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/or" />
+        android:text="@string/or"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/auth_guest_sign_in_text"
@@ -47,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:text="@string/continue_as_guest" />
+        android:text="@string/continue_as_guest"
+        android:visibility="invisible" />
 
 </LinearLayout>

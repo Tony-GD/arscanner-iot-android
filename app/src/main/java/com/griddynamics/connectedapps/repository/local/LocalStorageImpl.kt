@@ -32,6 +32,10 @@ class LocalStorageImpl : LocalStorage {
         return Hawk.get<String?>(WIDGET_TRACKED_DEVICE_ID)
     }
 
+    override fun clear() {
+        Hawk.deleteAll()
+    }
+
     override fun getUser(): User {
         return Hawk.get(USER_KEY) ?: EmptyUser
     }

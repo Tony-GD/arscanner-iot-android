@@ -66,6 +66,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         mGoogleSignInClient.signOut()
+        localStorage.clear()
         localStorage.saveUser(EmptyUser)
         val intent = Intent(this, GreetingActivity::class.java)
         startActivity(intent)

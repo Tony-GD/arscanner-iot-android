@@ -119,7 +119,9 @@ class EditDeviceFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as MainActivity).hideTabBar()
+        if (!viewModel.isAdding.get()) {
+            (activity as MainActivity).hideTabBar()
+        }
     }
 
     override fun onPause() {

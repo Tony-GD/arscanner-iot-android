@@ -3,6 +3,7 @@ package com.griddynamics.connectedapps.ui.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.location.Location
@@ -16,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -40,6 +42,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.search_layout.*
 import kotlinx.android.synthetic.main.search_layout.view.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -63,12 +66,13 @@ class MapFragment : DaggerFragment() {
     }
 
     private lateinit var mapViewModel: MapViewModel
+    private var locationManager: LocationManager? = null
 
     private val multiplePermissionsListener = object : MultiplePermissionsListener {
         @SuppressLint("MissingPermission")
         override fun onPermissionsChecked(report: MultiplePermissionsReport) {
             if (report.areAllPermissionsGranted()) {
-                val locationManager =
+                locationManager =
                     getSystemService(requireContext(), LocationManager::class.java)
 
                 locationManager?.requestLocationUpdates(
@@ -286,6 +290,19 @@ class MapFragment : DaggerFragment() {
     override fun onStart() {
         super.onStart()
         search_layout.et_search.setDrawableClickListener(onDrawableClickListener)
+        ib_search_location.setOnClickListener { centerMapByLocation() }
+    }
+
+    private fun centerMapByLocation() {
+        if (checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.let {
+                locationChangeListener.onLocationChanged(it)
+            }
+        }
     }
 
     private fun getFilterDialog(): AlertDialog {

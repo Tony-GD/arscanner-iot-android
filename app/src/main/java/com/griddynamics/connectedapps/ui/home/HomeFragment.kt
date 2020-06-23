@@ -75,4 +75,9 @@ class HomeFragment : DaggerFragment() {
         }.attach()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+    }
+
 }

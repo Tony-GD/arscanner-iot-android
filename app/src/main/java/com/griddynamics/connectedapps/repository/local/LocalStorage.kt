@@ -9,4 +9,5 @@ interface LocalStorage {
     fun getFirebaseToken(): String?
     fun saveWidgetTrackedDevice(deviceId: String?)
     fun getWidgetTrackedDevice(): String?
+    fun clear()
 }

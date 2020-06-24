@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_9"
-    android:padding="@dimen/description_padding_15"
-    android:background="@drawable/ghost_background">
+    android:background="@drawable/ghost_background"
+    android:padding="@dimen/description_padding_15">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_settings_item_image_container"
@@ -27,8 +27,8 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="28dp"
-            android:src="@drawable/ic_device"
             android:layout_marginStart="@dimen/margin_35"
+            android:src="@drawable/ic_device"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,18 +38,21 @@
         android:id="@+id/tv_settings_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_13"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:layout_marginStart="@dimen/margin_13"
         app:layout_constraintStart_toEndOf="@id/cl_settings_item_image_container"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_settings_item_address"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/light_gray"
         android:layout_marginStart="@dimen/margin_13"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:textColor="@color/light_gray"
         app:layout_constraintStart_toEndOf="@id/cl_settings_item_image_container"
         app:layout_constraintTop_toBottomOf="@id/tv_settings_item_name" />
 
@@ -57,8 +60,8 @@
         android:id="@+id/ib_settings_item_open"
         android:layout_width="@dimen/padding_42"
         android:layout_height="@dimen/padding_42"
-        android:src="@drawable/ic_arrow_down"
         android:background="@color/transparent"
+        android:src="@drawable/ic_arrow_down"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

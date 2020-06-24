@@ -47,8 +47,6 @@ internal class NetworkResponseCall<S : Any, E : Any>(
                             ?.addOnSuccessListener {
                                 localStorage.saveFirebaseToken(it.token)
                                 clone().enqueue(callback)
-                                callback.onResponse(this@NetworkResponseCall,
-                                Response.success(NetworkResponse.UnknownError(null)))
                             }
                     }
                     //end refresh

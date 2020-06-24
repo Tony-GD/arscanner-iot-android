@@ -13,6 +13,15 @@ object MapUtil {
     private const val TAG: String = "MapUtil"
     private val geocoder = GeocoderNominatim(GeocoderNominatim.NOMINATIM_SERVICE_URL)
 
+    suspend fun getAddress(location: GeoPoint): String {
+        return try {
+            downloadInfo(location).firstOrNull()?.getAddressLine()!!
+        } catch (e: Exception) {
+            Log.e(TAG, "MapUtil: getAddressFrom:", e)
+            return "Address is unavailable"
+        }
+    }
+
     fun getAddressFrom(location: GeoPoint): LiveData<String> {
         val data = MutableLiveData<String>()
         GlobalScope.launch {

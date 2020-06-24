@@ -18,8 +18,6 @@ import com.griddynamics.connectedapps.model.device.MetricConfig
 import com.griddynamics.connectedapps.repository.local.LocalStorageImpl
 
 private const val TAG: String = "FirebaseAPI"
-typealias DevicesCallback = (devices: List<DeviceResponse>) -> Unit
-typealias GatewaysCallback = (gateways: List<GatewayResponse>) -> Unit
 
 object FirebaseAPI {
     private val firestore = FirebaseFirestore.getInstance()

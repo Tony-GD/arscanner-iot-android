@@ -25,10 +25,4 @@ class SettingsViewModel @Inject constructor(private val localStorage: LocalStora
         }
         return mediatorLiveData
     }
-
-    fun loadAddress(location: GeoPoint?): LiveData<String> = if (location != null) {
-        MapUtil.getAddressFrom(location)
-    } else {
-        MutableLiveData()
-    }
 }

@@ -64,7 +64,7 @@
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.griddynamics.connectedapps.ui.settings.SettingsFragment"
-        android:label="@string/settings"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_navigation_settings_to_navigation_history"

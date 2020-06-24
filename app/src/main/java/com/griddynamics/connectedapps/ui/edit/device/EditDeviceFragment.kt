@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
@@ -179,8 +178,8 @@ class EditDeviceFragment : DaggerFragment() {
             config.keys.forEach { key ->
                 viewModel.configViewStateList += JsonMetricViewState().apply {
                     this.name.set(key)
-                    this.isPublic.set((config[key] as Map<String, Boolean>)?.get("is_public") == true)
-                    this.measurement.set((config[key] as Map<String, String>)?.get("measurementType"))
+                    this.isPublic.set((config[key]?.isPublic == true))
+                    this.measurement.set((config[key]?.measurementType))
                 }
             }
         }

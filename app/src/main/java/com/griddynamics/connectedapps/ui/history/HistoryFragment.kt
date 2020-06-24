@@ -73,11 +73,16 @@ class HistoryFragment : DaggerFragment() {
         history_header.tv_header_comment.setOnClickListener { navigateToEdit() }
         history_header.ib_header_back_arrow.setOnClickListener { requireActivity().onBackPressed() }
         history_header.tv_header_title.text = getString(R.string.history)
-        history_header.ll_header_extra_container.visibility = View.VISIBLE
+        history_header.ll_header_extra_container.visibility =
+            if (viewModel.isEditable) View.VISIBLE else View.GONE
         history_header.tv_header_address.text = address
         btn_add_to_widget.setOnClickListener {
             viewModel.addToWidget()
-            Snackbar.make(history_root, getString(R.string.added_to_the_widget), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(
+                history_root,
+                getString(R.string.added_to_the_widget),
+                Snackbar.LENGTH_LONG
+            ).show()
         }
         btn_history_remove.setOnClickListener {
             getRemoveAlertDialog {

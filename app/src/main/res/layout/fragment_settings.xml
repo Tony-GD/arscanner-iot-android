@@ -25,11 +25,27 @@
             <include layout="@layout/user_info_layout" />
         </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_settings_devices"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_settings_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/settings_user_layout" />
+            app:layout_constraintTop_toBottomOf="@id/settings_user_layout"
+            android:layout_marginHorizontal="@dimen/marker_size_12"
+            android:layout_marginTop="@dimen/marker_size_12"
+            android:minHeight="?actionBarSize"
+            app:tabBackground="@drawable/tab_background"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/whiteTransparent" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_settings_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_5"
+            app:layout_constraintTop_toBottomOf="@id/tl_settings_tabs" />
 
         <Button
             android:id="@+id/btn_settings_add"

@@ -63,7 +63,7 @@ class AirScannerRepositoryImpl
     }
 
     override suspend fun editGateway(request: GatewayResponse): GenericResponse<Any> {
-        return api.editGateway(request)
+        return api.editGateway("${request.gatewayId}", request)
     }
 
     override suspend fun deleteGateway(gatewayId: String): GenericResponse<Any> {

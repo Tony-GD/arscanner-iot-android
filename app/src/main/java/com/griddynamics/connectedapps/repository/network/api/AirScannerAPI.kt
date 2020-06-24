@@ -18,6 +18,7 @@ const val lastHour = "lastHour"
 typealias MetricsMap = Map<String, List<Map<String, String>>>
 typealias MutableMetricsMap = MutableMap<String, MutableList<MutableMap<String, String>>>
 typealias GenericResponse<S> = NetworkResponse<S, Any>
+
 interface AirScannerAPI {
 
     @POST(addDevice)
@@ -27,7 +28,10 @@ interface AirScannerAPI {
     suspend fun deleteDevice(@Path("id") deviceId: String): GenericResponse<Any>
 
     @PUT("$editDevice/{id}")
-    suspend fun editDevice(@Path("id") id: String, @Body device: DeviceRequest): GenericResponse<Any>
+    suspend fun editDevice(
+        @Path("id") id: String,
+        @Body device: DeviceRequest
+    ): GenericResponse<Any>
 
     @POST(addGateway)
     suspend fun addGateway(@Body device: GatewayRequest): GenericResponse<Any>
@@ -35,8 +39,11 @@ interface AirScannerAPI {
     @DELETE("$deleteGateway/{id}")
     suspend fun deleteGateway(@Path("id") gatewayId: String): GenericResponse<Any>
 
-    @PUT(editGateway)
-    suspend fun editGateway(@Body device: GatewayResponse): GenericResponse<Any>
+    @PUT("$editGateway/{id}")
+    suspend fun editGateway(
+        @Path("id") id: String,
+        @Body device: GatewayResponse
+    ): GenericResponse<Any>
 
     @GET("""$metrics/{id}/{timeSpan}""")
     suspend fun getInfluxMetrics(

@@ -2,6 +2,7 @@ package com.griddynamics.connectedapps.ui.settings
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.user_info_layout.view.*
 import javax.inject.Inject
+private const val TAG: String = "SettingsFragment"
 
 class SettingsFragment : DaggerFragment() {
 
@@ -38,10 +40,12 @@ class SettingsFragment : DaggerFragment() {
 
     private var onDeviceSelectedListener = object : SettingsItemsAdapter.OnDeviceSelectedListener {
         override fun onDeviceSelected(deviceId: String, address: String) {
+            Log.d(TAG, "onDeviceSelected() called with: deviceId = [$deviceId], address = [$address]")
             navigateToChartFragment(deviceId, address)
         }
 
         override fun onGatewaySelected(gatewayId: String) {
+            Log.d(TAG, "onGatewaySelected() called with: gatewayId = [$gatewayId]")
             navigateToGatewayDetailsFragment(gatewayId)
         }
 

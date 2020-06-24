@@ -52,7 +52,11 @@ class EditGatewayViewModel @Inject constructor(
         isLoading.set(true)
         viewModelScope.launch {
             gateway?.let {
-                val result = repository.addGateway(it)
+                val result = if (isAdding.get()) {
+                    repository.addGateway(it)
+                } else {
+                    repository.editGateway(it)
+                }
                 isLoading.set(false)
                 if (result is NetworkResponse.Success) {
                     eventsStream.events.postValue(HomeScreenEvent.SUCCESS)

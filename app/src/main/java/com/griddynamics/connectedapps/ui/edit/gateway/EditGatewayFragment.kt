@@ -89,7 +89,7 @@ class EditGatewayFragment : DaggerFragment() {
         ).apply {
             show()
             Handler().postDelayed({
-                tearDownDialog(this)
+                tearDownDialogAndGoBack(this)
             }, 2_500)
         }
     }
@@ -105,10 +105,14 @@ class EditGatewayFragment : DaggerFragment() {
         }
     }
 
+    private fun tearDownDialogAndGoBack(dialog: AlertDialog) {
+        tearDownDialog(dialog)
+        findNavController().popBackStack()
+    }
+
     private fun tearDownDialog(dialog: AlertDialog) {
         eventsStream.events.postValue(HomeScreenEvent.DEFAULT)
         dialog.dismiss()
-        findNavController().popBackStack()
     }
 
 }

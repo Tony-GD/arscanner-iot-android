@@ -1,5 +1,7 @@
 package com.griddynamics.connectedapps.ui.edit.device
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -8,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -116,6 +120,35 @@ class EditDeviceFragment : DaggerFragment() {
         mapController.animateTo(startPoint)
     }
 
+    private fun setupExtraInfo() {
+        if (!viewModel.isAdding.get()) {
+            cl_edit_extra_info.visibility = View.VISIBLE
+            val clientId =
+                String.format(getString(R.string.client_id_value), viewModel.device?.gatewayId)
+            tv_extra_client_value.text =
+                clientId
+            val topic = String.format(getString(R.string.topic_value), viewModel.device?.deviceId)
+            tv_extra_topic_value.text =
+                topic
+            ib_extra_client_copy.setOnClickListener {
+                setToClipboard(clientId)
+            }
+            ib_extra_topic_copy.setOnClickListener {
+                setToClipboard(topic)
+            }
+        } else {
+            cl_edit_extra_info.visibility = View.GONE
+        }
+    }
+
+    private fun setToClipboard(text: String) {
+        val clipboardManager =
+            getSystemService(requireContext(), ClipboardManager::class.java)
+        val clipData = ClipData.newPlainText("Data", text)
+        clipboardManager?.setPrimaryClip(clipData)
+        Toast.makeText(requireContext(), "Text copied to clipboard", Toast.LENGTH_LONG).show()
+    }
+
     override fun onResume() {
         super.onResume()
         if (!viewModel.isAdding.get()) {
@@ -172,6 +205,7 @@ class EditDeviceFragment : DaggerFragment() {
                 }
             })
         }
+        setupExtraInfo()
         header_layout.tv_header_title.text = viewModel.device?.displayName
         header_layout.ib_header_back_arrow.setOnClickListener { findNavController().popBackStack() }
         viewModel.device?.metricsConfig?.let { config ->

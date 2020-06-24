@@ -38,4 +38,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="height_54">54dp</dimen>
     <dimen name="padding_8">8dp</dimen>
     <dimen name="height_250">250dp</dimen>
+    <dimen name="width_220">220dp</dimen>
+    <dimen name="width_300">300dp</dimen>
 </resources>

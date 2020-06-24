@@ -46,7 +46,7 @@
 
     <TextView
         android:id="@+id/tv_settings_item_address"
-        android:layout_width="220dp"
+        android:layout_width="@dimen/width_220"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_13"
         android:ellipsize="end"

@@ -102,4 +102,8 @@ frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
     <string name="added_to_the_widget">Device has been added to the widget</string>
     <string name="loading">Loading</string>
     <string name="login_sso">Please Log In via Gmail SSO account to have possibility to manage personal devices and recieve notifications. </string>
+    <string name="client_id">Client id</string>
+    <string name="topic">Topic</string>
+    <string name="client_id_value">projects/gd-gcp-rnd-connected-apps/locations/europe-west1/registries/europe-registry/devices/g-%s</string>
+    <string name="topic_value">/devices/d-%s/events</string>
 </resources>

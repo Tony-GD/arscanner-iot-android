@@ -50,7 +50,9 @@ class HourHistoryFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_hour_item_metrics.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_hour_item_metrics.adapter = HistoryChartItemsAdapter(hourMetrics, "mm")
+        rv_hour_item_metrics.adapter = HistoryChartItemsAdapter(hourMetrics) {
+            viewModel.onMetricSelected(it)
+        }
     }
 
     override fun onStart() {

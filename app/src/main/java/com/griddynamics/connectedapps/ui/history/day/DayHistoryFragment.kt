@@ -46,7 +46,9 @@ class DayHistoryFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_day_history_charts.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_day_history_charts.adapter = HistoryChartItemsAdapter(metrics, "HH")
+        rv_day_history_charts.adapter = HistoryChartItemsAdapter(metrics) {
+            viewModel.onMetricSelected(it)
+        }
     }
 
     override fun onStart() {

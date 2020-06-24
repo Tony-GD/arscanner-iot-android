@@ -14,9 +14,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
+import com.griddynamics.connectedapps.model.metrics.MetricChartItem
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
+import com.griddynamics.connectedapps.ui.history.bottomsheet.BottomSheetChartDetailsFragment
 import com.griddynamics.connectedapps.ui.history.day.DayHistoryFragment
 import com.griddynamics.connectedapps.ui.history.day.events.DayHistoryEventsStream
+import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEvent
+import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEventsStream
 import com.griddynamics.connectedapps.ui.history.hour.HourHistoryFragment
 import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStream
 import com.griddynamics.connectedapps.ui.history.week.WeekHistoryFragment
@@ -51,6 +55,9 @@ class HistoryFragment : DaggerFragment() {
     @Inject
     lateinit var weekHistoryEventsStream: WeekHistoryEventsStream
 
+    @Inject
+    lateinit var historyFragmentEventsStream: HistoryFragmentEventsStream
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
@@ -84,6 +91,12 @@ class HistoryFragment : DaggerFragment() {
                 Snackbar.LENGTH_LONG
             ).show()
         }
+        historyFragmentEventsStream.events.observe(viewLifecycleOwner, Observer {
+            if (it is HistoryFragmentEvent.ShowBottomDialogEvent) {
+                showBottomChart(it.metricChartItem)
+                historyFragmentEventsStream.events.value = HistoryFragmentEvent.DEFAULT
+            }
+        })
         btn_history_remove.setOnClickListener {
             getRemoveAlertDialog {
                 viewModel.removeDevice("${viewModel.deviceId}")
@@ -136,6 +149,14 @@ class HistoryFragment : DaggerFragment() {
         TabLayoutMediator(tl_history_tabs, vp_history_pager) { tab, position ->
             tab.text = adapter.getTabTitle(position)
         }.attach()
+    }
+
+    private fun showBottomChart(metric: MetricChartItem) {
+        val bottomSheetDialogFragment = BottomSheetChartDetailsFragment(metric)
+        bottomSheetDialogFragment.show(
+            requireActivity().supportFragmentManager,
+            bottomSheetDialogFragment.tag
+        )
     }
 
     private fun navigateToEdit() {

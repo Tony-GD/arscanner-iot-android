@@ -46,7 +46,9 @@ class WeekHistoryFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_week_history_charts.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_week_history_charts.adapter = HistoryChartItemsAdapter(metrics, "dd")
+        rv_week_history_charts.adapter = HistoryChartItemsAdapter(metrics) {
+            viewModel.onMetricSelected(it)
+        }
     }
 
     override fun onStart() {

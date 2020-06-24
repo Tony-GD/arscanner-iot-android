@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:minHeight="600dp"
+    android:background="@drawable/bottom_sheet_bg"
+    android:paddingHorizontal="15dp"
+    android:paddingTop="10dp">
+
+    <View
+        android:id="@+id/bottom_button"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@drawable/bottom_sheet_button_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        app:layout_constraintTop_toBottomOf="@id/bottom_button"
+        android:id="@+id/bottom_chart"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

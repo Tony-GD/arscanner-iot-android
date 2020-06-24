@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
-import com.griddynamics.connectedapps.model.metrics.MetricsRequest
-import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_DAY
-import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_HOUR
-import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_WEEK
+import com.griddynamics.connectedapps.model.metrics.*
 import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.repository.network.api.GenericResponse
@@ -17,6 +14,8 @@ import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.repository.stream.MetricsStream
 import com.griddynamics.connectedapps.ui.edit.device.DEFAULT
+import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEvent
+import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEventsStream
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +23,8 @@ class HistoryViewModel @Inject constructor(
     private val stream: MetricsStream,
     private val deviceStream: DeviceStream,
     private val repository: AirScannerRepository,
-    private val localStorage: LocalStorage
+    private val localStorage: LocalStorage,
+    private val historyFragmentEventsStream: HistoryFragmentEventsStream
 ) : ViewModel() {
     var deviceId: String? = null
 
@@ -87,6 +87,14 @@ class HistoryViewModel @Inject constructor(
             liveData.postValue(response)
         }
         return liveData
+    }
+
+    fun onMetricSelected(metric: MetricChartItem) {
+        historyFragmentEventsStream.events.postValue(
+            HistoryFragmentEvent.ShowBottomDialogEvent(
+                metric
+            )
+        )
     }
 
     fun addToWidget() {

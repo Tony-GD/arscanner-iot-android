@@ -2,6 +2,8 @@ package com.griddynamics.connectedapps.di.ui.history
 
 import com.griddynamics.connectedapps.ui.history.day.events.DayHistoryEventsStream
 import com.griddynamics.connectedapps.ui.history.day.events.DayHistoryEventsStreamImpl
+import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEventsStream
+import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEventsStreamImpl
 import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStream
 import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStreamImpl
 import com.griddynamics.connectedapps.ui.history.week.events.WeekHistoryEventsStream
@@ -28,5 +30,11 @@ object HistoryScreenEventsModule {
     @Singleton
     fun provideWeekEventsStream(): WeekHistoryEventsStream {
         return WeekHistoryEventsStreamImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideHistoryEventsStream(): HistoryFragmentEventsStream {
+        return HistoryFragmentEventsStreamImpl()
     }
 }

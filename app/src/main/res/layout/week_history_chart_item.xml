@@ -14,20 +14,10 @@
         android:layout_height="@dimen/size_154"
         android:background="@drawable/ghost_background">
 
-        <com.anychart.AnyChartView
-            android:id="@+id/any_chart_view"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ghost_background"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar_week"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.github.florent37.shapeofview.shapes.RoundRectView>

@@ -34,6 +34,8 @@ class DayHistoryFragment(
     }
 
     private fun handleLoading() {
+        metrics.clear()
+        rv_day_history_charts.adapter?.notifyDataSetChanged()
         pb_day_loading.visibility = View.VISIBLE
     }
 
@@ -44,7 +46,7 @@ class DayHistoryFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_day_history_charts.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_day_history_charts.adapter = HistoryChartItemsAdapter(metrics)
+        rv_day_history_charts.adapter = HistoryChartItemsAdapter(metrics, "HH")
     }
 
     override fun onStart() {

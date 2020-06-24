@@ -27,7 +27,7 @@ android {
         applicationId "com.griddynamics.connectedappsrnd"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 10
+        versionCode 11
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -139,6 +139,7 @@ dependencies {
 
     //charts
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     //shape
     implementation 'com.github.florent37:shapeofview:1.4.7'

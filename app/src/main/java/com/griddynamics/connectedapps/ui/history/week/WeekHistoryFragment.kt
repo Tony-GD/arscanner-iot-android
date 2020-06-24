@@ -35,6 +35,8 @@ class WeekHistoryFragment(
 
     private fun handleLoading() {
         pb_week_loading.visibility = View.VISIBLE
+        metrics.clear()
+        rv_week_history_charts.adapter?.notifyDataSetChanged()
     }
 
     private fun handleDefault() {
@@ -44,7 +46,7 @@ class WeekHistoryFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_week_history_charts.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_week_history_charts.adapter = HistoryChartItemsAdapter(metrics)
+        rv_week_history_charts.adapter = HistoryChartItemsAdapter(metrics, "dd")
     }
 
     override fun onStart() {

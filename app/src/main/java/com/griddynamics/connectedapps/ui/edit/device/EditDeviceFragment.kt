@@ -36,7 +36,6 @@ import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.edit_device_fragment.*
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.header_layout.view.*
 import kotlinx.android.synthetic.main.location_picker_layout.view.*
 import org.osmdroid.events.MapEventsReceiver
@@ -192,13 +191,10 @@ class EditDeviceFragment : DaggerFragment() {
                     it.metricsConfig?.keys?.firstOrNull()?.let { name ->
                         viewModel.singleMetricName.set(name)
                         viewModel.singleMetricMeasurement.set(
-                            (it.metricsConfig?.get(name) as Map<String, String>?)?.get("measurementType")
-                                .toString()
+                            it.metricsConfig?.get(name)?.measurementType
                         )
                         viewModel.isSingleValuePublic.set(
-                            (it.metricsConfig?.get(name) as Map<String, Boolean>?)?.get(
-                                "is_public"
-                            ) == true
+                            (it.metricsConfig?.get(name)?.isPublic == true)
                         )
                     }
                 }

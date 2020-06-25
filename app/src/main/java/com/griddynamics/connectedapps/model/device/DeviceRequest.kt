@@ -24,7 +24,7 @@ data class DeviceRequest(
     var locLat: String,
     @SerializedName("loc_lon")
     var locLong: String,
-    @SerializedName("loc_desc")
+    @SerializedName("location_description")
     var locDesc: String,
     var publicMetrics: List<String>?,
     var metricsConfig: Map<String, MetricConfig>?

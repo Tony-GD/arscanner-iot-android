@@ -257,6 +257,7 @@
                     android:id="@+id/ll_edit_single"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
                     android:orientation="vertical"
                     android:visibility="@{viewModel.isSingleValue &amp;&amp; !viewModel.isAdding ? View.VISIBLE : View.GONE}">
 

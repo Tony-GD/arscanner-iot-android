@@ -34,10 +34,15 @@ class GatewayDetailsDevicesAdapter(
             binding.rvGatewayDetailsItemsContainer.layoutManager =
                 LinearLayoutManager(binding.root.context, RecyclerView.HORIZONTAL, false)
             binding.rvGatewayDetailsItemsContainer.adapter = DeviceMetricsAdapter(metrics.values)
-            viewModel.getAddress(device.location).observe(lifecycleOwner, Observer {
-                address = it
-                binding.deviceDescriptionContainer.tv_description_address.text = it
-            })
+            if (device.locationDescription != null) {
+                address = "${device.locationDescription}"
+                binding.deviceDescriptionContainer.tv_description_address.text = device.locationDescription
+            } else {
+                viewModel.getAddress(device.location).observe(lifecycleOwner, Observer {
+                    address = it
+                    binding.deviceDescriptionContainer.tv_description_address.text = it
+                })
+            }
             viewModel.subscribeForMetrics("${device.deviceId}").observe(lifecycleOwner, Observer {
                 if (metrics.isEmpty()) {
                     binding.metric = it

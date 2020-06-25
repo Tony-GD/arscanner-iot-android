@@ -27,6 +27,7 @@ import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
 import com.griddynamics.connectedapps.model.device.*
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
+import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
 import com.griddynamics.connectedapps.util.getErrorDialog
 import com.griddynamics.connectedapps.util.getMapColorFilter
@@ -35,6 +36,7 @@ import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.edit_device_fragment.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.header_layout.view.*
 import kotlinx.android.synthetic.main.location_picker_layout.view.*
 import org.osmdroid.events.MapEventsReceiver
@@ -80,6 +82,10 @@ class EditDeviceFragment : DaggerFragment() {
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
                 viewModel.selectedLat = p.latitude.toFloat()
                 viewModel.selectedLong = p.longitude.toFloat()
+                viewModel.setLocationDescription(p.latitude, p.longitude)
+                    .observe(viewLifecycleOwner, Observer {
+                        binding.invalidateAll()
+                    })
                 view.map_picker.overlays.clear()
                 val elementMarker = Marker(view.map_picker)
                 elementMarker.icon = requireContext().getDrawable(R.drawable.ic_pin)
@@ -111,6 +117,7 @@ class EditDeviceFragment : DaggerFragment() {
 
     private fun setupMap(map: MapView) {
         map.setTileSource(TileSourceFactory.MAPNIK)
+        map.setTileSource(TileSourceFactory.OpenTopo)
         val mapController = map.controller as MapController
         map.setBuiltInZoomControls(false)
         mapController.zoomTo(10)
@@ -164,6 +171,7 @@ class EditDeviceFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(EditDeviceViewModel::class.java)
+        setupEventsObserver()
         arguments?.apply {
             val deviceJson = EditDeviceFragmentArgs.fromBundle(
                 arguments
@@ -332,6 +340,17 @@ class EditDeviceFragment : DaggerFragment() {
                     }
                 }
         }
+    }
+
+    private fun setupEventsObserver() {
+        eventsStream.events.observe(viewLifecycleOwner, Observer {
+            if (it is HomeScreenEvent.LOADING) {
+                viewModel.isLoading.set(true)
+            }
+            if (it is HomeScreenEvent.DEFAULT) {
+                viewModel.isLoading.set(false)
+            }
+        })
     }
 
     private fun getSpinnerAdapter(array: Array<out String>): ArrayAdapter<String> {

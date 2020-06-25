@@ -40,9 +40,13 @@ sealed class DevicesLoader(protected val viewModel: SettingsViewModel) {
                             "${it.displayName}",
                             ""
                         )
-                        withContext(Dispatchers.IO) {
-                            it.location?.let { location ->
-                                item.address = getAddress(location)
+                        if (it.locationDescription != null) {
+                            item.address = "${it.locationDescription}"
+                        } else {
+                            withContext(Dispatchers.IO) {
+                                it.location?.let { location ->
+                                    item.address = getAddress(location)
+                                }
                             }
                         }
                         withContext(Dispatchers.Main) {
@@ -70,9 +74,13 @@ sealed class DevicesLoader(protected val viewModel: SettingsViewModel) {
                             "${it.displayName}",
                             ""
                         )
-                        withContext(Dispatchers.IO) {
-                            it.location?.let { location ->
-                                item.address = getAddress(location)
+                        if (it.locationDescription != null) {
+                            item.address = "${it.locationDescription}"
+                        } else {
+                            withContext(Dispatchers.IO) {
+                                it.location?.let { location ->
+                                    item.address = getAddress(location)
+                                }
                             }
                         }
                         item

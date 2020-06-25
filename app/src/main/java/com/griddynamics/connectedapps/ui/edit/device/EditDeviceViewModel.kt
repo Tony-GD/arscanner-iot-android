@@ -3,20 +3,19 @@ package com.griddynamics.connectedapps.ui.edit.device
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.google.firebase.firestore.GeoPoint
+import com.griddynamics.connectedapps.model.device.*
+import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.DeviceStream
-import com.griddynamics.connectedapps.model.device.*
-import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
+import com.griddynamics.connectedapps.util.MapUtil
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -79,6 +78,15 @@ class EditDeviceViewModel @Inject constructor(
         { devices ->
             deviceStream.userDevices.value = devices
         }
+    }
+
+    fun setLocationDescription(lat: Double, long: Double): LiveData<String> {
+        val mediatorLiveData = MediatorLiveData<String>()
+        mediatorLiveData.addSource(MapUtil.getAddressFrom(GeoPoint(lat, long))) {
+            mediatorLiveData.value = it
+            device?.locationDescription = it
+        }
+        return mediatorLiveData
     }
 
     fun saveEditedDevice() {

@@ -15,8 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditGatewayFragmentBinding
 import com.griddynamics.connectedapps.model.device.EMPTY_GATEWAY
-import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
 import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
 import com.griddynamics.connectedapps.util.getErrorDialog
 import com.griddynamics.connectedapps.util.getSuccessDialog
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
@@ -73,6 +73,12 @@ class EditGatewayFragment : DaggerFragment() {
         }
         binding.viewModel = viewModel
         eventsStream.events.observe(viewLifecycleOwner, Observer {
+            if (it is HomeScreenEvent.LOADING) {
+                viewModel.isLoading.set(true)
+            }
+            if (it is HomeScreenEvent.DEFAULT) {
+                viewModel.isLoading.set(false)
+            }
             if (it is HomeScreenEvent.SUCCESS) {
                 showSuccess()
             }

@@ -93,6 +93,7 @@ frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
     <string name="device_was_removed">Device was removed</string>
     <string name="gateway_was_removed">Gateway was removed</string>
     <string name="now">Now</string>
+    <string name="hour">Hour</string>
     <string name="week">Week</string>
     <string name="today">Today</string>
     <string name="all">&#160;All</string>
@@ -106,4 +107,5 @@ frhzIf4mqRVQUcQd3JCDGKWLFxisgKrjc7gfm+DDoDfKLGHkKEzZkfOXZSTkYXbc
     <string name="topic">Topic</string>
     <string name="client_id_value">projects/gd-gcp-rnd-connected-apps/locations/europe-west1/registries/europe-registry/devices/g-%s</string>
     <string name="topic_value">/devices/d-%s/events</string>
+    <string name="no_data_available">No data available</string>
 </resources>

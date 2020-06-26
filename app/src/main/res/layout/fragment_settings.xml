@@ -25,27 +25,11 @@
             <include layout="@layout/user_info_layout" />
         </FrameLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_settings_tabs"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_settings_devices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/settings_user_layout"
-            android:layout_marginHorizontal="@dimen/marker_size_12"
-            android:layout_marginTop="@dimen/marker_size_12"
-            android:minHeight="?actionBarSize"
-            app:tabBackground="@drawable/tab_background"
-            app:tabGravity="fill"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/whiteTransparent" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_settings_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_5"
-            app:layout_constraintTop_toBottomOf="@id/tl_settings_tabs" />
+            app:layout_constraintTop_toBottomOf="@id/settings_user_layout" />
 
 
         <Button
@@ -60,7 +44,7 @@
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_settings_pager" />
+            app:layout_constraintTop_toBottomOf="@id/rv_settings_devices" />
 
         <LinearLayout
             android:layout_width="match_parent"

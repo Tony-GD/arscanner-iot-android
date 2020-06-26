@@ -80,6 +80,22 @@ class HistoryViewModel @Inject constructor(
         return liveData
     }
 
+    fun getMetricsWithTimeSpan(id: String, timeSpan: String): LiveData<GenericResponse<MetricsMap>> {
+        val liveData = MutableLiveData<GenericResponse<MetricsMap>>()
+        viewModelScope.launch {
+            val data = repository.getMetrics(
+                MetricsRequest(
+                    id,
+                    2,
+                    DEFAULT,
+                    timeSpan
+                )
+            )
+            liveData.postValue(data)
+        }
+        return liveData
+    }
+
     fun removeDevice(id: String): LiveData<GenericResponse<Any>> {
         val liveData = MutableLiveData<GenericResponse<Any>>()
         viewModelScope.launch {

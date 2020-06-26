@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_9"
-    android:padding="@dimen/description_padding_15"
-    android:background="@drawable/ghost_background">
+    android:background="@drawable/ghost_background"
+    android:padding="@dimen/description_padding_15">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_settings_item_image_container"
@@ -27,10 +28,10 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="28dp"
-            android:src="@drawable/ic_gateway"
             android:layout_marginStart="@dimen/margin_35"
-            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_gateway"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -57,8 +58,8 @@
         android:id="@+id/ib_settings_item_open"
         android:layout_width="@dimen/padding_42"
         android:layout_height="@dimen/padding_42"
-        android:src="@drawable/ic_arrow_down"
         android:background="@color/transparent"
+        android:src="@drawable/ic_arrow_down"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

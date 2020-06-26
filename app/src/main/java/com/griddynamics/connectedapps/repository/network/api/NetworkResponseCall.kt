@@ -28,10 +28,14 @@ internal class NetworkResponseCall<S : Any, E : Any>(
 
                 if (response.isSuccessful) {
                     if (body != null) {
-                        callback.onResponse(
-                            this@NetworkResponseCall,
-                            Response.success(NetworkResponse.Success(body))
-                        )
+                        try {
+                            callback.onResponse(
+                                this@NetworkResponseCall,
+                                Response.success(NetworkResponse.Success(body))
+                            )
+                        } catch (e: IllegalStateException) {
+                            Log.e(TAG, "NetworkResponseCall: ", e)
+                        }
                     } else {
                         // Response is successful but the body is null
                         callback.onResponse(

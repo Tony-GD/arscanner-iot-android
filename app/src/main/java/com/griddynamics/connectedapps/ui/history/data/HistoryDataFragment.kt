@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.history.hour
+package com.griddynamics.connectedapps.ui.history.data
 
 import android.os.Bundle
 import android.util.Log
@@ -15,15 +15,15 @@ import com.griddynamics.connectedapps.model.settings.hour.HourHistoryItem
 import com.griddynamics.connectedapps.repository.network.api.MetricsMap
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.ui.history.HistoryViewModel
-import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStream
-import com.griddynamics.connectedapps.ui.history.week.HistoryChartItemsAdapter
-import kotlinx.android.synthetic.main.fragmnet_hour_history.*
+import com.griddynamics.connectedapps.ui.history.data.events.HistoryDataFragmentEventsStream
+import kotlinx.android.synthetic.main.fragment_history_data_list.*
 
-private const val TAG: String = "HourHistoryFragment"
+private const val TAG: String = "HistoryDataFragment"
 
-class HourHistoryFragment(
+class HistoryDataFragment(
+    private val timeSpan: String,
     private val viewModel: HistoryViewModel,
-    private val historyEventsStream: HourHistoryEventsStream
+    private val historyEventsStream: HistoryDataFragmentEventsStream
 ) : Fragment() {
 
     private val metrics = mutableMapOf<String, HourHistoryItem>()
@@ -34,10 +34,11 @@ class HourHistoryFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragmnet_hour_history, container, false)
+        return inflater.inflate(R.layout.fragment_history_data_list, container, false)
     }
 
     private fun handleLoading() {
+        tv_hour_empty.visibility = View.GONE
         pb_hour_loading.visibility = View.VISIBLE
         metrics.clear()
         rv_hour_item_metrics.adapter?.notifyDataSetChanged()
@@ -47,22 +48,34 @@ class HourHistoryFragment(
         pb_hour_loading.visibility = View.GONE
     }
 
+    private fun handleEmpty() {
+        pb_hour_loading.visibility = View.GONE
+        tv_hour_empty.visibility = View.VISIBLE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rv_hour_item_metrics.layoutManager = GridLayoutManager(requireContext(), 2)
-        rv_hour_item_metrics.adapter = HistoryChartItemsAdapter(hourMetrics) {
-            viewModel.onMetricSelected(it)
-        }
+        rv_hour_item_metrics.adapter =
+            HistoryChartItemsAdapter(
+                hourMetrics
+            ) {
+                viewModel.onMetricSelected(it)
+            }
     }
 
     override fun onStart() {
         super.onStart()
         handleLoading()
-        viewModel.getLastHourMetrics("${viewModel.deviceId}")
+        viewModel.getMetricsWithTimeSpan("${viewModel.deviceId}", timeSpan)
             .observe(viewLifecycleOwner, Observer { response ->
-                handleDefault()
                 when (response) {
                     is NetworkResponse.Success<MetricsMap> -> {
+                        if (response.body.isNotEmpty()) {
+                            handleDefault()
+                        } else {
+                            handleEmpty()
+                        }
                         response.body.keys.forEach { metricName ->
                             hourMetrics.add(MetricChartItem().apply {
                                 this.name = metricName
@@ -74,14 +87,16 @@ class HourHistoryFragment(
                         rv_hour_item_metrics.adapter?.notifyDataSetChanged()
                     }
                     is NetworkResponse.UnknownError -> {
+                        handleEmpty()
                         Log.e(TAG, "WeekHistoryFragment: ", response.error)
                         Toast.makeText(
                             requireContext(),
-                            "Unknown error: $response",
+                            "Unknown error",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    is NetworkResponse.ApiError -> {
+                    is NetworkResponse.ApiError<*> -> {
+                        handleEmpty()
                         Log.e(TAG, "WeekHistoryFragment: ", RuntimeException("${response.body}"))
                         Toast.makeText(
                             requireContext(),

@@ -201,7 +201,7 @@ class MapFragment : DaggerFragment() {
             binding.item = device
 //            binding.listener = onDeviceSelectedListener
             val greenIcon = requireContext().getDrawable(R.drawable.green)
-            val selectedIcon = requireContext().getDrawable(R.drawable.green_selected)
+            val selectedIcon = requireContext().getDrawable(R.drawable.ic_green_selected)
             val elementMarker = Marker(map)
             elementMarker.setOnMarkerClickListener { selectedMarker, mapView ->
                 Log.d(TAG, "generateMarker: inCLick $selectedMarker")

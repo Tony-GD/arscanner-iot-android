@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.history.week
+package com.griddynamics.connectedapps.ui.history.data
 
 import android.graphics.Color
 import android.view.LayoutInflater

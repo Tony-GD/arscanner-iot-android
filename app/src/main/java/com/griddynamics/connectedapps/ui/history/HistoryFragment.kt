@@ -15,16 +15,15 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.model.metrics.MetricChartItem
+import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_DAY
+import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_HOUR
+import com.griddynamics.connectedapps.model.metrics.TIME_SPAN_LAST_WEEK
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.ui.history.bottomsheet.BottomSheetChartDetailsFragment
-import com.griddynamics.connectedapps.ui.history.day.DayHistoryFragment
-import com.griddynamics.connectedapps.ui.history.day.events.DayHistoryEventsStream
+import com.griddynamics.connectedapps.ui.history.data.HistoryDataFragment
+import com.griddynamics.connectedapps.ui.history.data.events.HistoryDataFragmentEventsStream
 import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEvent
 import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEventsStream
-import com.griddynamics.connectedapps.ui.history.hour.HourHistoryFragment
-import com.griddynamics.connectedapps.ui.history.hour.events.HourHistoryEventsStream
-import com.griddynamics.connectedapps.ui.history.week.WeekHistoryFragment
-import com.griddynamics.connectedapps.ui.history.week.events.WeekHistoryEventsStream
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.ui.home.TabAdapter
 import com.griddynamics.connectedapps.util.getErrorDialog
@@ -47,13 +46,7 @@ class HistoryFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var dayHistoryEventsStream: DayHistoryEventsStream
-
-    @Inject
-    lateinit var hourHistoryEventsStream: HourHistoryEventsStream
-
-    @Inject
-    lateinit var weekHistoryEventsStream: WeekHistoryEventsStream
+    lateinit var historyDataFragmentEventsStream: HistoryDataFragmentEventsStream
 
     @Inject
     lateinit var historyFragmentEventsStream: HistoryFragmentEventsStream
@@ -134,15 +127,19 @@ class HistoryFragment : DaggerFragment() {
         }
         adapter = TabAdapter(this)
         adapter.addFragment(
-            HourHistoryFragment(viewModel, hourHistoryEventsStream),
-            getString(R.string.now)
+            HistoryDataFragment(
+                TIME_SPAN_LAST_HOUR,
+                viewModel,
+                historyDataFragmentEventsStream
+            ),
+            getString(R.string.hour)
         )
         adapter.addFragment(
-            DayHistoryFragment(viewModel, dayHistoryEventsStream),
+            HistoryDataFragment(TIME_SPAN_LAST_DAY, viewModel, historyDataFragmentEventsStream),
             getString(R.string.today)
         )
         adapter.addFragment(
-            WeekHistoryFragment(viewModel, weekHistoryEventsStream),
+            HistoryDataFragment(TIME_SPAN_LAST_WEEK, viewModel, historyDataFragmentEventsStream),
             getString(R.string.week)
         )
         vp_history_pager.adapter = adapter

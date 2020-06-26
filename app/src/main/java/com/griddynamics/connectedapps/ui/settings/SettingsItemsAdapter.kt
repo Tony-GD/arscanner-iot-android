@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.griddynamics.connectedapps.R
@@ -37,7 +36,7 @@ class SettingsItemsAdapter(
         var listener: View.OnClickListener?
             get() = null
             set(value) {
-                view.findViewById<ImageButton>(R.id.ib_settings_item_open).setOnClickListener(value)
+                view.findViewById<View>(R.id.settings_item_root).setOnClickListener(value)
             }
     }
 
@@ -69,7 +68,10 @@ class SettingsItemsAdapter(
         holder.listener = View.OnClickListener {
             Log.d("TAG", "onBindViewHolder: click")
             when (item.type) {
-                SettingsDeviceItem.TYPE_DEVICE -> deviceSelectedListener.onDeviceSelected(item.id, item.address)
+                SettingsDeviceItem.TYPE_DEVICE -> deviceSelectedListener.onDeviceSelected(
+                    item.id,
+                    item.address
+                )
                 else -> deviceSelectedListener.onGatewaySelected(item.id)
             }
         }

@@ -30,7 +30,7 @@ import com.griddynamics.connectedapps.databinding.MapInfoViewLayoutBinding
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.ui.common.DrawableClickableEditText
-import com.griddynamics.connectedapps.ui.edit.device.*
+import com.griddynamics.connectedapps.ui.home.edit.device.*
 import com.griddynamics.connectedapps.ui.map.bottomsheet.BottomSheetDeviceDetailsFragment
 import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory

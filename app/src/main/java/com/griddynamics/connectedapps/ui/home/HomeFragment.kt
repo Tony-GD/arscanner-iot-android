@@ -13,8 +13,8 @@ import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.FragmentHomeBindingImpl
 import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.model.device.DeviceRequest
-import com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment
-import com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment
+import com.griddynamics.connectedapps.ui.home.edit.device.EditDeviceFragment
+import com.griddynamics.connectedapps.ui.home.edit.gateway.EditGatewayFragment
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_home.*

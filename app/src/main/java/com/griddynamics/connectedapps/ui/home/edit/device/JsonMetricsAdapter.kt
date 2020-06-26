@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit.device
+package com.griddynamics.connectedapps.ui.home.edit.device
 
 import android.view.LayoutInflater
 import android.view.View

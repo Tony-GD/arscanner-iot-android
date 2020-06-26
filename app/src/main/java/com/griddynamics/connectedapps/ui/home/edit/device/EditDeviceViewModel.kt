@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit.device
+package com.griddynamics.connectedapps.ui.home.edit.device
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
@@ -13,8 +13,9 @@ import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.ui.home.Callback
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.EditDeviceScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
+import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
 import com.griddynamics.connectedapps.util.AddressUtil
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +37,7 @@ class EditDeviceViewModel @Inject constructor(
     private val deviceStream: DeviceStream,
     private val localStorage: LocalStorage,
     private val repository: AirScannerRepository,
-    private val eventsStream: HomeScreenEventsStream
+    private val eventsStream: EditDeviceScreenEventsStream
 ) :
     ViewModel() {
     var selectedLat: Float = 0f

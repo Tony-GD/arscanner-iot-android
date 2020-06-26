@@ -1,8 +1,8 @@
-package com.griddynamics.connectedapps.di.ui.edit.device
+package com.griddynamics.connectedapps.di.ui.home.edit.device
 
 import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.di.ViewModelKey
-import com.griddynamics.connectedapps.ui.edit.device.EditDeviceViewModel
+import com.griddynamics.connectedapps.ui.home.edit.device.EditDeviceViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/navigation_edit"
-        android:name="com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment"
+        android:name="com.griddynamics.connectedapps.ui.home.edit.device.EditDeviceFragment"
         android:label="@string/edit"
         tools:layout="@layout/edit_device_fragment">
         <argument
@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/navigation_edit_gateway"
-        android:name="com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment"
+        android:name="com.griddynamics.connectedapps.ui.home.edit.gateway.EditGatewayFragment"
         android:label="@string/edit"
         tools:layout="@layout/edit_gateway_fragment">
         <argument

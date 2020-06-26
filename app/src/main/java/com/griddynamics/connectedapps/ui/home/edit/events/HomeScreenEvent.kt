@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.home.events
+package com.griddynamics.connectedapps.ui.home.edit.events
 
 sealed class HomeScreenEvent {
     object DEFAULT: HomeScreenEvent()

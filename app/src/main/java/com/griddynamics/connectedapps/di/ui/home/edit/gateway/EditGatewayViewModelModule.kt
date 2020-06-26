@@ -1,8 +1,8 @@
-package com.griddynamics.connectedapps.di.ui.edit.gateway
+package com.griddynamics.connectedapps.di.ui.home.edit.gateway
 
 import androidx.lifecycle.ViewModel
 import com.griddynamics.connectedapps.di.ViewModelKey
-import com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayViewModel
+import com.griddynamics.connectedapps.ui.home.edit.gateway.EditGatewayViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

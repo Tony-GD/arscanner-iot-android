@@ -1,6 +1,6 @@
-package com.griddynamics.connectedapps.di.ui.edit.device
+package com.griddynamics.connectedapps.di.ui.home.edit.device
 
-import com.griddynamics.connectedapps.ui.edit.device.EditDeviceFragment
+import com.griddynamics.connectedapps.ui.home.edit.device.EditDeviceFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

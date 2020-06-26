@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit.gateway
+package com.griddynamics.connectedapps.ui.home.edit.gateway
 
 import android.content.Context
 import android.os.Bundle
@@ -15,8 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditGatewayFragmentBinding
 import com.griddynamics.connectedapps.model.device.EMPTY_GATEWAY
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
+import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
 import com.griddynamics.connectedapps.util.getErrorDialog
 import com.griddynamics.connectedapps.util.getSuccessDialog
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
@@ -36,7 +36,7 @@ class EditGatewayFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var eventsStream: HomeScreenEventsStream
+    lateinit var eventsStream: EditGatewayScreenEventsStream
     private lateinit var binding: EditGatewayFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

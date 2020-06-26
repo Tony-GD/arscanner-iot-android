@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayViewModel" />
+            type="com.griddynamics.connectedapps.ui.home.edit.gateway.EditGatewayViewModel" />
 
     </data>
 
@@ -23,7 +23,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/margin_10"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context="com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment">
+            tools:context=".ui.home.edit.gateway.EditGatewayFragment">
 
             <FrameLayout
                 android:id="@+id/header_layout"

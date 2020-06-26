@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.griddynamics.connectedapps.ui.edit.device.EditDeviceViewModel" />
+            type="com.griddynamics.connectedapps.ui.home.edit.device.EditDeviceViewModel" />
     </data>
 
     <ScrollView
@@ -29,7 +29,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/margin_10"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:context=".ui.edit.device.EditDeviceFragment">
+                tools:context=".ui.home.edit.device.EditDeviceFragment">
 
                 <FrameLayout
                     android:id="@+id/header_layout"

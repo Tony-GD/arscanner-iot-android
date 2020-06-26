@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit.gateway
+package com.griddynamics.connectedapps.ui.home.edit.gateway
 
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModel
@@ -7,14 +7,14 @@ import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.repository.stream.GatewayStream
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
+import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EditGatewayViewModel @Inject constructor(
     private val repository: AirScannerRepository,
-    private val eventsStream: HomeScreenEventsStream,
+    private val eventsStream: EditGatewayScreenEventsStream,
     private val gatewayStream: GatewayStream
 ) :
     ViewModel() {

@@ -1,6 +1,6 @@
 package com.griddynamics.connectedapps.model
 
-import com.griddynamics.connectedapps.ui.edit.device.*
+import com.griddynamics.connectedapps.ui.home.edit.device.*
 
 const val SCANNER_RESPONSE_ID = "SCANNER_RESPONSE_ID"
 

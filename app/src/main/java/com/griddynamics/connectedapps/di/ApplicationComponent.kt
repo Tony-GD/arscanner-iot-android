@@ -4,10 +4,10 @@ import android.app.Application
 import com.griddynamics.connectedapps.BaseApp
 import com.griddynamics.connectedapps.di.repository.RepositoryModule
 import com.griddynamics.connectedapps.di.repository.StreamModule
-import com.griddynamics.connectedapps.di.ui.edit.device.EditFragmentContributor
-import com.griddynamics.connectedapps.di.ui.edit.device.EditModule
-import com.griddynamics.connectedapps.di.ui.edit.gateway.EditGatewayFragmentContributor
-import com.griddynamics.connectedapps.di.ui.edit.gateway.EditGatewayModule
+import com.griddynamics.connectedapps.di.ui.home.edit.device.EditFragmentContributor
+import com.griddynamics.connectedapps.di.ui.home.edit.device.EditModule
+import com.griddynamics.connectedapps.di.ui.home.edit.gateway.EditGatewayFragmentContributor
+import com.griddynamics.connectedapps.di.ui.home.edit.gateway.EditGatewayModule
 import com.griddynamics.connectedapps.di.ui.gateway.GatewayDetailsFragmentContributor
 import com.griddynamics.connectedapps.di.ui.gateway.GatewayDetailsModule
 import com.griddynamics.connectedapps.di.ui.greeting.GreetingActivityContributor

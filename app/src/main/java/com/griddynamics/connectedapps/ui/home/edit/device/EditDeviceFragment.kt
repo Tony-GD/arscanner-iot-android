@@ -1,4 +1,4 @@
-package com.griddynamics.connectedapps.ui.edit.device
+package com.griddynamics.connectedapps.ui.home.edit.device
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -27,8 +27,8 @@ import com.griddynamics.connectedapps.databinding.EditDeviceFragmentBinding
 import com.griddynamics.connectedapps.model.device.*
 import com.griddynamics.connectedapps.model.metrics.JsonMetricViewState
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
-import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.EditDeviceScreenEventsStream
+import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
 import com.griddynamics.connectedapps.util.getErrorDialog
 import com.griddynamics.connectedapps.util.getMapColorFilter
 import com.griddynamics.connectedapps.util.getSuccessDialog
@@ -55,7 +55,7 @@ class EditDeviceFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var eventsStream: HomeScreenEventsStream
+    lateinit var eventsStream: EditDeviceScreenEventsStream
     private lateinit var binding: EditDeviceFragmentBinding
     private lateinit var viewModel: EditDeviceViewModel
 

@@ -13,7 +13,7 @@ import com.griddynamics.connectedapps.repository.network.api.MetricsMap
 import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.repository.stream.MetricsStream
-import com.griddynamics.connectedapps.ui.edit.device.DEFAULT
+import com.griddynamics.connectedapps.ui.home.edit.device.DEFAULT
 import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEvent
 import com.griddynamics.connectedapps.ui.history.events.HistoryFragmentEventsStream
 import kotlinx.coroutines.launch

@@ -1,6 +1,6 @@
-package com.griddynamics.connectedapps.di.ui.edit.gateway
+package com.griddynamics.connectedapps.di.ui.home.edit.gateway
 
-import com.griddynamics.connectedapps.ui.edit.gateway.EditGatewayFragment
+import com.griddynamics.connectedapps.ui.home.edit.gateway.EditGatewayFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

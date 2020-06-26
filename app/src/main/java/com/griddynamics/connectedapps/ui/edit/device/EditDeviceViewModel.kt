@@ -15,7 +15,7 @@ import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEvent
 import com.griddynamics.connectedapps.ui.home.events.HomeScreenEventsStream
-import com.griddynamics.connectedapps.util.MapUtil
+import com.griddynamics.connectedapps.util.AddressUtil
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -82,7 +82,7 @@ class EditDeviceViewModel @Inject constructor(
 
     fun setLocationDescription(lat: Double, long: Double): LiveData<String> {
         val mediatorLiveData = MediatorLiveData<String>()
-        mediatorLiveData.addSource(MapUtil.getAddressFrom(GeoPoint(lat, long))) {
+        mediatorLiveData.addSource(AddressUtil.getAddressFrom(GeoPoint(lat, long))) {
             mediatorLiveData.value = it
             device?.locationDescription = it
         }

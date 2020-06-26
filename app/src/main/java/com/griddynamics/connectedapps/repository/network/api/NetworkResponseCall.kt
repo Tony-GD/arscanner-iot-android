@@ -35,6 +35,10 @@ internal class NetworkResponseCall<S : Any, E : Any>(
                             )
                         } catch (e: IllegalStateException) {
                             Log.e(TAG, "NetworkResponseCall: ", e)
+                            callback.onResponse(
+                                this@NetworkResponseCall.clone(),
+                                Response.success(NetworkResponse.Success(body))
+                            )
                         }
                     } else {
                         // Response is successful but the body is null

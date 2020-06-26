@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.osmdroid.bonuspack.location.GeocoderNominatim
 
-object MapUtil {
+object AddressUtil {
     private const val TAG: String = "MapUtil"
     private val geocoder = GeocoderNominatim(GeocoderNominatim.NOMINATIM_SERVICE_URL)
 

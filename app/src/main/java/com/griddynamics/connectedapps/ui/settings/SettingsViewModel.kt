@@ -11,7 +11,7 @@ import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.GatewayStream
-import com.griddynamics.connectedapps.util.MapUtil
+import com.griddynamics.connectedapps.util.AddressUtil
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -39,7 +39,7 @@ class SettingsViewModel @Inject constructor(
         return mediatorLiveData
     }
     fun loadAddress(location: GeoPoint?): LiveData<String> = if (location != null) {
-        MapUtil.getAddressFrom(location)
+        AddressUtil.getAddressFrom(location)
     } else {
         MutableLiveData()
     }

@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.griddynamics.connectedapps.model.settings.SettingsDeviceItem
 import com.griddynamics.connectedapps.ui.settings.SettingsViewModel
-import com.griddynamics.connectedapps.util.MapUtil.getAddress
+import com.griddynamics.connectedapps.util.AddressUtil.getAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

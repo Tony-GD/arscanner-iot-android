@@ -16,7 +16,7 @@ import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.repository.stream.GatewayStream
 import com.griddynamics.connectedapps.ui.gateway.events.GatewayDetailsEventsStream
 import com.griddynamics.connectedapps.ui.gateway.events.GatewayDetailsScreenEvent
-import com.griddynamics.connectedapps.util.MapUtil
+import com.griddynamics.connectedapps.util.AddressUtil
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class GatewayDetailsViewModel @Inject constructor(
 
     fun getAddress(geoPoint: GeoPoint?): LiveData<String> {
         Log.d(TAG, "getAddress() called with: geoPoint = [$geoPoint]")
-        return if (geoPoint != null) MapUtil.getAddressFrom(geoPoint)
+        return if (geoPoint != null) AddressUtil.getAddressFrom(geoPoint)
         else MutableLiveData()
     }
 

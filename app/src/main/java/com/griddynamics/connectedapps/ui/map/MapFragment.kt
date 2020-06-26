@@ -256,7 +256,7 @@ class MapFragment : DaggerFragment() {
     private fun showDetails(device: DeviceResponse) {
         Log.d(TAG, "showDetails() called with: device = [$device]")
         val bottomSheetDialogFragment =
-            BottomSheetDeviceDetailsFragment().apply { setDeviceInfo(device) }
+            BottomSheetDeviceDetailsFragment(onDeviceSelectedListener).apply { setDeviceInfo(device) }
         bottomSheetDialogFragment.show(
             requireActivity().supportFragmentManager,
             bottomSheetDialogFragment.tag

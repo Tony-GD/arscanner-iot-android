@@ -97,6 +97,7 @@
             app:destination="@id/navigation_edit" />
     </fragment>
     <fragment
+        tools:layout="@layout/gateway_details_fragment"
         android:id="@+id/gatewayDetailsFragment"
         android:name="com.griddynamics.connectedapps.ui.gateway.GatewayDetailsFragment"
         android:label="GatewayDetailsFragment" >

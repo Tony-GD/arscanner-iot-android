@@ -1,14 +1,19 @@
 package com.griddynamics.connectedapps.ui.map.bottomsheet
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.BottomDialogItemLayoutBinding
 import com.griddynamics.connectedapps.model.DefaultScannersResponse
+import com.griddynamics.connectedapps.ui.home.Callback
 
-class BottomSheetDialogMetricsAdapter(private val entries: Collection<DefaultScannersResponse>) :
+class BottomSheetDialogMetricsAdapter(
+    private val entries: Collection<DefaultScannersResponse>,
+    private val onMetricClicked: Callback
+) :
     RecyclerView.Adapter<BottomSheetDialogMetricsAdapter.MetricViewHolder>() {
 
     class MetricViewHolder(val binding: BottomDialogItemLayoutBinding) :
@@ -37,5 +42,7 @@ class BottomSheetDialogMetricsAdapter(private val entries: Collection<DefaultSca
         position: Int
     ) {
         holder.binding.response = entries.toTypedArray()[position]
+
+        holder.binding.onMetricClicked = View.OnClickListener { onMetricClicked() }
     }
 }

@@ -1,8 +1,8 @@
-package com.griddynamics.connectedapps.ui.history.data.events
+package com.griddynamics.connectedapps.ui.settings.events
 
 import androidx.lifecycle.MutableLiveData
 import com.griddynamics.connectedapps.ui.common.ScreenEvent
 
-interface HistoryDataFragmentEventsStream {
+interface SettingsScreenEventsStream {
     val events: MutableLiveData<ScreenEvent>
 }

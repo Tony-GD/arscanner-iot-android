@@ -14,9 +14,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.griddynamics.connectedapps.MainActivity
 import com.griddynamics.connectedapps.R
-import com.griddynamics.connectedapps.repository.stream.GatewayStream
+import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.settings.SettingsDeviceItem
+import com.griddynamics.connectedapps.repository.stream.GatewayStream
+import com.griddynamics.connectedapps.ui.common.ScreenEvent
 import com.griddynamics.connectedapps.ui.home.Callback
+import com.griddynamics.connectedapps.ui.settings.events.SettingsScreenEventsStream
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
@@ -32,6 +35,10 @@ class SettingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var gatewayStream: GatewayStream
+
+    @Inject
+    lateinit var eventsStream: SettingsScreenEventsStream
+
     private lateinit var settingsViewModel: SettingsViewModel
     private var onDeviceSelectedListener = object : SettingsItemsAdapter.OnDeviceSelectedListener {
         override fun onDeviceSelected(deviceId: String, address: String) {
@@ -66,13 +73,26 @@ class SettingsFragment : DaggerFragment() {
         AndroidSupportInjection.inject(this)
         settingsViewModel =
             ViewModelProvider(this, viewModelFactory).get(SettingsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_settings, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val user = settingsViewModel.user
+        setupEventsObserver()
+        setupUi(user)
+        val items = mutableListOf<SettingsDeviceItem>()
+        rv_settings_devices.adapter = SettingsItemsAdapter(items, onDeviceSelectedListener)
+        rv_settings_devices.layoutManager = LinearLayoutManager(requireContext())
+        eventsStream.events.value = ScreenEvent.LOADING
+        settingsViewModel.loadData().observe(viewLifecycleOwner, Observer {
+            eventsStream.events.value = ScreenEvent.DEFAULT
+            items.addAll(it)
+            rv_settings_devices.adapter?.notifyDataSetChanged()
+        })
+    }
+
+    private fun setupUi(user: User) {
         Glide.with(this)
             .load(user.photoUrl)
             .transform(CircleCrop())
@@ -88,37 +108,15 @@ class SettingsFragment : DaggerFragment() {
         }
         btn_settings_add.setOnClickListener { navigateToHomeFragment() }
         ib_header_back_arrow.setOnClickListener { activity?.onBackPressed() }
-        val items = mutableListOf<SettingsDeviceItem>()
-        rv_settings_devices.adapter = SettingsItemsAdapter(items, onDeviceSelectedListener)
-        rv_settings_devices.layoutManager = LinearLayoutManager(requireContext())
-        settingsViewModel.loadUserGateways().observe(viewLifecycleOwner, Observer { gateways ->
-            gatewayStream.gatewayData.value = gateways
-            gateways.forEach {
-                items.add(
-                    SettingsDeviceItem(
-                        "${it.gatewayId}",
-                        SettingsDeviceItem.TYPE_GATEWAY,
-                        "${it.displayName}",
-                        ""
-                    )
-                )
+    }
+
+    private fun setupEventsObserver() {
+        eventsStream.events.observe(viewLifecycleOwner, Observer {
+            if (it is ScreenEvent.LOADING) {
+                pb_settings_loading.visibility = View.VISIBLE
             }
-            (rv_settings_devices.adapter as SettingsItemsAdapter).notifyDataSetChanged()
-        })
-        settingsViewModel.loadUserDevices().observe(viewLifecycleOwner, Observer { devices ->
-            devices.forEach {
-                val item = SettingsDeviceItem(
-                    "${it.deviceId}",
-                    SettingsDeviceItem.TYPE_DEVICE,
-                    "${it.displayName}",
-                    ""
-                )
-                settingsViewModel.loadAddress(it.location)
-                    .observe(viewLifecycleOwner, Observer { address ->
-                        item.address = address
-                        (rv_settings_devices.adapter as SettingsItemsAdapter).notifyDataSetChanged()
-                    })
-                items.add(item)
+            if (it is ScreenEvent.DEFAULT) {
+                pb_settings_loading.visibility = View.GONE
             }
         })
     }

@@ -16,7 +16,7 @@ import com.griddynamics.connectedapps.R
 import com.griddynamics.connectedapps.databinding.EditGatewayFragmentBinding
 import com.griddynamics.connectedapps.model.device.EMPTY_GATEWAY
 import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
-import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
+import com.griddynamics.connectedapps.ui.common.ScreenEvent
 import com.griddynamics.connectedapps.util.getErrorDialog
 import com.griddynamics.connectedapps.util.getSuccessDialog
 import com.griddynamics.connectedapps.viewmodels.ViewModelFactory
@@ -73,16 +73,16 @@ class EditGatewayFragment : DaggerFragment() {
         }
         binding.viewModel = viewModel
         eventsStream.events.observe(viewLifecycleOwner, Observer {
-            if (it is HomeScreenEvent.LOADING) {
+            if (it is ScreenEvent.LOADING) {
                 viewModel.isLoading.set(true)
             }
-            if (it is HomeScreenEvent.DEFAULT) {
+            if (it is ScreenEvent.DEFAULT) {
                 viewModel.isLoading.set(false)
             }
-            if (it is HomeScreenEvent.SUCCESS) {
+            if (it is ScreenEvent.SUCCESS) {
                 showSuccess()
             }
-            if (it is HomeScreenEvent.ERROR) {
+            if (it is ScreenEvent.ERROR) {
                 showError()
             }
         })
@@ -117,7 +117,7 @@ class EditGatewayFragment : DaggerFragment() {
     }
 
     private fun tearDownDialog(dialog: AlertDialog) {
-        eventsStream.events.postValue(HomeScreenEvent.DEFAULT)
+        eventsStream.events.postValue(ScreenEvent.DEFAULT)
         dialog.dismiss()
     }
 

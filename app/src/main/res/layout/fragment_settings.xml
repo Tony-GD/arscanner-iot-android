@@ -34,10 +34,10 @@
 
         <Button
             android:id="@+id/btn_settings_add"
+            style="@style/AppText.FiraSans.White.16.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/radius_24"
-            style="@style/AppText.FiraSans.White.16.Bold"
             android:background="@color/transparent"
             android:text="@string/add_new"
             android:textAlignment="center"
@@ -84,5 +84,15 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_settings_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

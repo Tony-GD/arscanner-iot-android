@@ -14,8 +14,7 @@ import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.DeviceStream
 import com.griddynamics.connectedapps.ui.home.Callback
 import com.griddynamics.connectedapps.ui.home.edit.events.EditDeviceScreenEventsStream
-import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
-import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
+import com.griddynamics.connectedapps.ui.common.ScreenEvent
 import com.griddynamics.connectedapps.util.AddressUtil
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -93,10 +92,10 @@ class EditDeviceViewModel @Inject constructor(
     fun saveEditedDevice() {
         viewModelScope.launch {
             device?.let {
-                eventsStream.events.postValue(HomeScreenEvent.LOADING)
+                eventsStream.events.postValue(ScreenEvent.LOADING)
                 if (isAdding.get()) {
                     val response = repository.addDevice(it.apply { saveMetrics() })
-                    eventsStream.events.postValue(HomeScreenEvent.DEFAULT)
+                    eventsStream.events.postValue(ScreenEvent.DEFAULT)
                     networkResponse.postValue(response)
                     when (response) {
                         is NetworkResponse.Success<*> -> {
@@ -107,7 +106,7 @@ class EditDeviceViewModel @Inject constructor(
                     }
                 } else {
                     val response = repository.editDevice(it.apply { saveMetrics() })
-                    eventsStream.events.postValue(HomeScreenEvent.DEFAULT)
+                    eventsStream.events.postValue(ScreenEvent.DEFAULT)
                     networkResponse.postValue(response)
                     when (response) {
                         is NetworkResponse.Success<*> -> {

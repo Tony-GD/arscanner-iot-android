@@ -2,17 +2,22 @@ package com.griddynamics.connectedapps.ui.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.GeoPoint
+import androidx.lifecycle.viewModelScope
 import com.griddynamics.connectedapps.model.User
 import com.griddynamics.connectedapps.model.device.DeviceResponse
 import com.griddynamics.connectedapps.model.device.GatewayResponse
+import com.griddynamics.connectedapps.model.settings.SettingsDeviceItem
 import com.griddynamics.connectedapps.repository.local.LocalStorage
 import com.griddynamics.connectedapps.repository.network.firebase.FirebaseAPI
 import com.griddynamics.connectedapps.repository.stream.GatewayStream
 import com.griddynamics.connectedapps.util.AddressUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+private const val TAG: String = "SettingsViewModel"
 
 class SettingsViewModel @Inject constructor(
     private val gatewayStream: GatewayStream,
@@ -21,7 +26,20 @@ class SettingsViewModel @Inject constructor(
     val user: User
         get() = localStorage.getUser()
 
-    fun loadUserGateways(): LiveData<List<GatewayResponse>> {
+    fun loadData(): LiveData<List<SettingsDeviceItem>> {
+        val mediatorLiveData = MediatorLiveData<List<SettingsDeviceItem>>()
+        mediatorLiveData.addSource(loadUserGateways()) { response ->
+            mediatorLiveData.value =
+                response.toSettingsGatewayItem()
+        }
+        mediatorLiveData.addSource(loadUserDevices()) { response ->
+            mediatorLiveData.value =
+                response.toSettingsDeviceItem()
+        }
+        return mediatorLiveData
+    }
+
+    private fun loadUserGateways(): LiveData<List<GatewayResponse>> {
         val mediatorLiveData = MediatorLiveData<List<GatewayResponse>>()
         mediatorLiveData.addSource(FirebaseAPI.getUserGateways(user)) {
             mediatorLiveData.value = it
@@ -30,17 +48,37 @@ class SettingsViewModel @Inject constructor(
         return mediatorLiveData
     }
 
-    fun loadUserDevices() = FirebaseAPI.getUserDevices(user)
-    fun loadPublicDevices(): LiveData<List<DeviceResponse>> {
-        val mediatorLiveData = MediatorLiveData<List<DeviceResponse>>()
-        mediatorLiveData.addSource(FirebaseAPI.getPublicDevices()) { devices ->
-            mediatorLiveData.value = devices.filter { it.userId != user.uid }
-        }
-        return mediatorLiveData
+    private fun loadUserDevices() = FirebaseAPI.getUserDevices(user)
+
+    private fun List<GatewayResponse>.toSettingsGatewayItem(): MutableList<SettingsDeviceItem> {
+        return ArrayList(this.map {
+            SettingsDeviceItem(
+                "${it.gatewayId}",
+                SettingsDeviceItem.TYPE_GATEWAY,
+                "${it.displayName}",
+                ""
+            )
+        })
     }
-    fun loadAddress(location: GeoPoint?): LiveData<String> = if (location != null) {
-        AddressUtil.getAddressFrom(location)
-    } else {
-        MutableLiveData()
+
+    private fun List<DeviceResponse>.toSettingsDeviceItem(): MutableList<SettingsDeviceItem> {
+        return ArrayList(this.map {
+            val device = SettingsDeviceItem(
+                "${it.deviceId}", SettingsDeviceItem.TYPE_DEVICE, "${it.displayName}",
+                ""
+            )
+            if (it.locationDescription != null) {
+                device.address = "${it.locationDescription}"
+            } else {
+                it.location?.let { location ->
+                    viewModelScope.launch {
+                        withContext(Dispatchers.IO) {
+                            device.address = AddressUtil.getAddress(location)
+                        }
+                    }
+                }
+            }
+            device
+        })
     }
 }

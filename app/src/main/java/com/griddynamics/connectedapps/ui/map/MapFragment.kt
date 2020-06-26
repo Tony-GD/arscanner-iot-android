@@ -137,12 +137,6 @@ class MapFragment : DaggerFragment() {
         }
     }
 
-    private val onGatewaySelectedListener = object : OnGatewaySelectedListener {
-        override fun onGatewaySelected(gateway: GatewayResponse) {
-            navigateToGatewayEditFragment("${gateway.displayName}")
-        }
-    }
-
     private val locationChangeListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             map?.let {
@@ -199,7 +193,6 @@ class MapFragment : DaggerFragment() {
                     false
                 )
             binding.item = device
-//            binding.listener = onDeviceSelectedListener
             val greenIcon = requireContext().getDrawable(R.drawable.green)
             val selectedIcon = requireContext().getDrawable(R.drawable.ic_green_selected)
             val elementMarker = Marker(map)

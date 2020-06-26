@@ -7,7 +7,7 @@ import com.griddynamics.connectedapps.model.device.GatewayResponse
 import com.griddynamics.connectedapps.repository.network.AirScannerRepository
 import com.griddynamics.connectedapps.repository.network.api.NetworkResponse
 import com.griddynamics.connectedapps.repository.stream.GatewayStream
-import com.griddynamics.connectedapps.ui.home.edit.events.HomeScreenEvent
+import com.griddynamics.connectedapps.ui.common.ScreenEvent
 import com.griddynamics.connectedapps.ui.home.edit.events.EditGatewayScreenEventsStream
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -49,7 +49,7 @@ class EditGatewayViewModel @Inject constructor(
         }
 
     fun saveGateway() {
-        eventsStream.events.postValue(HomeScreenEvent.LOADING)
+        eventsStream.events.postValue(ScreenEvent.LOADING)
         viewModelScope.launch {
             gateway?.let {
                 val result = if (isAdding.get()) {
@@ -57,11 +57,11 @@ class EditGatewayViewModel @Inject constructor(
                 } else {
                     repository.editGateway(it)
                 }
-                eventsStream.events.postValue(HomeScreenEvent.DEFAULT)
+                eventsStream.events.postValue(ScreenEvent.DEFAULT)
                 if (result is NetworkResponse.Success) {
-                    eventsStream.events.postValue(HomeScreenEvent.SUCCESS)
+                    eventsStream.events.postValue(ScreenEvent.SUCCESS)
                 } else {
-                    eventsStream.events.postValue(HomeScreenEvent.ERROR)
+                    eventsStream.events.postValue(ScreenEvent.ERROR)
                 }
             }
         }
